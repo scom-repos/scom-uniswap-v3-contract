@@ -1,0 +1,19 @@
+{
+    "type":"contract",
+    "solidity": {
+        "version": "0.7.6",
+        "optimizerRuns": 1000000,
+        "sourceDir": "./node_modules/@uniswap/v3-periphery/contracts",
+        "artifactsDir": "./node_modules/@uniswap/v3-periphery/artifacts",
+        "outputDir": "src/contracts",
+        "outputObjects": {"bytecode":true},
+        "overrides": [
+            {
+                "sources":[
+                    "libraries/NFTDescriptor.sol"
+                ], 
+                "optimizerRuns":500
+            }
+        ]
+    }
+}

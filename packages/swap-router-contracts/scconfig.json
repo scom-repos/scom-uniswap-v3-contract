@@ -1,0 +1,11 @@
+{
+    "type":"contract",
+    "solidity": {
+        "version": "0.7.6",
+        "optimizerRuns": 800,
+        "sourceDir": "node_modules/@uniswap/swap-router-contracts/contracts",
+        "artifactsDir": "node_modules/@uniswap/swap-router-contracts/artifacts",
+        "outputDir": "src/contracts",
+        "outputObjects": {"bytecode":true}
+    }
+}
