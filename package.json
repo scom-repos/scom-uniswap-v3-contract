@@ -5,10 +5,7 @@
     "pluginTypes": "pluginTypes/index.d.ts",
     "types": "types/index.d.ts",
     "dependencies": {
-        "@ijstech/eth-contract": "^0.1.8",
-        "swap-router-contracts": "file:./packages/swap-router-contracts",
-        "v3-core": "file:./packages/v3-core",
-        "v3-periphery": "file:./packages/v3-periphery"
+        "@ijstech/eth-contract": "^0.1.8"
     },
     "devDependencies": {
         "@ijstech/cli": "^0.1.28",
@@ -20,9 +17,12 @@
         "@types/node": "18.8.4",
         "ganache": "7.5.0",
         "mocha": "10.0.0",
+        "swap-router-contracts": "file:./packages/swap-router-contracts",
         "ts-node": "10.9.1",
         "tsconfig-paths": "^4.2.0",
-        "typescript": "4.8.4"
+        "typescript": "4.8.4",
+        "v3-core": "file:./packages/v3-core",
+        "v3-periphery": "file:./packages/v3-periphery"
     },
     "scripts": {
         "build": "npm run build:v3-core && npm run build:v3-periphery && npm run build:swap-router-contracts && rm -rf lib && rm -rf dist && rm -rf types && rm -rf pluginTypes && rm -rf src/contracts && npx @ijstech/compiler",
