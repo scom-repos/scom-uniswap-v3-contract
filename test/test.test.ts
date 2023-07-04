@@ -71,6 +71,11 @@ describe('Uniswap V3', function() {
             log(big_X) = log(x*(10+eY)) = Y + log(x)
             Math.round(Math.round(Math.log(Math.sqrt(price))/Math.log(1.0001))/tickSpacing)*tickSpacing,
             */
+           /*
+           447213.59549995793928183473374626
+           0.44721359549995793928183473374626
+           6 + 
+           */
             let sqrt = price.sqrt().toFixed();
             let dp = sqrt.indexOf('.');
             if (sqrt.startsWith("0.")) { // sqrt < 1
@@ -105,10 +110,10 @@ describe('Uniswap V3', function() {
                 token0: token0.address,
                 token1: token1.address,
                 fee: pairFee, 
-                tickLower: getTick(_price.times("0.8"), tickSpacing),
-                tickUpper: getTick(_price.times("1.2"), tickSpacing),
-                // tickLower: Math.round(-887272/tickSpacing)*tickSpacing,
-                // tickUpper: Math.round(887272/tickSpacing)*tickSpacing,
+                // tickLower: getTick(_price.times("0.8"), tickSpacing),
+                // tickUpper: getTick(_price.times("1.2"), tickSpacing),
+                tickLower: Math.round(-887272/tickSpacing)*tickSpacing,
+                tickUpper: Math.round(887272/tickSpacing)*tickSpacing,
                 amount0Desired: amount0,
                 amount1Desired: amount1,
                 amount0Min: 0,
@@ -116,6 +121,13 @@ describe('Uniswap V3', function() {
                 recipient: lp,
                 deadline: now + 1000
             };
+/*
+  tickLower: -131200
+  tickUpper: -129200
+  
+  tickLower: 129000
+  tickUpper: 131000
+*/
             print(params2)
             receipt2 = await uniswap.nftPosMngr.mint(params2);
 
@@ -127,8 +139,8 @@ describe('Uniswap V3', function() {
         } else {
             ({receipt1, receipt2} = await createAndAdd(usdt, uni, new BigNumber(1 / UNI_PRICE_IN_USD), Utils.toDecimals(USDT_TO_ADD, 6), Utils.toDecimals(UNI_TO_ADD)));
         }
-        print(receipt1);
-        print(receipt2);
+        // print(receipt1);
+        // print(receipt2);
     });
     let USDT_FROM_AMOUNT = 100;
     it('swap', async function() {
@@ -147,8 +159,18 @@ describe('Uniswap V3', function() {
         );
         console.log("pool:", poolAddress);
         let pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
-        print(await pool.slot0());
-
+        // print(await pool.slot0());
+        /*
+        {
+        sqrtPriceX96: 177159557114295710296167184869
+        tick: 16095
+        observationIndex: 0
+        observationCardinality: 1
+        observationCardinalityNext: 1
+        feeProtocol: 0
+        unlocked: true
+        }        
+        */
         let now = await wallet.getBlockTimestamp();
         wallet.defaultAccount = swapper;
         let params = {
@@ -163,6 +185,14 @@ describe('Uniswap V3', function() {
         };
         print(params);
         let receipt = await uniswap.router.exactInputSingle(params);
-        print(receipt);
+        // print(receipt);
+/*
+
+0.000049350768385353 
+
+0.000000019435486356 
+*/
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
     });
 }); 
