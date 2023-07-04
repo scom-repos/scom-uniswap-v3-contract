@@ -24,4 +24,4 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Contract = void 0;
-exports.Contract = __importStar(require("./contracts"));
+exports.Contract = __importStar(require("./contracts/index"));

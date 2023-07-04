@@ -2,7 +2,7 @@
     "type":"contract",
     "solidity": {
         "version": "0.7.6",
-        "optimizerRuns": 1000000,
+        "optimizerRuns": 800,
         "sourceDir": "node_modules/@uniswap/v3-core/contracts",
         "artifactsDir": "node_modules/@uniswap/v3-core/artifacts",
         "outputDir": "src/contracts",

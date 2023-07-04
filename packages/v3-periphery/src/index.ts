@@ -1,2 +1,2 @@
 import {IWallet, BigNumber} from '@ijstech/eth-wallet';
-export * as Contract from "./contracts";
+export * as Contract from "./contracts/index";

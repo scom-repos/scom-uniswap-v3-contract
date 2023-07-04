@@ -1,0 +1,23 @@
+{ 
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "removeComments": true,
+        "declarationDir": "types",
+        "declaration": true,
+        "outDir": "lib",
+        "baseUrl": ".",
+        "paths": {
+            "swap-router-contracts": ["../packages/swap-router-contracts"],
+            "v3-core": ["../packages/v3-core"],
+            "v3-periphery": ["../packages/v3-periphery"]
+        }
+    },
+    "include": [
+      "*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+  }
