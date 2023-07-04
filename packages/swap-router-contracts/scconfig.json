@@ -6,6 +6,6 @@
         "sourceDir": "node_modules/@uniswap/swap-router-contracts/contracts",
         "artifactsDir": "node_modules/@uniswap/swap-router-contracts/artifacts",
         "outputDir": "src/contracts",
-        "outputObjects": {"bytecode":true}
+        "outputOptions": {"txData":true}
     }
 }

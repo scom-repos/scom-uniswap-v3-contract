@@ -5,7 +5,6 @@
         "optimizerRuns": 800,
         "sourceDir": "node_modules/@uniswap/v3-core/contracts",
         "artifactsDir": "node_modules/@uniswap/v3-core/artifacts",
-        "outputDir": "src/contracts",
-        "outputObjects": {"bytecode":true}
+        "outputDir": "src/contracts"
     }
 }

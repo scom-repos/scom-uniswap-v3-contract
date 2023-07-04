@@ -6,7 +6,7 @@
         "sourceDir": "./node_modules/@uniswap/v3-periphery/contracts",
         "artifactsDir": "./node_modules/@uniswap/v3-periphery/artifacts",
         "outputDir": "src/contracts",
-        "outputObjects": {"bytecode":true},
+        "outputOptions": {"txData":true},
         "overrides": [
             {
                 "sources":[

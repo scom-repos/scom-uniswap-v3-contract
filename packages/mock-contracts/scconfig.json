@@ -5,7 +5,6 @@
         "optimizerRuns": 999999,
         "sourceDir": "contracts",
         "outputDir": "src/contracts",
-        "outputObjects": "bytecode",
         "overrides": [{
             "sources":["WETH9.sol"],
             "version": "0.4.26"
