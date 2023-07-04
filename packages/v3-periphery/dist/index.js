@@ -251,8 +251,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('approve', approveParams(params), options);
                 return;
             };
+            let approve_txData = async (params, options) => {
+                let result = await this.txData('approve', approveParams(params), options);
+                return result;
+            };
             this.approve = Object.assign(approve_send, {
-                call: approve_call
+                call: approve_call,
+                txData: approve_txData
             });
             let burn_send = async (tokenId, options) => {
                 let result = await this.send('burn', [this.wallet.utils.toString(tokenId)], options);
@@ -262,8 +267,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('burn', [this.wallet.utils.toString(tokenId)], options);
                 return;
             };
+            let burn_txData = async (tokenId, options) => {
+                let result = await this.txData('burn', [this.wallet.utils.toString(tokenId)], options);
+                return result;
+            };
             this.burn = Object.assign(burn_send, {
-                call: burn_call
+                call: burn_call,
+                txData: burn_txData
             });
             let collect_send = async (params, options) => {
                 let result = await this.send('collect', [[this.wallet.utils.toString(params.tokenId), params.recipient, this.wallet.utils.toString(params.amount0Max), this.wallet.utils.toString(params.amount1Max)]], options);
@@ -276,8 +286,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                     amount1: new eth_contract_1.BigNumber(result.amount1)
                 };
             };
+            let collect_txData = async (params, options) => {
+                let result = await this.txData('collect', [[this.wallet.utils.toString(params.tokenId), params.recipient, this.wallet.utils.toString(params.amount0Max), this.wallet.utils.toString(params.amount1Max)]], options);
+                return result;
+            };
             this.collect = Object.assign(collect_send, {
-                call: collect_call
+                call: collect_call,
+                txData: collect_txData
             });
             let createAndInitializePoolIfNecessaryParams = (params) => [params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceX96)];
             let createAndInitializePoolIfNecessary_send = async (params, options) => {
@@ -288,8 +303,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
                 return result;
             };
+            let createAndInitializePoolIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
+                return result;
+            };
             this.createAndInitializePoolIfNecessary = Object.assign(createAndInitializePoolIfNecessary_send, {
-                call: createAndInitializePoolIfNecessary_call
+                call: createAndInitializePoolIfNecessary_call,
+                txData: createAndInitializePoolIfNecessary_txData
             });
             let decreaseLiquidity_send = async (params, options) => {
                 let result = await this.send('decreaseLiquidity', [[this.wallet.utils.toString(params.tokenId), this.wallet.utils.toString(params.liquidity), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), this.wallet.utils.toString(params.deadline)]], options);
@@ -302,8 +322,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                     amount1: new eth_contract_1.BigNumber(result.amount1)
                 };
             };
+            let decreaseLiquidity_txData = async (params, options) => {
+                let result = await this.txData('decreaseLiquidity', [[this.wallet.utils.toString(params.tokenId), this.wallet.utils.toString(params.liquidity), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), this.wallet.utils.toString(params.deadline)]], options);
+                return result;
+            };
             this.decreaseLiquidity = Object.assign(decreaseLiquidity_send, {
-                call: decreaseLiquidity_call
+                call: decreaseLiquidity_call,
+                txData: decreaseLiquidity_txData
             });
             let increaseLiquidity_send = async (params, options) => {
                 let result = await this.send('increaseLiquidity', [[this.wallet.utils.toString(params.tokenId), this.wallet.utils.toString(params.amount0Desired), this.wallet.utils.toString(params.amount1Desired), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), this.wallet.utils.toString(params.deadline)]], options);
@@ -317,8 +342,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                     amount1: new eth_contract_1.BigNumber(result.amount1)
                 };
             };
+            let increaseLiquidity_txData = async (params, options) => {
+                let result = await this.txData('increaseLiquidity', [[this.wallet.utils.toString(params.tokenId), this.wallet.utils.toString(params.amount0Desired), this.wallet.utils.toString(params.amount1Desired), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), this.wallet.utils.toString(params.deadline)]], options);
+                return result;
+            };
             this.increaseLiquidity = Object.assign(increaseLiquidity_send, {
-                call: increaseLiquidity_call
+                call: increaseLiquidity_call,
+                txData: increaseLiquidity_txData
             });
             let mint_send = async (params, options) => {
                 let result = await this.send('mint', [[params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Desired), this.wallet.utils.toString(params.amount1Desired), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline)]], options);
@@ -333,8 +363,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                     amount1: new eth_contract_1.BigNumber(result.amount1)
                 };
             };
+            let mint_txData = async (params, options) => {
+                let result = await this.txData('mint', [[params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Desired), this.wallet.utils.toString(params.amount1Desired), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline)]], options);
+                return result;
+            };
             this.mint = Object.assign(mint_send, {
-                call: mint_call
+                call: mint_call,
+                txData: mint_txData
             });
             let multicall_send = async (data, options) => {
                 let result = await this.send('multicall', [this.wallet.utils.stringToBytes(data)], options);
@@ -344,8 +379,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('multicall', [this.wallet.utils.stringToBytes(data)], options);
                 return result;
             };
+            let multicall_txData = async (data, options) => {
+                let result = await this.txData('multicall', [this.wallet.utils.stringToBytes(data)], options);
+                return result;
+            };
             this.multicall = Object.assign(multicall_send, {
-                call: multicall_call
+                call: multicall_call,
+                txData: multicall_txData
             });
             let permitParams = (params) => [params.spender, this.wallet.utils.toString(params.tokenId), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let permit_send = async (params, options) => {
@@ -356,8 +396,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('permit', permitParams(params), options);
                 return;
             };
+            let permit_txData = async (params, options) => {
+                let result = await this.txData('permit', permitParams(params), options);
+                return result;
+            };
             this.permit = Object.assign(permit_send, {
-                call: permit_call
+                call: permit_call,
+                txData: permit_txData
             });
             let refundETH_send = async (options) => {
                 let result = await this.send('refundETH', [], options);
@@ -367,8 +412,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('refundETH', [], options);
                 return;
             };
+            let refundETH_txData = async (options) => {
+                let result = await this.txData('refundETH', [], options);
+                return result;
+            };
             this.refundETH = Object.assign(refundETH_send, {
-                call: refundETH_call
+                call: refundETH_call,
+                txData: refundETH_txData
             });
             let safeTransferFromParams = (params) => [params.from, params.to, this.wallet.utils.toString(params.tokenId)];
             let safeTransferFrom_send = async (params, options) => {
@@ -379,8 +429,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('safeTransferFrom', safeTransferFromParams(params), options);
                 return;
             };
+            let safeTransferFrom_txData = async (params, options) => {
+                let result = await this.txData('safeTransferFrom', safeTransferFromParams(params), options);
+                return result;
+            };
             this.safeTransferFrom = Object.assign(safeTransferFrom_send, {
-                call: safeTransferFrom_call
+                call: safeTransferFrom_call,
+                txData: safeTransferFrom_txData
             });
             let safeTransferFrom_1Params = (params) => [params.from, params.to, this.wallet.utils.toString(params.tokenId), this.wallet.utils.stringToBytes(params.data)];
             let safeTransferFrom_1_send = async (params, options) => {
@@ -391,8 +446,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('safeTransferFrom', safeTransferFrom_1Params(params), options);
                 return;
             };
+            let safeTransferFrom_1_txData = async (params, options) => {
+                let result = await this.txData('safeTransferFrom', safeTransferFrom_1Params(params), options);
+                return result;
+            };
             this.safeTransferFrom_1 = Object.assign(safeTransferFrom_1_send, {
-                call: safeTransferFrom_1_call
+                call: safeTransferFrom_1_call,
+                txData: safeTransferFrom_1_txData
             });
             let selfPermitParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermit_send = async (params, options) => {
@@ -403,8 +463,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('selfPermit', selfPermitParams(params), options);
                 return;
             };
+            let selfPermit_txData = async (params, options) => {
+                let result = await this.txData('selfPermit', selfPermitParams(params), options);
+                return result;
+            };
             this.selfPermit = Object.assign(selfPermit_send, {
-                call: selfPermit_call
+                call: selfPermit_call,
+                txData: selfPermit_txData
             });
             let selfPermitAllowedParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowed_send = async (params, options) => {
@@ -415,8 +480,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('selfPermitAllowed', selfPermitAllowedParams(params), options);
                 return;
             };
+            let selfPermitAllowed_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowed', selfPermitAllowedParams(params), options);
+                return result;
+            };
             this.selfPermitAllowed = Object.assign(selfPermitAllowed_send, {
-                call: selfPermitAllowed_call
+                call: selfPermitAllowed_call,
+                txData: selfPermitAllowed_txData
             });
             let selfPermitAllowedIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowedIfNecessary_send = async (params, options) => {
@@ -427,8 +497,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitAllowedIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitAllowedIfNecessary = Object.assign(selfPermitAllowedIfNecessary_send, {
-                call: selfPermitAllowedIfNecessary_call
+                call: selfPermitAllowedIfNecessary_call,
+                txData: selfPermitAllowedIfNecessary_txData
             });
             let selfPermitIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitIfNecessary_send = async (params, options) => {
@@ -439,8 +514,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitIfNecessary = Object.assign(selfPermitIfNecessary_send, {
-                call: selfPermitIfNecessary_call
+                call: selfPermitIfNecessary_call,
+                txData: selfPermitIfNecessary_txData
             });
             let setApprovalForAllParams = (params) => [params.operator, params.approved];
             let setApprovalForAll_send = async (params, options) => {
@@ -451,8 +531,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('setApprovalForAll', setApprovalForAllParams(params), options);
                 return;
             };
+            let setApprovalForAll_txData = async (params, options) => {
+                let result = await this.txData('setApprovalForAll', setApprovalForAllParams(params), options);
+                return result;
+            };
             this.setApprovalForAll = Object.assign(setApprovalForAll_send, {
-                call: setApprovalForAll_call
+                call: setApprovalForAll_call,
+                txData: setApprovalForAll_txData
             });
             let sweepTokenParams = (params) => [params.token, this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let sweepToken_send = async (params, options) => {
@@ -463,8 +548,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('sweepToken', sweepTokenParams(params), options);
                 return;
             };
+            let sweepToken_txData = async (params, options) => {
+                let result = await this.txData('sweepToken', sweepTokenParams(params), options);
+                return result;
+            };
             this.sweepToken = Object.assign(sweepToken_send, {
-                call: sweepToken_call
+                call: sweepToken_call,
+                txData: sweepToken_txData
             });
             let transferFromParams = (params) => [params.from, params.to, this.wallet.utils.toString(params.tokenId)];
             let transferFrom_send = async (params, options) => {
@@ -475,8 +565,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('transferFrom', transferFromParams(params), options);
                 return;
             };
+            let transferFrom_txData = async (params, options) => {
+                let result = await this.txData('transferFrom', transferFromParams(params), options);
+                return result;
+            };
             this.transferFrom = Object.assign(transferFrom_send, {
-                call: transferFrom_call
+                call: transferFrom_call,
+                txData: transferFrom_txData
             });
             let uniswapV3MintCallbackParams = (params) => [this.wallet.utils.toString(params.amount0Owed), this.wallet.utils.toString(params.amount1Owed), this.wallet.utils.stringToBytes(params.data)];
             let uniswapV3MintCallback_send = async (params, options) => {
@@ -487,8 +582,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('uniswapV3MintCallback', uniswapV3MintCallbackParams(params), options);
                 return;
             };
+            let uniswapV3MintCallback_txData = async (params, options) => {
+                let result = await this.txData('uniswapV3MintCallback', uniswapV3MintCallbackParams(params), options);
+                return result;
+            };
             this.uniswapV3MintCallback = Object.assign(uniswapV3MintCallback_send, {
-                call: uniswapV3MintCallback_call
+                call: uniswapV3MintCallback_call,
+                txData: uniswapV3MintCallback_txData
             });
             let unwrapWETH9Params = (params) => [this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let unwrapWETH9_send = async (params, options) => {
@@ -499,8 +599,13 @@ define("v3-periphery/contracts/NonfungiblePositionManager.ts", ["require", "expo
                 let result = await this.call('unwrapWETH9', unwrapWETH9Params(params), options);
                 return;
             };
+            let unwrapWETH9_txData = async (params, options) => {
+                let result = await this.txData('unwrapWETH9', unwrapWETH9Params(params), options);
+                return result;
+            };
             this.unwrapWETH9 = Object.assign(unwrapWETH9_send, {
-                call: unwrapWETH9_call
+                call: unwrapWETH9_call,
+                txData: unwrapWETH9_txData
             });
         }
     }
@@ -636,8 +741,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('exactInput', [[this.wallet.utils.stringToBytes(params.path), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.amountOutMinimum)]], options);
                 return new eth_contract_3.BigNumber(result);
             };
+            let exactInput_txData = async (params, options) => {
+                let result = await this.txData('exactInput', [[this.wallet.utils.stringToBytes(params.path), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.amountOutMinimum)]], options);
+                return result;
+            };
             this.exactInput = Object.assign(exactInput_send, {
-                call: exactInput_call
+                call: exactInput_call,
+                txData: exactInput_txData
             });
             let exactInputSingle_send = async (params, options) => {
                 let result = await this.send('exactInputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.amountOutMinimum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
@@ -647,8 +757,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('exactInputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.amountOutMinimum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
                 return new eth_contract_3.BigNumber(result);
             };
+            let exactInputSingle_txData = async (params, options) => {
+                let result = await this.txData('exactInputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.amountOutMinimum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
+                return result;
+            };
             this.exactInputSingle = Object.assign(exactInputSingle_send, {
-                call: exactInputSingle_call
+                call: exactInputSingle_call,
+                txData: exactInputSingle_txData
             });
             let exactOutput_send = async (params, options) => {
                 let result = await this.send('exactOutput', [[this.wallet.utils.stringToBytes(params.path), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum)]], options);
@@ -658,8 +773,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('exactOutput', [[this.wallet.utils.stringToBytes(params.path), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum)]], options);
                 return new eth_contract_3.BigNumber(result);
             };
+            let exactOutput_txData = async (params, options) => {
+                let result = await this.txData('exactOutput', [[this.wallet.utils.stringToBytes(params.path), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum)]], options);
+                return result;
+            };
             this.exactOutput = Object.assign(exactOutput_send, {
-                call: exactOutput_call
+                call: exactOutput_call,
+                txData: exactOutput_txData
             });
             let exactOutputSingle_send = async (params, options) => {
                 let result = await this.send('exactOutputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
@@ -669,8 +789,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('exactOutputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
                 return new eth_contract_3.BigNumber(result);
             };
+            let exactOutputSingle_txData = async (params, options) => {
+                let result = await this.txData('exactOutputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), params.recipient, this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.amountInMaximum), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
+                return result;
+            };
             this.exactOutputSingle = Object.assign(exactOutputSingle_send, {
-                call: exactOutputSingle_call
+                call: exactOutputSingle_call,
+                txData: exactOutputSingle_txData
             });
             let multicall_send = async (data, options) => {
                 let result = await this.send('multicall', [this.wallet.utils.stringToBytes(data)], options);
@@ -680,8 +805,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('multicall', [this.wallet.utils.stringToBytes(data)], options);
                 return result;
             };
+            let multicall_txData = async (data, options) => {
+                let result = await this.txData('multicall', [this.wallet.utils.stringToBytes(data)], options);
+                return result;
+            };
             this.multicall = Object.assign(multicall_send, {
-                call: multicall_call
+                call: multicall_call,
+                txData: multicall_txData
             });
             let refundETH_send = async (options) => {
                 let result = await this.send('refundETH', [], options);
@@ -691,8 +821,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('refundETH', [], options);
                 return;
             };
+            let refundETH_txData = async (options) => {
+                let result = await this.txData('refundETH', [], options);
+                return result;
+            };
             this.refundETH = Object.assign(refundETH_send, {
-                call: refundETH_call
+                call: refundETH_call,
+                txData: refundETH_txData
             });
             let selfPermitParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermit_send = async (params, options) => {
@@ -703,8 +838,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermit', selfPermitParams(params), options);
                 return;
             };
+            let selfPermit_txData = async (params, options) => {
+                let result = await this.txData('selfPermit', selfPermitParams(params), options);
+                return result;
+            };
             this.selfPermit = Object.assign(selfPermit_send, {
-                call: selfPermit_call
+                call: selfPermit_call,
+                txData: selfPermit_txData
             });
             let selfPermitAllowedParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowed_send = async (params, options) => {
@@ -715,8 +855,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitAllowed', selfPermitAllowedParams(params), options);
                 return;
             };
+            let selfPermitAllowed_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowed', selfPermitAllowedParams(params), options);
+                return result;
+            };
             this.selfPermitAllowed = Object.assign(selfPermitAllowed_send, {
-                call: selfPermitAllowed_call
+                call: selfPermitAllowed_call,
+                txData: selfPermitAllowed_txData
             });
             let selfPermitAllowedIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowedIfNecessary_send = async (params, options) => {
@@ -727,8 +872,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitAllowedIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitAllowedIfNecessary = Object.assign(selfPermitAllowedIfNecessary_send, {
-                call: selfPermitAllowedIfNecessary_call
+                call: selfPermitAllowedIfNecessary_call,
+                txData: selfPermitAllowedIfNecessary_txData
             });
             let selfPermitIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitIfNecessary_send = async (params, options) => {
@@ -739,8 +889,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitIfNecessary = Object.assign(selfPermitIfNecessary_send, {
-                call: selfPermitIfNecessary_call
+                call: selfPermitIfNecessary_call,
+                txData: selfPermitIfNecessary_txData
             });
             let sweepTokenParams = (params) => [params.token, this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let sweepToken_send = async (params, options) => {
@@ -751,8 +906,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('sweepToken', sweepTokenParams(params), options);
                 return;
             };
+            let sweepToken_txData = async (params, options) => {
+                let result = await this.txData('sweepToken', sweepTokenParams(params), options);
+                return result;
+            };
             this.sweepToken = Object.assign(sweepToken_send, {
-                call: sweepToken_call
+                call: sweepToken_call,
+                txData: sweepToken_txData
             });
             let sweepTokenWithFeeParams = (params) => [params.token, this.wallet.utils.toString(params.amountMinimum), params.recipient, this.wallet.utils.toString(params.feeBips), params.feeRecipient];
             let sweepTokenWithFee_send = async (params, options) => {
@@ -763,8 +923,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('sweepTokenWithFee', sweepTokenWithFeeParams(params), options);
                 return;
             };
+            let sweepTokenWithFee_txData = async (params, options) => {
+                let result = await this.txData('sweepTokenWithFee', sweepTokenWithFeeParams(params), options);
+                return result;
+            };
             this.sweepTokenWithFee = Object.assign(sweepTokenWithFee_send, {
-                call: sweepTokenWithFee_call
+                call: sweepTokenWithFee_call,
+                txData: sweepTokenWithFee_txData
             });
             let uniswapV3SwapCallbackParams = (params) => [this.wallet.utils.toString(params.amount0Delta), this.wallet.utils.toString(params.amount1Delta), this.wallet.utils.stringToBytes(params.data)];
             let uniswapV3SwapCallback_send = async (params, options) => {
@@ -775,8 +940,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('uniswapV3SwapCallback', uniswapV3SwapCallbackParams(params), options);
                 return;
             };
+            let uniswapV3SwapCallback_txData = async (params, options) => {
+                let result = await this.txData('uniswapV3SwapCallback', uniswapV3SwapCallbackParams(params), options);
+                return result;
+            };
             this.uniswapV3SwapCallback = Object.assign(uniswapV3SwapCallback_send, {
-                call: uniswapV3SwapCallback_call
+                call: uniswapV3SwapCallback_call,
+                txData: uniswapV3SwapCallback_txData
             });
             let unwrapWETH9Params = (params) => [this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let unwrapWETH9_send = async (params, options) => {
@@ -787,8 +957,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('unwrapWETH9', unwrapWETH9Params(params), options);
                 return;
             };
+            let unwrapWETH9_txData = async (params, options) => {
+                let result = await this.txData('unwrapWETH9', unwrapWETH9Params(params), options);
+                return result;
+            };
             this.unwrapWETH9 = Object.assign(unwrapWETH9_send, {
-                call: unwrapWETH9_call
+                call: unwrapWETH9_call,
+                txData: unwrapWETH9_txData
             });
             let unwrapWETH9WithFeeParams = (params) => [this.wallet.utils.toString(params.amountMinimum), params.recipient, this.wallet.utils.toString(params.feeBips), params.feeRecipient];
             let unwrapWETH9WithFee_send = async (params, options) => {
@@ -799,8 +974,13 @@ define("v3-periphery/contracts/SwapRouter.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('unwrapWETH9WithFee', unwrapWETH9WithFeeParams(params), options);
                 return;
             };
+            let unwrapWETH9WithFee_txData = async (params, options) => {
+                let result = await this.txData('unwrapWETH9WithFee', unwrapWETH9WithFeeParams(params), options);
+                return result;
+            };
             this.unwrapWETH9WithFee = Object.assign(unwrapWETH9WithFee_send, {
-                call: unwrapWETH9WithFee_call
+                call: unwrapWETH9WithFee_call,
+                txData: unwrapWETH9WithFee_txData
             });
         }
     }
@@ -866,8 +1046,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
                 return result;
             };
+            let createAndInitializePoolIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
+                return result;
+            };
             this.createAndInitializePoolIfNecessary = Object.assign(createAndInitializePoolIfNecessary_send, {
-                call: createAndInitializePoolIfNecessary_call
+                call: createAndInitializePoolIfNecessary_call,
+                txData: createAndInitializePoolIfNecessary_txData
             });
             let migrate_send = async (params, options) => {
                 let result = await this.send('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
@@ -877,8 +1062,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
                 return;
             };
+            let migrate_txData = async (params, options) => {
+                let result = await this.txData('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
+                return result;
+            };
             this.migrate = Object.assign(migrate_send, {
-                call: migrate_call
+                call: migrate_call,
+                txData: migrate_txData
             });
             let multicall_send = async (data, options) => {
                 let result = await this.send('multicall', [this.wallet.utils.stringToBytes(data)], options);
@@ -888,8 +1078,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('multicall', [this.wallet.utils.stringToBytes(data)], options);
                 return result;
             };
+            let multicall_txData = async (data, options) => {
+                let result = await this.txData('multicall', [this.wallet.utils.stringToBytes(data)], options);
+                return result;
+            };
             this.multicall = Object.assign(multicall_send, {
-                call: multicall_call
+                call: multicall_call,
+                txData: multicall_txData
             });
             let selfPermitParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermit_send = async (params, options) => {
@@ -900,8 +1095,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermit', selfPermitParams(params), options);
                 return;
             };
+            let selfPermit_txData = async (params, options) => {
+                let result = await this.txData('selfPermit', selfPermitParams(params), options);
+                return result;
+            };
             this.selfPermit = Object.assign(selfPermit_send, {
-                call: selfPermit_call
+                call: selfPermit_call,
+                txData: selfPermit_txData
             });
             let selfPermitAllowedParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowed_send = async (params, options) => {
@@ -912,8 +1112,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitAllowed', selfPermitAllowedParams(params), options);
                 return;
             };
+            let selfPermitAllowed_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowed', selfPermitAllowedParams(params), options);
+                return result;
+            };
             this.selfPermitAllowed = Object.assign(selfPermitAllowed_send, {
-                call: selfPermitAllowed_call
+                call: selfPermitAllowed_call,
+                txData: selfPermitAllowed_txData
             });
             let selfPermitAllowedIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitAllowedIfNecessary_send = async (params, options) => {
@@ -924,8 +1129,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitAllowedIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitAllowedIfNecessary = Object.assign(selfPermitAllowedIfNecessary_send, {
-                call: selfPermitAllowedIfNecessary_call
+                call: selfPermitAllowedIfNecessary_call,
+                txData: selfPermitAllowedIfNecessary_txData
             });
             let selfPermitIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
             let selfPermitIfNecessary_send = async (params, options) => {
@@ -936,8 +1146,13 @@ define("v3-periphery/contracts/V3Migrator.ts", ["require", "exports", "@ijstech/
                 let result = await this.call('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
                 return;
             };
+            let selfPermitIfNecessary_txData = async (params, options) => {
+                let result = await this.txData('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
+                return result;
+            };
             this.selfPermitIfNecessary = Object.assign(selfPermitIfNecessary_send, {
-                call: selfPermitIfNecessary_call
+                call: selfPermitIfNecessary_call,
+                txData: selfPermitIfNecessary_txData
             });
         }
     }
@@ -1000,8 +1215,13 @@ define("v3-periphery/contracts/PairFlash.ts", ["require", "exports", "@ijstech/e
                 let result = await this.call('initFlash', [[params.token0, params.token1, this.wallet.utils.toString(params.fee1), this.wallet.utils.toString(params.amount0), this.wallet.utils.toString(params.amount1), this.wallet.utils.toString(params.fee2), this.wallet.utils.toString(params.fee3)]], options);
                 return;
             };
+            let initFlash_txData = async (params, options) => {
+                let result = await this.txData('initFlash', [[params.token0, params.token1, this.wallet.utils.toString(params.fee1), this.wallet.utils.toString(params.amount0), this.wallet.utils.toString(params.amount1), this.wallet.utils.toString(params.fee2), this.wallet.utils.toString(params.fee3)]], options);
+                return result;
+            };
             this.initFlash = Object.assign(initFlash_send, {
-                call: initFlash_call
+                call: initFlash_call,
+                txData: initFlash_txData
             });
             let refundETH_send = async (options) => {
                 let result = await this.send('refundETH', [], options);
@@ -1011,8 +1231,13 @@ define("v3-periphery/contracts/PairFlash.ts", ["require", "exports", "@ijstech/e
                 let result = await this.call('refundETH', [], options);
                 return;
             };
+            let refundETH_txData = async (options) => {
+                let result = await this.txData('refundETH', [], options);
+                return result;
+            };
             this.refundETH = Object.assign(refundETH_send, {
-                call: refundETH_call
+                call: refundETH_call,
+                txData: refundETH_txData
             });
             let sweepTokenParams = (params) => [params.token, this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let sweepToken_send = async (params, options) => {
@@ -1023,8 +1248,13 @@ define("v3-periphery/contracts/PairFlash.ts", ["require", "exports", "@ijstech/e
                 let result = await this.call('sweepToken', sweepTokenParams(params), options);
                 return;
             };
+            let sweepToken_txData = async (params, options) => {
+                let result = await this.txData('sweepToken', sweepTokenParams(params), options);
+                return result;
+            };
             this.sweepToken = Object.assign(sweepToken_send, {
-                call: sweepToken_call
+                call: sweepToken_call,
+                txData: sweepToken_txData
             });
             let uniswapV3FlashCallbackParams = (params) => [this.wallet.utils.toString(params.fee0), this.wallet.utils.toString(params.fee1), this.wallet.utils.stringToBytes(params.data)];
             let uniswapV3FlashCallback_send = async (params, options) => {
@@ -1035,8 +1265,13 @@ define("v3-periphery/contracts/PairFlash.ts", ["require", "exports", "@ijstech/e
                 let result = await this.call('uniswapV3FlashCallback', uniswapV3FlashCallbackParams(params), options);
                 return;
             };
+            let uniswapV3FlashCallback_txData = async (params, options) => {
+                let result = await this.txData('uniswapV3FlashCallback', uniswapV3FlashCallbackParams(params), options);
+                return result;
+            };
             this.uniswapV3FlashCallback = Object.assign(uniswapV3FlashCallback_send, {
-                call: uniswapV3FlashCallback_call
+                call: uniswapV3FlashCallback_call,
+                txData: uniswapV3FlashCallback_txData
             });
             let unwrapWETH9Params = (params) => [this.wallet.utils.toString(params.amountMinimum), params.recipient];
             let unwrapWETH9_send = async (params, options) => {
@@ -1047,8 +1282,13 @@ define("v3-periphery/contracts/PairFlash.ts", ["require", "exports", "@ijstech/e
                 let result = await this.call('unwrapWETH9', unwrapWETH9Params(params), options);
                 return;
             };
+            let unwrapWETH9_txData = async (params, options) => {
+                let result = await this.txData('unwrapWETH9', unwrapWETH9Params(params), options);
+                return result;
+            };
             this.unwrapWETH9 = Object.assign(unwrapWETH9_send, {
-                call: unwrapWETH9_call
+                call: unwrapWETH9_call,
+                txData: unwrapWETH9_txData
             });
         }
     }
@@ -1111,8 +1351,13 @@ define("v3-periphery/contracts/Quoter.ts", ["require", "exports", "@ijstech/eth-
                 let result = await this.call('quoteExactInput', quoteExactInputParams(params), options);
                 return new eth_contract_6.BigNumber(result);
             };
+            let quoteExactInput_txData = async (params, options) => {
+                let result = await this.txData('quoteExactInput', quoteExactInputParams(params), options);
+                return result;
+            };
             this.quoteExactInput = Object.assign(quoteExactInput_send, {
-                call: quoteExactInput_call
+                call: quoteExactInput_call,
+                txData: quoteExactInput_txData
             });
             let quoteExactInputSingleParams = (params) => [params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.sqrtPriceLimitX96)];
             let quoteExactInputSingle_send = async (params, options) => {
@@ -1123,8 +1368,13 @@ define("v3-periphery/contracts/Quoter.ts", ["require", "exports", "@ijstech/eth-
                 let result = await this.call('quoteExactInputSingle', quoteExactInputSingleParams(params), options);
                 return new eth_contract_6.BigNumber(result);
             };
+            let quoteExactInputSingle_txData = async (params, options) => {
+                let result = await this.txData('quoteExactInputSingle', quoteExactInputSingleParams(params), options);
+                return result;
+            };
             this.quoteExactInputSingle = Object.assign(quoteExactInputSingle_send, {
-                call: quoteExactInputSingle_call
+                call: quoteExactInputSingle_call,
+                txData: quoteExactInputSingle_txData
             });
             let quoteExactOutputParams = (params) => [this.wallet.utils.stringToBytes(params.path), this.wallet.utils.toString(params.amountOut)];
             let quoteExactOutput_send = async (params, options) => {
@@ -1135,8 +1385,13 @@ define("v3-periphery/contracts/Quoter.ts", ["require", "exports", "@ijstech/eth-
                 let result = await this.call('quoteExactOutput', quoteExactOutputParams(params), options);
                 return new eth_contract_6.BigNumber(result);
             };
+            let quoteExactOutput_txData = async (params, options) => {
+                let result = await this.txData('quoteExactOutput', quoteExactOutputParams(params), options);
+                return result;
+            };
             this.quoteExactOutput = Object.assign(quoteExactOutput_send, {
-                call: quoteExactOutput_call
+                call: quoteExactOutput_call,
+                txData: quoteExactOutput_txData
             });
             let quoteExactOutputSingleParams = (params) => [params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.sqrtPriceLimitX96)];
             let quoteExactOutputSingle_send = async (params, options) => {
@@ -1147,8 +1402,13 @@ define("v3-periphery/contracts/Quoter.ts", ["require", "exports", "@ijstech/eth-
                 let result = await this.call('quoteExactOutputSingle', quoteExactOutputSingleParams(params), options);
                 return new eth_contract_6.BigNumber(result);
             };
+            let quoteExactOutputSingle_txData = async (params, options) => {
+                let result = await this.txData('quoteExactOutputSingle', quoteExactOutputSingleParams(params), options);
+                return result;
+            };
             this.quoteExactOutputSingle = Object.assign(quoteExactOutputSingle_send, {
-                call: quoteExactOutputSingle_call
+                call: quoteExactOutputSingle_call,
+                txData: quoteExactOutputSingle_txData
             });
         }
     }
@@ -1216,8 +1476,13 @@ define("v3-periphery/contracts/QuoterV2.ts", ["require", "exports", "@ijstech/et
                     gasEstimate: new eth_contract_7.BigNumber(result.gasEstimate)
                 };
             };
+            let quoteExactInput_txData = async (params, options) => {
+                let result = await this.txData('quoteExactInput', quoteExactInputParams(params), options);
+                return result;
+            };
             this.quoteExactInput = Object.assign(quoteExactInput_send, {
-                call: quoteExactInput_call
+                call: quoteExactInput_call,
+                txData: quoteExactInput_txData
             });
             let quoteExactInputSingle_send = async (params, options) => {
                 let result = await this.send('quoteExactInputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
@@ -1232,8 +1497,13 @@ define("v3-periphery/contracts/QuoterV2.ts", ["require", "exports", "@ijstech/et
                     gasEstimate: new eth_contract_7.BigNumber(result.gasEstimate)
                 };
             };
+            let quoteExactInputSingle_txData = async (params, options) => {
+                let result = await this.txData('quoteExactInputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
+                return result;
+            };
             this.quoteExactInputSingle = Object.assign(quoteExactInputSingle_send, {
-                call: quoteExactInputSingle_call
+                call: quoteExactInputSingle_call,
+                txData: quoteExactInputSingle_txData
             });
             let quoteExactOutputParams = (params) => [this.wallet.utils.stringToBytes(params.path), this.wallet.utils.toString(params.amountOut)];
             let quoteExactOutput_send = async (params, options) => {
@@ -1249,8 +1519,13 @@ define("v3-periphery/contracts/QuoterV2.ts", ["require", "exports", "@ijstech/et
                     gasEstimate: new eth_contract_7.BigNumber(result.gasEstimate)
                 };
             };
+            let quoteExactOutput_txData = async (params, options) => {
+                let result = await this.txData('quoteExactOutput', quoteExactOutputParams(params), options);
+                return result;
+            };
             this.quoteExactOutput = Object.assign(quoteExactOutput_send, {
-                call: quoteExactOutput_call
+                call: quoteExactOutput_call,
+                txData: quoteExactOutput_txData
             });
             let quoteExactOutputSingle_send = async (params, options) => {
                 let result = await this.send('quoteExactOutputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amount), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
@@ -1265,8 +1540,13 @@ define("v3-periphery/contracts/QuoterV2.ts", ["require", "exports", "@ijstech/et
                     gasEstimate: new eth_contract_7.BigNumber(result.gasEstimate)
                 };
             };
+            let quoteExactOutputSingle_txData = async (params, options) => {
+                let result = await this.txData('quoteExactOutputSingle', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amount), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
+                return result;
+            };
             this.quoteExactOutputSingle = Object.assign(quoteExactOutputSingle_send, {
-                call: quoteExactOutputSingle_call
+                call: quoteExactOutputSingle_call,
+                txData: quoteExactOutputSingle_txData
             });
         }
     }
@@ -1363,8 +1643,13 @@ define("v3-periphery/contracts/UniswapInterfaceMulticall.ts", ["require", "expor
                     }))
                 };
             };
+            let multicall_txData = async (calls, options) => {
+                let result = await this.txData('multicall', [calls.map(e => ([e.target, this.wallet.utils.toString(e.gasLimit), this.wallet.utils.stringToBytes(e.callData)]))], options);
+                return result;
+            };
             this.multicall = Object.assign(multicall_send, {
-                call: multicall_call
+                call: multicall_call,
+                txData: multicall_txData
             });
         }
     }

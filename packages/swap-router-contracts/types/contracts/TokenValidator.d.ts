@@ -26,6 +26,7 @@ export declare class TokenValidator extends _Contract {
     batchValidate: {
         (params: IBatchValidateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IBatchValidateParams, options?: TransactionOptions) => Promise<BigNumber[]>;
+        txData: (params: IBatchValidateParams, options?: TransactionOptions) => Promise<string>;
     };
     factoryV2: {
         (options?: TransactionOptions): Promise<string>;
@@ -39,6 +40,7 @@ export declare class TokenValidator extends _Contract {
     validate: {
         (params: IValidateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IValidateParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IValidateParams, options?: TransactionOptions) => Promise<string>;
     };
     private assign;
 }

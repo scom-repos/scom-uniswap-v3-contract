@@ -40,8 +40,13 @@ class UniswapInterfaceMulticall extends eth_contract_1.Contract {
                 }))
             };
         };
+        let multicall_txData = async (calls, options) => {
+            let result = await this.txData('multicall', [calls.map(e => ([e.target, this.wallet.utils.toString(e.gasLimit), this.wallet.utils.stringToBytes(e.callData)]))], options);
+            return result;
+        };
         this.multicall = Object.assign(multicall_send, {
-            call: multicall_call
+            call: multicall_call,
+            txData: multicall_txData
         });
     }
 }

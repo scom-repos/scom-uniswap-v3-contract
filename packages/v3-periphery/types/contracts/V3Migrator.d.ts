@@ -52,6 +52,7 @@ export declare class V3Migrator extends _Contract {
     createAndInitializePoolIfNecessary: {
         (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
+        txData: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     factory: {
         (options?: TransactionOptions): Promise<string>;
@@ -87,10 +88,26 @@ export declare class V3Migrator extends _Contract {
             deadline: number | BigNumber;
             refundAsETH: boolean;
         }, options?: TransactionOptions) => Promise<void>;
+        txData: (params: {
+            pair: string;
+            liquidityToMigrate: number | BigNumber;
+            percentageToMigrate: number | BigNumber;
+            token0: string;
+            token1: string;
+            fee: number | BigNumber;
+            tickLower: number | BigNumber;
+            tickUpper: number | BigNumber;
+            amount0Min: number | BigNumber;
+            amount1Min: number | BigNumber;
+            recipient: string;
+            deadline: number | BigNumber;
+            refundAsETH: boolean;
+        }, options?: TransactionOptions) => Promise<string>;
     };
     multicall: {
         (data: string[], options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string[]>;
+        txData: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     nonfungiblePositionManager: {
         (options?: TransactionOptions): Promise<string>;
@@ -98,18 +115,22 @@ export declare class V3Migrator extends _Contract {
     selfPermit: {
         (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitAllowed: {
         (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitAllowedIfNecessary: {
         (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitIfNecessary: {
         (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     private assign;
 }

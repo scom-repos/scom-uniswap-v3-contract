@@ -43,18 +43,22 @@ export declare class Quoter extends _Contract {
     quoteExactInput: {
         (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactInputSingle: {
         (params: IQuoteExactInputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactOutput: {
         (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactOutputSingle: {
         (params: IQuoteExactOutputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<string>;
     };
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;

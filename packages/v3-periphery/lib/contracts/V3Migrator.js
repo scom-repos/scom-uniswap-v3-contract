@@ -39,8 +39,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
             return result;
         };
+        let createAndInitializePoolIfNecessary_txData = async (params, options) => {
+            let result = await this.txData('createAndInitializePoolIfNecessary', createAndInitializePoolIfNecessaryParams(params), options);
+            return result;
+        };
         this.createAndInitializePoolIfNecessary = Object.assign(createAndInitializePoolIfNecessary_send, {
-            call: createAndInitializePoolIfNecessary_call
+            call: createAndInitializePoolIfNecessary_call,
+            txData: createAndInitializePoolIfNecessary_txData
         });
         let migrate_send = async (params, options) => {
             let result = await this.send('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
@@ -50,8 +55,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
             return;
         };
+        let migrate_txData = async (params, options) => {
+            let result = await this.txData('migrate', [[params.pair, this.wallet.utils.toString(params.liquidityToMigrate), this.wallet.utils.toString(params.percentageToMigrate), params.token0, params.token1, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.tickLower), this.wallet.utils.toString(params.tickUpper), this.wallet.utils.toString(params.amount0Min), this.wallet.utils.toString(params.amount1Min), params.recipient, this.wallet.utils.toString(params.deadline), params.refundAsETH]], options);
+            return result;
+        };
         this.migrate = Object.assign(migrate_send, {
-            call: migrate_call
+            call: migrate_call,
+            txData: migrate_txData
         });
         let multicall_send = async (data, options) => {
             let result = await this.send('multicall', [this.wallet.utils.stringToBytes(data)], options);
@@ -61,8 +71,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('multicall', [this.wallet.utils.stringToBytes(data)], options);
             return result;
         };
+        let multicall_txData = async (data, options) => {
+            let result = await this.txData('multicall', [this.wallet.utils.stringToBytes(data)], options);
+            return result;
+        };
         this.multicall = Object.assign(multicall_send, {
-            call: multicall_call
+            call: multicall_call,
+            txData: multicall_txData
         });
         let selfPermitParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
         let selfPermit_send = async (params, options) => {
@@ -73,8 +88,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('selfPermit', selfPermitParams(params), options);
             return;
         };
+        let selfPermit_txData = async (params, options) => {
+            let result = await this.txData('selfPermit', selfPermitParams(params), options);
+            return result;
+        };
         this.selfPermit = Object.assign(selfPermit_send, {
-            call: selfPermit_call
+            call: selfPermit_call,
+            txData: selfPermit_txData
         });
         let selfPermitAllowedParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitAllowed_send = async (params, options) => {
@@ -85,8 +105,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('selfPermitAllowed', selfPermitAllowedParams(params), options);
             return;
         };
+        let selfPermitAllowed_txData = async (params, options) => {
+            let result = await this.txData('selfPermitAllowed', selfPermitAllowedParams(params), options);
+            return result;
+        };
         this.selfPermitAllowed = Object.assign(selfPermitAllowed_send, {
-            call: selfPermitAllowed_call
+            call: selfPermitAllowed_call,
+            txData: selfPermitAllowed_txData
         });
         let selfPermitAllowedIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.nonce), this.wallet.utils.toString(params.expiry), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitAllowedIfNecessary_send = async (params, options) => {
@@ -97,8 +122,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
             return;
         };
+        let selfPermitAllowedIfNecessary_txData = async (params, options) => {
+            let result = await this.txData('selfPermitAllowedIfNecessary', selfPermitAllowedIfNecessaryParams(params), options);
+            return result;
+        };
         this.selfPermitAllowedIfNecessary = Object.assign(selfPermitAllowedIfNecessary_send, {
-            call: selfPermitAllowedIfNecessary_call
+            call: selfPermitAllowedIfNecessary_call,
+            txData: selfPermitAllowedIfNecessary_txData
         });
         let selfPermitIfNecessaryParams = (params) => [params.token, this.wallet.utils.toString(params.value), this.wallet.utils.toString(params.deadline), this.wallet.utils.toString(params.v), this.wallet.utils.stringToBytes32(params.r), this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitIfNecessary_send = async (params, options) => {
@@ -109,8 +139,13 @@ class V3Migrator extends eth_contract_1.Contract {
             let result = await this.call('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
             return;
         };
+        let selfPermitIfNecessary_txData = async (params, options) => {
+            let result = await this.txData('selfPermitIfNecessary', selfPermitIfNecessaryParams(params), options);
+            return result;
+        };
         this.selfPermitIfNecessary = Object.assign(selfPermitIfNecessary_send, {
-            call: selfPermitIfNecessary_call
+            call: selfPermitIfNecessary_call,
+            txData: selfPermitIfNecessary_txData
         });
     }
 }

@@ -34,6 +34,7 @@ export declare class MixedRouteQuoterV1 extends _Contract {
             v3InitializedTicksCrossedList: BigNumber[];
             v3SwapGasEstimate: BigNumber;
         }>;
+        txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactInputSingleV2: {
         (params: {
@@ -62,6 +63,13 @@ export declare class MixedRouteQuoterV1 extends _Contract {
             initializedTicksCrossed: BigNumber;
             gasEstimate: BigNumber;
         }>;
+        txData: (params: {
+            tokenIn: string;
+            tokenOut: string;
+            amountIn: number | BigNumber;
+            fee: number | BigNumber;
+            sqrtPriceLimitX96: number | BigNumber;
+        }, options?: TransactionOptions) => Promise<string>;
     };
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;

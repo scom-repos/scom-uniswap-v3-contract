@@ -34,6 +34,7 @@ export declare class QuoterV2 extends _Contract {
             initializedTicksCrossedList: BigNumber[];
             gasEstimate: BigNumber;
         }>;
+        txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactInputSingle: {
         (params: {
@@ -55,6 +56,13 @@ export declare class QuoterV2 extends _Contract {
             initializedTicksCrossed: BigNumber;
             gasEstimate: BigNumber;
         }>;
+        txData: (params: {
+            tokenIn: string;
+            tokenOut: string;
+            amountIn: number | BigNumber;
+            fee: number | BigNumber;
+            sqrtPriceLimitX96: number | BigNumber;
+        }, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactOutput: {
         (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
@@ -64,6 +72,7 @@ export declare class QuoterV2 extends _Contract {
             initializedTicksCrossedList: BigNumber[];
             gasEstimate: BigNumber;
         }>;
+        txData: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<string>;
     };
     quoteExactOutputSingle: {
         (params: {
@@ -85,6 +94,13 @@ export declare class QuoterV2 extends _Contract {
             initializedTicksCrossed: BigNumber;
             gasEstimate: BigNumber;
         }>;
+        txData: (params: {
+            tokenIn: string;
+            tokenOut: string;
+            amount: number | BigNumber;
+            fee: number | BigNumber;
+            sqrtPriceLimitX96: number | BigNumber;
+        }, options?: TransactionOptions) => Promise<string>;
     };
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;

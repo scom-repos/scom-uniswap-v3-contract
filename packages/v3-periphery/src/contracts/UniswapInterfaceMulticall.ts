@@ -18,6 +18,7 @@ export class UniswapInterfaceMulticall extends _Contract{
     multicall: {
         (calls:{target:string,gasLimit:number|BigNumber,callData:string}[], options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (calls:{target:string,gasLimit:number|BigNumber,callData:string}[], options?: TransactionOptions) => Promise<{blockNumber:BigNumber,returnData:{success:boolean,gasUsed:BigNumber,returnData:string}[]}>;
+        txData: (calls:{target:string,gasLimit:number|BigNumber,callData:string}[], options?: TransactionOptions) => Promise<string>;
     }
     private assign(){
         let getCurrentBlockTimestamp_call = async (options?: TransactionOptions): Promise<BigNumber> => {
@@ -47,8 +48,13 @@ export class UniswapInterfaceMulticall extends _Contract{
                 ))
             };
         }
+        let multicall_txData = async (calls:{target:string,gasLimit:number|BigNumber,callData:string}[], options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('multicall',[calls.map(e=>([e.target,this.wallet.utils.toString(e.gasLimit),this.wallet.utils.stringToBytes(e.callData)]))],options);
+            return result;
+        }
         this.multicall = Object.assign(multicall_send, {
             call:multicall_call
+            , txData:multicall_txData
         });
     }
 }

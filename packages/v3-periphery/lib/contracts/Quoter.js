@@ -40,8 +40,13 @@ class Quoter extends eth_contract_1.Contract {
             let result = await this.call('quoteExactInput', quoteExactInputParams(params), options);
             return new eth_contract_1.BigNumber(result);
         };
+        let quoteExactInput_txData = async (params, options) => {
+            let result = await this.txData('quoteExactInput', quoteExactInputParams(params), options);
+            return result;
+        };
         this.quoteExactInput = Object.assign(quoteExactInput_send, {
-            call: quoteExactInput_call
+            call: quoteExactInput_call,
+            txData: quoteExactInput_txData
         });
         let quoteExactInputSingleParams = (params) => [params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.sqrtPriceLimitX96)];
         let quoteExactInputSingle_send = async (params, options) => {
@@ -52,8 +57,13 @@ class Quoter extends eth_contract_1.Contract {
             let result = await this.call('quoteExactInputSingle', quoteExactInputSingleParams(params), options);
             return new eth_contract_1.BigNumber(result);
         };
+        let quoteExactInputSingle_txData = async (params, options) => {
+            let result = await this.txData('quoteExactInputSingle', quoteExactInputSingleParams(params), options);
+            return result;
+        };
         this.quoteExactInputSingle = Object.assign(quoteExactInputSingle_send, {
-            call: quoteExactInputSingle_call
+            call: quoteExactInputSingle_call,
+            txData: quoteExactInputSingle_txData
         });
         let quoteExactOutputParams = (params) => [this.wallet.utils.stringToBytes(params.path), this.wallet.utils.toString(params.amountOut)];
         let quoteExactOutput_send = async (params, options) => {
@@ -64,8 +74,13 @@ class Quoter extends eth_contract_1.Contract {
             let result = await this.call('quoteExactOutput', quoteExactOutputParams(params), options);
             return new eth_contract_1.BigNumber(result);
         };
+        let quoteExactOutput_txData = async (params, options) => {
+            let result = await this.txData('quoteExactOutput', quoteExactOutputParams(params), options);
+            return result;
+        };
         this.quoteExactOutput = Object.assign(quoteExactOutput_send, {
-            call: quoteExactOutput_call
+            call: quoteExactOutput_call,
+            txData: quoteExactOutput_txData
         });
         let quoteExactOutputSingleParams = (params) => [params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.amountOut), this.wallet.utils.toString(params.sqrtPriceLimitX96)];
         let quoteExactOutputSingle_send = async (params, options) => {
@@ -76,8 +91,13 @@ class Quoter extends eth_contract_1.Contract {
             let result = await this.call('quoteExactOutputSingle', quoteExactOutputSingleParams(params), options);
             return new eth_contract_1.BigNumber(result);
         };
+        let quoteExactOutputSingle_txData = async (params, options) => {
+            let result = await this.txData('quoteExactOutputSingle', quoteExactOutputSingleParams(params), options);
+            return result;
+        };
         this.quoteExactOutputSingle = Object.assign(quoteExactOutputSingle_send, {
-            call: quoteExactOutputSingle_call
+            call: quoteExactOutputSingle_call,
+            txData: quoteExactOutputSingle_txData
         });
     }
 }

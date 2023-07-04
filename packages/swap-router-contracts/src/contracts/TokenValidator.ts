@@ -16,6 +16,7 @@ export class TokenValidator extends _Contract{
     batchValidate: {
         (params: IBatchValidateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IBatchValidateParams, options?: TransactionOptions) => Promise<BigNumber[]>;
+        txData: (params: IBatchValidateParams, options?: TransactionOptions) => Promise<string>;
     }
     factoryV2: {
         (options?: TransactionOptions): Promise<string>;
@@ -29,6 +30,7 @@ export class TokenValidator extends _Contract{
     validate: {
         (params: IValidateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IValidateParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IValidateParams, options?: TransactionOptions) => Promise<string>;
     }
     private assign(){
         let factoryV2_call = async (options?: TransactionOptions): Promise<string> => {
@@ -56,8 +58,13 @@ export class TokenValidator extends _Contract{
             let result = await this.call('batchValidate',batchValidateParams(params),options);
             return result.map(e=>new BigNumber(e));
         }
+        let batchValidate_txData = async (params: IBatchValidateParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('batchValidate',batchValidateParams(params),options);
+            return result;
+        }
         this.batchValidate = Object.assign(batchValidate_send, {
             call:batchValidate_call
+            , txData:batchValidate_txData
         });
         let validateParams = (params: IValidateParams) => [params.token,params.baseTokens,this.wallet.utils.toString(params.amountToBorrow)];
         let validate_send = async (params: IValidateParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -68,8 +75,13 @@ export class TokenValidator extends _Contract{
             let result = await this.call('validate',validateParams(params),options);
             return new BigNumber(result);
         }
+        let validate_txData = async (params: IValidateParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('validate',validateParams(params),options);
+            return result;
+        }
         this.validate = Object.assign(validate_send, {
             call:validate_call
+            , txData:validate_txData
         });
     }
 }

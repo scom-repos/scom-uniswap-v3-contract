@@ -55,8 +55,13 @@ class MixedRouteQuoterV1 extends eth_contract_1.Contract {
                 v3SwapGasEstimate: new eth_contract_1.BigNumber(result.v3SwapGasEstimate)
             };
         };
+        let quoteExactInput_txData = async (params, options) => {
+            let result = await this.txData('quoteExactInput', quoteExactInputParams(params), options);
+            return result;
+        };
         this.quoteExactInput = Object.assign(quoteExactInput_send, {
-            call: quoteExactInput_call
+            call: quoteExactInput_call,
+            txData: quoteExactInput_txData
         });
         let quoteExactInputSingleV3_send = async (params, options) => {
             let result = await this.send('quoteExactInputSingleV3', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
@@ -71,8 +76,13 @@ class MixedRouteQuoterV1 extends eth_contract_1.Contract {
                 gasEstimate: new eth_contract_1.BigNumber(result.gasEstimate)
             };
         };
+        let quoteExactInputSingleV3_txData = async (params, options) => {
+            let result = await this.txData('quoteExactInputSingleV3', [[params.tokenIn, params.tokenOut, this.wallet.utils.toString(params.amountIn), this.wallet.utils.toString(params.fee), this.wallet.utils.toString(params.sqrtPriceLimitX96)]], options);
+            return result;
+        };
         this.quoteExactInputSingleV3 = Object.assign(quoteExactInputSingleV3_send, {
-            call: quoteExactInputSingleV3_call
+            call: quoteExactInputSingleV3_call,
+            txData: quoteExactInputSingleV3_txData
         });
     }
 }

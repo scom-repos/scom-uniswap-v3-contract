@@ -113,6 +113,7 @@ export class NonfungiblePositionManager extends _Contract{
     approve: {
         (params: IApproveParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IApproveParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: IApproveParams, options?: TransactionOptions) => Promise<string>;
     }
     balanceOf: {
         (owner:string, options?: TransactionOptions): Promise<BigNumber>;
@@ -123,18 +124,22 @@ export class NonfungiblePositionManager extends _Contract{
     burn: {
         (tokenId:number|BigNumber, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (tokenId:number|BigNumber, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (tokenId:number|BigNumber, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     collect: {
         (params:{tokenId:number|BigNumber,recipient:string,amount0Max:number|BigNumber,amount1Max:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params:{tokenId:number|BigNumber,recipient:string,amount0Max:number|BigNumber,amount1Max:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<{amount0:BigNumber,amount1:BigNumber}>;
+        txData: (params:{tokenId:number|BigNumber,recipient:string,amount0Max:number|BigNumber,amount1Max:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     createAndInitializePoolIfNecessary: {
         (params: ICreateAndInitializePoolIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
+        txData: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     decreaseLiquidity: {
         (params:{tokenId:number|BigNumber,liquidity:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params:{tokenId:number|BigNumber,liquidity:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<{amount0:BigNumber,amount1:BigNumber}>;
+        txData: (params:{tokenId:number|BigNumber,liquidity:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     factory: {
         (options?: TransactionOptions): Promise<string>;
@@ -145,6 +150,7 @@ export class NonfungiblePositionManager extends _Contract{
     increaseLiquidity: {
         (params:{tokenId:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params:{tokenId:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<{liquidity:BigNumber,amount0:BigNumber,amount1:BigNumber}>;
+        txData: (params:{tokenId:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     isApprovedForAll: {
         (params: IIsApprovedForAllParams, options?: TransactionOptions): Promise<boolean>;
@@ -152,10 +158,12 @@ export class NonfungiblePositionManager extends _Contract{
     mint: {
         (params:{token0:string,token1:string,fee:number|BigNumber,tickLower:number|BigNumber,tickUpper:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,recipient:string,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params:{token0:string,token1:string,fee:number|BigNumber,tickLower:number|BigNumber,tickUpper:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,recipient:string,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<{tokenId:BigNumber,liquidity:BigNumber,amount0:BigNumber,amount1:BigNumber}>;
+        txData: (params:{token0:string,token1:string,fee:number|BigNumber,tickLower:number|BigNumber,tickUpper:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,recipient:string,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     multicall: {
         (data:string[], options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (data:string[], options?: number|BigNumber|TransactionOptions) => Promise<string[]>;
+        txData: (data:string[], options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     name: {
         (options?: TransactionOptions): Promise<string>;
@@ -166,6 +174,7 @@ export class NonfungiblePositionManager extends _Contract{
     permit: {
         (params: IPermitParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IPermitParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: IPermitParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     positions: {
         (tokenId:number|BigNumber, options?: TransactionOptions): Promise<{nonce:BigNumber,operator:string,token0:string,token1:string,fee:BigNumber,tickLower:BigNumber,tickUpper:BigNumber,liquidity:BigNumber,feeGrowthInside0LastX128:BigNumber,feeGrowthInside1LastX128:BigNumber,tokensOwed0:BigNumber,tokensOwed1:BigNumber}>;
@@ -173,34 +182,42 @@ export class NonfungiblePositionManager extends _Contract{
     refundETH: {
         (options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     safeTransferFrom: {
         (params: ISafeTransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISafeTransferFromParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: ISafeTransferFromParams, options?: TransactionOptions) => Promise<string>;
     }
     safeTransferFrom_1: {
         (params: ISafeTransferFrom_1Params, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISafeTransferFrom_1Params, options?: TransactionOptions) => Promise<void>;
+        txData: (params: ISafeTransferFrom_1Params, options?: TransactionOptions) => Promise<string>;
     }
     selfPermit: {
         (params: ISelfPermitParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     selfPermitAllowed: {
         (params: ISelfPermitAllowedParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     selfPermitAllowedIfNecessary: {
         (params: ISelfPermitAllowedIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     selfPermitIfNecessary: {
         (params: ISelfPermitIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitIfNecessaryParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     setApprovalForAll: {
         (params: ISetApprovalForAllParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISetApprovalForAllParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: ISetApprovalForAllParams, options?: TransactionOptions) => Promise<string>;
     }
     supportsInterface: {
         (interfaceId:string, options?: TransactionOptions): Promise<boolean>;
@@ -208,6 +225,7 @@ export class NonfungiblePositionManager extends _Contract{
     sweepToken: {
         (params: ISweepTokenParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISweepTokenParams, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: ISweepTokenParams, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     symbol: {
         (options?: TransactionOptions): Promise<string>;
@@ -227,14 +245,17 @@ export class NonfungiblePositionManager extends _Contract{
     transferFrom: {
         (params: ITransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ITransferFromParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: ITransferFromParams, options?: TransactionOptions) => Promise<string>;
     }
     uniswapV3MintCallback: {
         (params: IUniswapV3MintCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUniswapV3MintCallbackParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: IUniswapV3MintCallbackParams, options?: TransactionOptions) => Promise<string>;
     }
     unwrapWETH9: {
         (params: IUnwrapWETH9Params, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUnwrapWETH9Params, options?: number|BigNumber|TransactionOptions) => Promise<void>;
+        txData: (params: IUnwrapWETH9Params, options?: number|BigNumber|TransactionOptions) => Promise<string>;
     }
     private assign(){
         let DOMAIN_SEPARATOR_call = async (options?: TransactionOptions): Promise<string> => {
@@ -346,8 +367,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('approve',approveParams(params),options);
             return;
         }
+        let approve_txData = async (params: IApproveParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('approve',approveParams(params),options);
+            return result;
+        }
         this.approve = Object.assign(approve_send, {
             call:approve_call
+            , txData:approve_txData
         });
         let burn_send = async (tokenId:number|BigNumber, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('burn',[this.wallet.utils.toString(tokenId)],options);
@@ -357,8 +383,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('burn',[this.wallet.utils.toString(tokenId)],options);
             return;
         }
+        let burn_txData = async (tokenId:number|BigNumber, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('burn',[this.wallet.utils.toString(tokenId)],options);
+            return result;
+        }
         this.burn = Object.assign(burn_send, {
             call:burn_call
+            , txData:burn_txData
         });
         let collect_send = async (params:{tokenId:number|BigNumber,recipient:string,amount0Max:number|BigNumber,amount1Max:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('collect',[[this.wallet.utils.toString(params.tokenId),params.recipient,this.wallet.utils.toString(params.amount0Max),this.wallet.utils.toString(params.amount1Max)]],options);
@@ -371,8 +402,13 @@ export class NonfungiblePositionManager extends _Contract{
                 amount1: new BigNumber(result.amount1)
             };
         }
+        let collect_txData = async (params:{tokenId:number|BigNumber,recipient:string,amount0Max:number|BigNumber,amount1Max:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('collect',[[this.wallet.utils.toString(params.tokenId),params.recipient,this.wallet.utils.toString(params.amount0Max),this.wallet.utils.toString(params.amount1Max)]],options);
+            return result;
+        }
         this.collect = Object.assign(collect_send, {
             call:collect_call
+            , txData:collect_txData
         });
         let createAndInitializePoolIfNecessaryParams = (params: ICreateAndInitializePoolIfNecessaryParams) => [params.token0,params.token1,this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.sqrtPriceX96)];
         let createAndInitializePoolIfNecessary_send = async (params: ICreateAndInitializePoolIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -383,8 +419,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('createAndInitializePoolIfNecessary',createAndInitializePoolIfNecessaryParams(params),options);
             return result;
         }
+        let createAndInitializePoolIfNecessary_txData = async (params: ICreateAndInitializePoolIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('createAndInitializePoolIfNecessary',createAndInitializePoolIfNecessaryParams(params),options);
+            return result;
+        }
         this.createAndInitializePoolIfNecessary = Object.assign(createAndInitializePoolIfNecessary_send, {
             call:createAndInitializePoolIfNecessary_call
+            , txData:createAndInitializePoolIfNecessary_txData
         });
         let decreaseLiquidity_send = async (params:{tokenId:number|BigNumber,liquidity:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('decreaseLiquidity',[[this.wallet.utils.toString(params.tokenId),this.wallet.utils.toString(params.liquidity),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),this.wallet.utils.toString(params.deadline)]],options);
@@ -397,8 +438,13 @@ export class NonfungiblePositionManager extends _Contract{
                 amount1: new BigNumber(result.amount1)
             };
         }
+        let decreaseLiquidity_txData = async (params:{tokenId:number|BigNumber,liquidity:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('decreaseLiquidity',[[this.wallet.utils.toString(params.tokenId),this.wallet.utils.toString(params.liquidity),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),this.wallet.utils.toString(params.deadline)]],options);
+            return result;
+        }
         this.decreaseLiquidity = Object.assign(decreaseLiquidity_send, {
             call:decreaseLiquidity_call
+            , txData:decreaseLiquidity_txData
         });
         let increaseLiquidity_send = async (params:{tokenId:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('increaseLiquidity',[[this.wallet.utils.toString(params.tokenId),this.wallet.utils.toString(params.amount0Desired),this.wallet.utils.toString(params.amount1Desired),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),this.wallet.utils.toString(params.deadline)]],options);
@@ -412,8 +458,13 @@ export class NonfungiblePositionManager extends _Contract{
                 amount1: new BigNumber(result.amount1)
             };
         }
+        let increaseLiquidity_txData = async (params:{tokenId:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('increaseLiquidity',[[this.wallet.utils.toString(params.tokenId),this.wallet.utils.toString(params.amount0Desired),this.wallet.utils.toString(params.amount1Desired),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),this.wallet.utils.toString(params.deadline)]],options);
+            return result;
+        }
         this.increaseLiquidity = Object.assign(increaseLiquidity_send, {
             call:increaseLiquidity_call
+            , txData:increaseLiquidity_txData
         });
         let mint_send = async (params:{token0:string,token1:string,fee:number|BigNumber,tickLower:number|BigNumber,tickUpper:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,recipient:string,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('mint',[[params.token0,params.token1,this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.tickLower),this.wallet.utils.toString(params.tickUpper),this.wallet.utils.toString(params.amount0Desired),this.wallet.utils.toString(params.amount1Desired),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),params.recipient,this.wallet.utils.toString(params.deadline)]],options);
@@ -428,8 +479,13 @@ export class NonfungiblePositionManager extends _Contract{
                 amount1: new BigNumber(result.amount1)
             };
         }
+        let mint_txData = async (params:{token0:string,token1:string,fee:number|BigNumber,tickLower:number|BigNumber,tickUpper:number|BigNumber,amount0Desired:number|BigNumber,amount1Desired:number|BigNumber,amount0Min:number|BigNumber,amount1Min:number|BigNumber,recipient:string,deadline:number|BigNumber}, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('mint',[[params.token0,params.token1,this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.tickLower),this.wallet.utils.toString(params.tickUpper),this.wallet.utils.toString(params.amount0Desired),this.wallet.utils.toString(params.amount1Desired),this.wallet.utils.toString(params.amount0Min),this.wallet.utils.toString(params.amount1Min),params.recipient,this.wallet.utils.toString(params.deadline)]],options);
+            return result;
+        }
         this.mint = Object.assign(mint_send, {
             call:mint_call
+            , txData:mint_txData
         });
         let multicall_send = async (data:string[], options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('multicall',[this.wallet.utils.stringToBytes(data)],options);
@@ -439,8 +495,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('multicall',[this.wallet.utils.stringToBytes(data)],options);
             return result;
         }
+        let multicall_txData = async (data:string[], options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('multicall',[this.wallet.utils.stringToBytes(data)],options);
+            return result;
+        }
         this.multicall = Object.assign(multicall_send, {
             call:multicall_call
+            , txData:multicall_txData
         });
         let permitParams = (params: IPermitParams) => [params.spender,this.wallet.utils.toString(params.tokenId),this.wallet.utils.toString(params.deadline),this.wallet.utils.toString(params.v),this.wallet.utils.stringToBytes32(params.r),this.wallet.utils.stringToBytes32(params.s)];
         let permit_send = async (params: IPermitParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -451,8 +512,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('permit',permitParams(params),options);
             return;
         }
+        let permit_txData = async (params: IPermitParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('permit',permitParams(params),options);
+            return result;
+        }
         this.permit = Object.assign(permit_send, {
             call:permit_call
+            , txData:permit_txData
         });
         let refundETH_send = async (options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('refundETH',[],options);
@@ -462,8 +528,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('refundETH',[],options);
             return;
         }
+        let refundETH_txData = async (options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('refundETH',[],options);
+            return result;
+        }
         this.refundETH = Object.assign(refundETH_send, {
             call:refundETH_call
+            , txData:refundETH_txData
         });
         let safeTransferFromParams = (params: ISafeTransferFromParams) => [params.from,params.to,this.wallet.utils.toString(params.tokenId)];
         let safeTransferFrom_send = async (params: ISafeTransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -474,8 +545,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('safeTransferFrom',safeTransferFromParams(params),options);
             return;
         }
+        let safeTransferFrom_txData = async (params: ISafeTransferFromParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('safeTransferFrom',safeTransferFromParams(params),options);
+            return result;
+        }
         this.safeTransferFrom = Object.assign(safeTransferFrom_send, {
             call:safeTransferFrom_call
+            , txData:safeTransferFrom_txData
         });
         let safeTransferFrom_1Params = (params: ISafeTransferFrom_1Params) => [params.from,params.to,this.wallet.utils.toString(params.tokenId),this.wallet.utils.stringToBytes(params.data)];
         let safeTransferFrom_1_send = async (params: ISafeTransferFrom_1Params, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -486,8 +562,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('safeTransferFrom',safeTransferFrom_1Params(params),options);
             return;
         }
+        let safeTransferFrom_1_txData = async (params: ISafeTransferFrom_1Params, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('safeTransferFrom',safeTransferFrom_1Params(params),options);
+            return result;
+        }
         this.safeTransferFrom_1 = Object.assign(safeTransferFrom_1_send, {
             call:safeTransferFrom_1_call
+            , txData:safeTransferFrom_1_txData
         });
         let selfPermitParams = (params: ISelfPermitParams) => [params.token,this.wallet.utils.toString(params.value),this.wallet.utils.toString(params.deadline),this.wallet.utils.toString(params.v),this.wallet.utils.stringToBytes32(params.r),this.wallet.utils.stringToBytes32(params.s)];
         let selfPermit_send = async (params: ISelfPermitParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -498,8 +579,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('selfPermit',selfPermitParams(params),options);
             return;
         }
+        let selfPermit_txData = async (params: ISelfPermitParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('selfPermit',selfPermitParams(params),options);
+            return result;
+        }
         this.selfPermit = Object.assign(selfPermit_send, {
             call:selfPermit_call
+            , txData:selfPermit_txData
         });
         let selfPermitAllowedParams = (params: ISelfPermitAllowedParams) => [params.token,this.wallet.utils.toString(params.nonce),this.wallet.utils.toString(params.expiry),this.wallet.utils.toString(params.v),this.wallet.utils.stringToBytes32(params.r),this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitAllowed_send = async (params: ISelfPermitAllowedParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -510,8 +596,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('selfPermitAllowed',selfPermitAllowedParams(params),options);
             return;
         }
+        let selfPermitAllowed_txData = async (params: ISelfPermitAllowedParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('selfPermitAllowed',selfPermitAllowedParams(params),options);
+            return result;
+        }
         this.selfPermitAllowed = Object.assign(selfPermitAllowed_send, {
             call:selfPermitAllowed_call
+            , txData:selfPermitAllowed_txData
         });
         let selfPermitAllowedIfNecessaryParams = (params: ISelfPermitAllowedIfNecessaryParams) => [params.token,this.wallet.utils.toString(params.nonce),this.wallet.utils.toString(params.expiry),this.wallet.utils.toString(params.v),this.wallet.utils.stringToBytes32(params.r),this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitAllowedIfNecessary_send = async (params: ISelfPermitAllowedIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -522,8 +613,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('selfPermitAllowedIfNecessary',selfPermitAllowedIfNecessaryParams(params),options);
             return;
         }
+        let selfPermitAllowedIfNecessary_txData = async (params: ISelfPermitAllowedIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('selfPermitAllowedIfNecessary',selfPermitAllowedIfNecessaryParams(params),options);
+            return result;
+        }
         this.selfPermitAllowedIfNecessary = Object.assign(selfPermitAllowedIfNecessary_send, {
             call:selfPermitAllowedIfNecessary_call
+            , txData:selfPermitAllowedIfNecessary_txData
         });
         let selfPermitIfNecessaryParams = (params: ISelfPermitIfNecessaryParams) => [params.token,this.wallet.utils.toString(params.value),this.wallet.utils.toString(params.deadline),this.wallet.utils.toString(params.v),this.wallet.utils.stringToBytes32(params.r),this.wallet.utils.stringToBytes32(params.s)];
         let selfPermitIfNecessary_send = async (params: ISelfPermitIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -534,8 +630,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('selfPermitIfNecessary',selfPermitIfNecessaryParams(params),options);
             return;
         }
+        let selfPermitIfNecessary_txData = async (params: ISelfPermitIfNecessaryParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('selfPermitIfNecessary',selfPermitIfNecessaryParams(params),options);
+            return result;
+        }
         this.selfPermitIfNecessary = Object.assign(selfPermitIfNecessary_send, {
             call:selfPermitIfNecessary_call
+            , txData:selfPermitIfNecessary_txData
         });
         let setApprovalForAllParams = (params: ISetApprovalForAllParams) => [params.operator,params.approved];
         let setApprovalForAll_send = async (params: ISetApprovalForAllParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -546,8 +647,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('setApprovalForAll',setApprovalForAllParams(params),options);
             return;
         }
+        let setApprovalForAll_txData = async (params: ISetApprovalForAllParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('setApprovalForAll',setApprovalForAllParams(params),options);
+            return result;
+        }
         this.setApprovalForAll = Object.assign(setApprovalForAll_send, {
             call:setApprovalForAll_call
+            , txData:setApprovalForAll_txData
         });
         let sweepTokenParams = (params: ISweepTokenParams) => [params.token,this.wallet.utils.toString(params.amountMinimum),params.recipient];
         let sweepToken_send = async (params: ISweepTokenParams, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -558,8 +664,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('sweepToken',sweepTokenParams(params),options);
             return;
         }
+        let sweepToken_txData = async (params: ISweepTokenParams, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('sweepToken',sweepTokenParams(params),options);
+            return result;
+        }
         this.sweepToken = Object.assign(sweepToken_send, {
             call:sweepToken_call
+            , txData:sweepToken_txData
         });
         let transferFromParams = (params: ITransferFromParams) => [params.from,params.to,this.wallet.utils.toString(params.tokenId)];
         let transferFrom_send = async (params: ITransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -570,8 +681,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('transferFrom',transferFromParams(params),options);
             return;
         }
+        let transferFrom_txData = async (params: ITransferFromParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('transferFrom',transferFromParams(params),options);
+            return result;
+        }
         this.transferFrom = Object.assign(transferFrom_send, {
             call:transferFrom_call
+            , txData:transferFrom_txData
         });
         let uniswapV3MintCallbackParams = (params: IUniswapV3MintCallbackParams) => [this.wallet.utils.toString(params.amount0Owed),this.wallet.utils.toString(params.amount1Owed),this.wallet.utils.stringToBytes(params.data)];
         let uniswapV3MintCallback_send = async (params: IUniswapV3MintCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -582,8 +698,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('uniswapV3MintCallback',uniswapV3MintCallbackParams(params),options);
             return;
         }
+        let uniswapV3MintCallback_txData = async (params: IUniswapV3MintCallbackParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('uniswapV3MintCallback',uniswapV3MintCallbackParams(params),options);
+            return result;
+        }
         this.uniswapV3MintCallback = Object.assign(uniswapV3MintCallback_send, {
             call:uniswapV3MintCallback_call
+            , txData:uniswapV3MintCallback_txData
         });
         let unwrapWETH9Params = (params: IUnwrapWETH9Params) => [this.wallet.utils.toString(params.amountMinimum),params.recipient];
         let unwrapWETH9_send = async (params: IUnwrapWETH9Params, options?: number|BigNumber|TransactionOptions): Promise<TransactionReceipt> => {
@@ -594,8 +715,13 @@ export class NonfungiblePositionManager extends _Contract{
             let result = await this.call('unwrapWETH9',unwrapWETH9Params(params),options);
             return;
         }
+        let unwrapWETH9_txData = async (params: IUnwrapWETH9Params, options?: number|BigNumber|TransactionOptions): Promise<string> => {
+            let result = await this.txData('unwrapWETH9',unwrapWETH9Params(params),options);
+            return result;
+        }
         this.unwrapWETH9 = Object.assign(unwrapWETH9_send, {
             call:unwrapWETH9_call
+            , txData:unwrapWETH9_txData
         });
     }
 }

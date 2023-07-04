@@ -47,10 +47,20 @@ export declare class PairFlash extends _Contract {
             fee2: number | BigNumber;
             fee3: number | BigNumber;
         }, options?: TransactionOptions) => Promise<void>;
+        txData: (params: {
+            token0: string;
+            token1: string;
+            fee1: number | BigNumber;
+            amount0: number | BigNumber;
+            amount1: number | BigNumber;
+            fee2: number | BigNumber;
+            fee3: number | BigNumber;
+        }, options?: TransactionOptions) => Promise<string>;
     };
     refundETH: {
         (options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     swapRouter: {
         (options?: TransactionOptions): Promise<string>;
@@ -58,14 +68,17 @@ export declare class PairFlash extends _Contract {
     sweepToken: {
         (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     uniswapV3FlashCallback: {
         (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions) => Promise<string>;
     };
     unwrapWETH9: {
         (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     private assign;
 }

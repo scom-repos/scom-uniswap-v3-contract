@@ -24,18 +24,22 @@ export class Quoter extends _Contract{
     quoteExactInput: {
         (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
     }
     quoteExactInputSingle: {
         (params: IQuoteExactInputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<string>;
     }
     quoteExactOutput: {
         (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<string>;
     }
     quoteExactOutputSingle: {
         (params: IQuoteExactOutputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+        txData: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<string>;
     }
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;
@@ -66,8 +70,13 @@ export class Quoter extends _Contract{
             let result = await this.call('quoteExactInput',quoteExactInputParams(params),options);
             return new BigNumber(result);
         }
+        let quoteExactInput_txData = async (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactInput',quoteExactInputParams(params),options);
+            return result;
+        }
         this.quoteExactInput = Object.assign(quoteExactInput_send, {
             call:quoteExactInput_call
+            , txData:quoteExactInput_txData
         });
         let quoteExactInputSingleParams = (params: IQuoteExactInputSingleParams) => [params.tokenIn,params.tokenOut,this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.amountIn),this.wallet.utils.toString(params.sqrtPriceLimitX96)];
         let quoteExactInputSingle_send = async (params: IQuoteExactInputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -78,8 +87,13 @@ export class Quoter extends _Contract{
             let result = await this.call('quoteExactInputSingle',quoteExactInputSingleParams(params),options);
             return new BigNumber(result);
         }
+        let quoteExactInputSingle_txData = async (params: IQuoteExactInputSingleParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactInputSingle',quoteExactInputSingleParams(params),options);
+            return result;
+        }
         this.quoteExactInputSingle = Object.assign(quoteExactInputSingle_send, {
             call:quoteExactInputSingle_call
+            , txData:quoteExactInputSingle_txData
         });
         let quoteExactOutputParams = (params: IQuoteExactOutputParams) => [this.wallet.utils.stringToBytes(params.path),this.wallet.utils.toString(params.amountOut)];
         let quoteExactOutput_send = async (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -90,8 +104,13 @@ export class Quoter extends _Contract{
             let result = await this.call('quoteExactOutput',quoteExactOutputParams(params),options);
             return new BigNumber(result);
         }
+        let quoteExactOutput_txData = async (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactOutput',quoteExactOutputParams(params),options);
+            return result;
+        }
         this.quoteExactOutput = Object.assign(quoteExactOutput_send, {
             call:quoteExactOutput_call
+            , txData:quoteExactOutput_txData
         });
         let quoteExactOutputSingleParams = (params: IQuoteExactOutputSingleParams) => [params.tokenIn,params.tokenOut,this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.amountOut),this.wallet.utils.toString(params.sqrtPriceLimitX96)];
         let quoteExactOutputSingle_send = async (params: IQuoteExactOutputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt> => {
@@ -102,8 +121,13 @@ export class Quoter extends _Contract{
             let result = await this.call('quoteExactOutputSingle',quoteExactOutputSingleParams(params),options);
             return new BigNumber(result);
         }
+        let quoteExactOutputSingle_txData = async (params: IQuoteExactOutputSingleParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactOutputSingle',quoteExactOutputSingleParams(params),options);
+            return result;
+        }
         this.quoteExactOutputSingle = Object.assign(quoteExactOutputSingle_send, {
             call:quoteExactOutputSingle_call
+            , txData:quoteExactOutputSingle_txData
         });
     }
 }

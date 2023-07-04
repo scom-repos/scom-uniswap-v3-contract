@@ -40,8 +40,13 @@ class TokenValidator extends eth_contract_1.Contract {
             let result = await this.call('batchValidate', batchValidateParams(params), options);
             return result.map(e => new eth_contract_1.BigNumber(e));
         };
+        let batchValidate_txData = async (params, options) => {
+            let result = await this.txData('batchValidate', batchValidateParams(params), options);
+            return result;
+        };
         this.batchValidate = Object.assign(batchValidate_send, {
-            call: batchValidate_call
+            call: batchValidate_call,
+            txData: batchValidate_txData
         });
         let validateParams = (params) => [params.token, params.baseTokens, this.wallet.utils.toString(params.amountToBorrow)];
         let validate_send = async (params, options) => {
@@ -52,8 +57,13 @@ class TokenValidator extends eth_contract_1.Contract {
             let result = await this.call('validate', validateParams(params), options);
             return new eth_contract_1.BigNumber(result);
         };
+        let validate_txData = async (params, options) => {
+            let result = await this.txData('validate', validateParams(params), options);
+            return result;
+        };
         this.validate = Object.assign(validate_send, {
-            call: validate_call
+            call: validate_call,
+            txData: validate_txData
         });
     }
 }

@@ -84,6 +84,13 @@ export declare class SwapRouter extends _Contract {
             amountIn: number | BigNumber;
             amountOutMinimum: number | BigNumber;
         }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+        txData: (params: {
+            path: string;
+            recipient: string;
+            deadline: number | BigNumber;
+            amountIn: number | BigNumber;
+            amountOutMinimum: number | BigNumber;
+        }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     exactInputSingle: {
         (params: {
@@ -106,6 +113,16 @@ export declare class SwapRouter extends _Contract {
             amountOutMinimum: number | BigNumber;
             sqrtPriceLimitX96: number | BigNumber;
         }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+        txData: (params: {
+            tokenIn: string;
+            tokenOut: string;
+            fee: number | BigNumber;
+            recipient: string;
+            deadline: number | BigNumber;
+            amountIn: number | BigNumber;
+            amountOutMinimum: number | BigNumber;
+            sqrtPriceLimitX96: number | BigNumber;
+        }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     exactOutput: {
         (params: {
@@ -122,6 +139,13 @@ export declare class SwapRouter extends _Contract {
             amountOut: number | BigNumber;
             amountInMaximum: number | BigNumber;
         }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+        txData: (params: {
+            path: string;
+            recipient: string;
+            deadline: number | BigNumber;
+            amountOut: number | BigNumber;
+            amountInMaximum: number | BigNumber;
+        }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     exactOutputSingle: {
         (params: {
@@ -144,6 +168,16 @@ export declare class SwapRouter extends _Contract {
             amountInMaximum: number | BigNumber;
             sqrtPriceLimitX96: number | BigNumber;
         }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+        txData: (params: {
+            tokenIn: string;
+            tokenOut: string;
+            fee: number | BigNumber;
+            recipient: string;
+            deadline: number | BigNumber;
+            amountOut: number | BigNumber;
+            amountInMaximum: number | BigNumber;
+            sqrtPriceLimitX96: number | BigNumber;
+        }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     factory: {
         (options?: TransactionOptions): Promise<string>;
@@ -151,46 +185,57 @@ export declare class SwapRouter extends _Contract {
     multicall: {
         (data: string[], options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string[]>;
+        txData: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     refundETH: {
         (options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermit: {
         (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitAllowed: {
         (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitAllowedIfNecessary: {
         (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     selfPermitIfNecessary: {
         (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     sweepToken: {
         (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     sweepTokenWithFee: {
         (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions) => Promise<void>;
+        txData: (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions) => Promise<string>;
     };
     unwrapWETH9: {
         (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     unwrapWETH9WithFee: {
         (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+        txData: (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
     };
     private assign;
 }

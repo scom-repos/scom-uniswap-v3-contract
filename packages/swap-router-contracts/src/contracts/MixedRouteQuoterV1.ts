@@ -24,6 +24,7 @@ export class MixedRouteQuoterV1 extends _Contract{
     quoteExactInput: {
         (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<{amountOut:BigNumber,v3SqrtPriceX96AfterList:BigNumber[],v3InitializedTicksCrossedList:BigNumber[],v3SwapGasEstimate:BigNumber}>;
+        txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
     }
     quoteExactInputSingleV2: {
         (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber}, options?: TransactionOptions): Promise<BigNumber>;
@@ -31,6 +32,7 @@ export class MixedRouteQuoterV1 extends _Contract{
     quoteExactInputSingleV3: {
         (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber,fee:number|BigNumber,sqrtPriceLimitX96:number|BigNumber}, options?: TransactionOptions): Promise<TransactionReceipt>;
         call: (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber,fee:number|BigNumber,sqrtPriceLimitX96:number|BigNumber}, options?: TransactionOptions) => Promise<{amountOut:BigNumber,sqrtPriceX96After:BigNumber,initializedTicksCrossed:BigNumber,gasEstimate:BigNumber}>;
+        txData: (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber,fee:number|BigNumber,sqrtPriceLimitX96:number|BigNumber}, options?: TransactionOptions) => Promise<string>;
     }
     uniswapV3SwapCallback: {
         (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;
@@ -76,8 +78,13 @@ export class MixedRouteQuoterV1 extends _Contract{
                 v3SwapGasEstimate: new BigNumber(result.v3SwapGasEstimate)
             };
         }
+        let quoteExactInput_txData = async (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactInput',quoteExactInputParams(params),options);
+            return result;
+        }
         this.quoteExactInput = Object.assign(quoteExactInput_send, {
             call:quoteExactInput_call
+            , txData:quoteExactInput_txData
         });
         let quoteExactInputSingleV3_send = async (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber,fee:number|BigNumber,sqrtPriceLimitX96:number|BigNumber}, options?: TransactionOptions): Promise<TransactionReceipt> => {
             let result = await this.send('quoteExactInputSingleV3',[[params.tokenIn,params.tokenOut,this.wallet.utils.toString(params.amountIn),this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.sqrtPriceLimitX96)]],options);
@@ -92,8 +99,13 @@ export class MixedRouteQuoterV1 extends _Contract{
                 gasEstimate: new BigNumber(result.gasEstimate)
             };
         }
+        let quoteExactInputSingleV3_txData = async (params:{tokenIn:string,tokenOut:string,amountIn:number|BigNumber,fee:number|BigNumber,sqrtPriceLimitX96:number|BigNumber}, options?: TransactionOptions): Promise<string> => {
+            let result = await this.txData('quoteExactInputSingleV3',[[params.tokenIn,params.tokenOut,this.wallet.utils.toString(params.amountIn),this.wallet.utils.toString(params.fee),this.wallet.utils.toString(params.sqrtPriceLimitX96)]],options);
+            return result;
+        }
         this.quoteExactInputSingleV3 = Object.assign(quoteExactInputSingleV3_send, {
             call:quoteExactInputSingleV3_call
+            , txData:quoteExactInputSingleV3_txData
         });
     }
 }

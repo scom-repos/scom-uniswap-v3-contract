@@ -27,6 +27,11 @@ export declare class UniswapInterfaceMulticall extends _Contract {
                 returnData: string;
             }[];
         }>;
+        txData: (calls: {
+            target: string;
+            gasLimit: number | BigNumber;
+            callData: string;
+        }[], options?: TransactionOptions) => Promise<string>;
     };
     private assign;
 }

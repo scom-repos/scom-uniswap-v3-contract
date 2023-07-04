@@ -199,6 +199,7 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         approve: {
             (params: IApproveParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IApproveParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: IApproveParams, options?: TransactionOptions) => Promise<string>;
         };
         balanceOf: {
             (owner: string, options?: TransactionOptions): Promise<BigNumber>;
@@ -209,6 +210,7 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         burn: {
             (tokenId: number | BigNumber, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (tokenId: number | BigNumber, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (tokenId: number | BigNumber, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         collect: {
             (params: {
@@ -226,10 +228,17 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
                 amount0: BigNumber;
                 amount1: BigNumber;
             }>;
+            txData: (params: {
+                tokenId: number | BigNumber;
+                recipient: string;
+                amount0Max: number | BigNumber;
+                amount1Max: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         createAndInitializePoolIfNecessary: {
             (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
+            txData: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         decreaseLiquidity: {
             (params: {
@@ -249,6 +258,13 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
                 amount0: BigNumber;
                 amount1: BigNumber;
             }>;
+            txData: (params: {
+                tokenId: number | BigNumber;
+                liquidity: number | BigNumber;
+                amount0Min: number | BigNumber;
+                amount1Min: number | BigNumber;
+                deadline: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         factory: {
             (options?: TransactionOptions): Promise<string>;
@@ -277,6 +293,14 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
                 amount0: BigNumber;
                 amount1: BigNumber;
             }>;
+            txData: (params: {
+                tokenId: number | BigNumber;
+                amount0Desired: number | BigNumber;
+                amount1Desired: number | BigNumber;
+                amount0Min: number | BigNumber;
+                amount1Min: number | BigNumber;
+                deadline: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         isApprovedForAll: {
             (params: IIsApprovedForAllParams, options?: TransactionOptions): Promise<boolean>;
@@ -313,10 +337,24 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
                 amount0: BigNumber;
                 amount1: BigNumber;
             }>;
+            txData: (params: {
+                token0: string;
+                token1: string;
+                fee: number | BigNumber;
+                tickLower: number | BigNumber;
+                tickUpper: number | BigNumber;
+                amount0Desired: number | BigNumber;
+                amount1Desired: number | BigNumber;
+                amount0Min: number | BigNumber;
+                amount1Min: number | BigNumber;
+                recipient: string;
+                deadline: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         multicall: {
             (data: string[], options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string[]>;
+            txData: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         name: {
             (options?: TransactionOptions): Promise<string>;
@@ -327,6 +365,7 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         permit: {
             (params: IPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: IPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         positions: {
             (tokenId: number | BigNumber, options?: TransactionOptions): Promise<{
@@ -347,34 +386,42 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         refundETH: {
             (options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         safeTransferFrom: {
             (params: ISafeTransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISafeTransferFromParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: ISafeTransferFromParams, options?: TransactionOptions) => Promise<string>;
         };
         safeTransferFrom_1: {
             (params: ISafeTransferFrom_1Params, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISafeTransferFrom_1Params, options?: TransactionOptions) => Promise<void>;
+            txData: (params: ISafeTransferFrom_1Params, options?: TransactionOptions) => Promise<string>;
         };
         selfPermit: {
             (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowed: {
             (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowedIfNecessary: {
             (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitIfNecessary: {
             (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         setApprovalForAll: {
             (params: ISetApprovalForAllParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISetApprovalForAllParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: ISetApprovalForAllParams, options?: TransactionOptions) => Promise<string>;
         };
         supportsInterface: {
             (interfaceId: string, options?: TransactionOptions): Promise<boolean>;
@@ -382,6 +429,7 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         sweepToken: {
             (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         symbol: {
             (options?: TransactionOptions): Promise<string>;
@@ -401,14 +449,17 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         transferFrom: {
             (params: ITransferFromParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ITransferFromParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: ITransferFromParams, options?: TransactionOptions) => Promise<string>;
         };
         uniswapV3MintCallback: {
             (params: IUniswapV3MintCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUniswapV3MintCallbackParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: IUniswapV3MintCallbackParams, options?: TransactionOptions) => Promise<string>;
         };
         unwrapWETH9: {
             (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         private assign;
     }
@@ -689,6 +740,13 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
                 amountIn: number | BigNumber;
                 amountOutMinimum: number | BigNumber;
             }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+            txData: (params: {
+                path: string;
+                recipient: string;
+                deadline: number | BigNumber;
+                amountIn: number | BigNumber;
+                amountOutMinimum: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         exactInputSingle: {
             (params: {
@@ -711,6 +769,16 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
                 amountOutMinimum: number | BigNumber;
                 sqrtPriceLimitX96: number | BigNumber;
             }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+            txData: (params: {
+                tokenIn: string;
+                tokenOut: string;
+                fee: number | BigNumber;
+                recipient: string;
+                deadline: number | BigNumber;
+                amountIn: number | BigNumber;
+                amountOutMinimum: number | BigNumber;
+                sqrtPriceLimitX96: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         exactOutput: {
             (params: {
@@ -727,6 +795,13 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
                 amountOut: number | BigNumber;
                 amountInMaximum: number | BigNumber;
             }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+            txData: (params: {
+                path: string;
+                recipient: string;
+                deadline: number | BigNumber;
+                amountOut: number | BigNumber;
+                amountInMaximum: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         exactOutputSingle: {
             (params: {
@@ -749,6 +824,16 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
                 amountInMaximum: number | BigNumber;
                 sqrtPriceLimitX96: number | BigNumber;
             }, options?: number | BigNumber | TransactionOptions) => Promise<BigNumber>;
+            txData: (params: {
+                tokenIn: string;
+                tokenOut: string;
+                fee: number | BigNumber;
+                recipient: string;
+                deadline: number | BigNumber;
+                amountOut: number | BigNumber;
+                amountInMaximum: number | BigNumber;
+                sqrtPriceLimitX96: number | BigNumber;
+            }, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         factory: {
             (options?: TransactionOptions): Promise<string>;
@@ -756,46 +841,57 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
         multicall: {
             (data: string[], options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string[]>;
+            txData: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         refundETH: {
             (options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermit: {
             (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowed: {
             (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowedIfNecessary: {
             (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitIfNecessary: {
             (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         sweepToken: {
             (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         sweepTokenWithFee: {
             (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISweepTokenWithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         uniswapV3SwapCallback: {
             (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions) => Promise<string>;
         };
         unwrapWETH9: {
             (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         unwrapWETH9WithFee: {
             (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: IUnwrapWETH9WithFeeParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         private assign;
     }
@@ -909,6 +1005,7 @@ declare module "v3-periphery/contracts/V3Migrator.ts" {
         createAndInitializePoolIfNecessary: {
             (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
+            txData: (params: ICreateAndInitializePoolIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         factory: {
             (options?: TransactionOptions): Promise<string>;
@@ -944,10 +1041,26 @@ declare module "v3-periphery/contracts/V3Migrator.ts" {
                 deadline: number | BigNumber;
                 refundAsETH: boolean;
             }, options?: TransactionOptions) => Promise<void>;
+            txData: (params: {
+                pair: string;
+                liquidityToMigrate: number | BigNumber;
+                percentageToMigrate: number | BigNumber;
+                token0: string;
+                token1: string;
+                fee: number | BigNumber;
+                tickLower: number | BigNumber;
+                tickUpper: number | BigNumber;
+                amount0Min: number | BigNumber;
+                amount1Min: number | BigNumber;
+                recipient: string;
+                deadline: number | BigNumber;
+                refundAsETH: boolean;
+            }, options?: TransactionOptions) => Promise<string>;
         };
         multicall: {
             (data: string[], options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string[]>;
+            txData: (data: string[], options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         nonfungiblePositionManager: {
             (options?: TransactionOptions): Promise<string>;
@@ -955,18 +1068,22 @@ declare module "v3-periphery/contracts/V3Migrator.ts" {
         selfPermit: {
             (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowed: {
             (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitAllowedIfNecessary: {
             (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitAllowedIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         selfPermitIfNecessary: {
             (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISelfPermitIfNecessaryParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         private assign;
     }
@@ -1081,10 +1198,20 @@ declare module "v3-periphery/contracts/PairFlash.ts" {
                 fee2: number | BigNumber;
                 fee3: number | BigNumber;
             }, options?: TransactionOptions) => Promise<void>;
+            txData: (params: {
+                token0: string;
+                token1: string;
+                fee1: number | BigNumber;
+                amount0: number | BigNumber;
+                amount1: number | BigNumber;
+                fee2: number | BigNumber;
+                fee3: number | BigNumber;
+            }, options?: TransactionOptions) => Promise<string>;
         };
         refundETH: {
             (options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         swapRouter: {
             (options?: TransactionOptions): Promise<string>;
@@ -1092,14 +1219,17 @@ declare module "v3-periphery/contracts/PairFlash.ts" {
         sweepToken: {
             (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: ISweepTokenParams, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         uniswapV3FlashCallback: {
             (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions) => Promise<void>;
+            txData: (params: IUniswapV3FlashCallbackParams, options?: TransactionOptions) => Promise<string>;
         };
         unwrapWETH9: {
             (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<void>;
+            txData: (params: IUnwrapWETH9Params, options?: number | BigNumber | TransactionOptions) => Promise<string>;
         };
         private assign;
     }
@@ -1183,18 +1313,22 @@ declare module "v3-periphery/contracts/Quoter.ts" {
         quoteExactInput: {
             (params: IQuoteExactInputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<BigNumber>;
+            txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactInputSingle: {
             (params: IQuoteExactInputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+            txData: (params: IQuoteExactInputSingleParams, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactOutput: {
             (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<BigNumber>;
+            txData: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactOutputSingle: {
             (params: IQuoteExactOutputSingleParams, options?: TransactionOptions): Promise<TransactionReceipt>;
             call: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<BigNumber>;
+            txData: (params: IQuoteExactOutputSingleParams, options?: TransactionOptions) => Promise<string>;
         };
         uniswapV3SwapCallback: {
             (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;
@@ -1291,6 +1425,7 @@ declare module "v3-periphery/contracts/QuoterV2.ts" {
                 initializedTicksCrossedList: BigNumber[];
                 gasEstimate: BigNumber;
             }>;
+            txData: (params: IQuoteExactInputParams, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactInputSingle: {
             (params: {
@@ -1312,6 +1447,13 @@ declare module "v3-periphery/contracts/QuoterV2.ts" {
                 initializedTicksCrossed: BigNumber;
                 gasEstimate: BigNumber;
             }>;
+            txData: (params: {
+                tokenIn: string;
+                tokenOut: string;
+                amountIn: number | BigNumber;
+                fee: number | BigNumber;
+                sqrtPriceLimitX96: number | BigNumber;
+            }, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactOutput: {
             (params: IQuoteExactOutputParams, options?: TransactionOptions): Promise<TransactionReceipt>;
@@ -1321,6 +1463,7 @@ declare module "v3-periphery/contracts/QuoterV2.ts" {
                 initializedTicksCrossedList: BigNumber[];
                 gasEstimate: BigNumber;
             }>;
+            txData: (params: IQuoteExactOutputParams, options?: TransactionOptions) => Promise<string>;
         };
         quoteExactOutputSingle: {
             (params: {
@@ -1342,6 +1485,13 @@ declare module "v3-periphery/contracts/QuoterV2.ts" {
                 initializedTicksCrossed: BigNumber;
                 gasEstimate: BigNumber;
             }>;
+            txData: (params: {
+                tokenIn: string;
+                tokenOut: string;
+                amount: number | BigNumber;
+                fee: number | BigNumber;
+                sqrtPriceLimitX96: number | BigNumber;
+            }, options?: TransactionOptions) => Promise<string>;
         };
         uniswapV3SwapCallback: {
             (params: IUniswapV3SwapCallbackParams, options?: TransactionOptions): Promise<void>;
@@ -1479,6 +1629,11 @@ declare module "v3-periphery/contracts/UniswapInterfaceMulticall.ts" {
                     returnData: string;
                 }[];
             }>;
+            txData: (calls: {
+                target: string;
+                gasLimit: number | BigNumber;
+                callData: string;
+            }[], options?: TransactionOptions) => Promise<string>;
         };
         private assign;
     }
