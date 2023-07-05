@@ -29,6 +29,7 @@
 4. ETH input is automatically wrapped.
 5. To get native ETH output: 1. set router as the recipient in swap paramters, 2. use router.multicall() with router.unwrapWETH9() as the second call.
 6. For ETH input and router.exactOut(): use router.multicall() with router.refundETH() as the second call to get excess ETH back.
+7. For Multi-hop, path are reverse (token-out is the first in the list and token-in is the last).
 
 ## Notes on logarithm
 1. log<sub>1.0001</sub>(X) = log(X) / log(1.0001)
