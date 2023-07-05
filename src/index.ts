@@ -122,7 +122,7 @@ export async function deploy(wallet: IWallet, options: IDeployOptions, onProgres
         router02: router02
     }
 };
-function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedContracts {
+export function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedContracts {
     return {
         factory: new CoreContract.UniswapV3Factory(wallet, result.factory),
         tickLens: new PeripheryContract.TickLens(wallet, result.tickLens),
@@ -135,11 +135,16 @@ function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedCont
         router02: new SwapRouterContract.SwapRouter02(wallet, result.router02)
     }
 }
+const X96 = new BigNumber(2).pow(96);
+export function toSqrtX96(n: BigNumber): BigNumber {
+    return n.sqrt().times(X96).dp(0, BigNumber.ROUND_FLOOR);
+}
 export default {
     CoreContract,
     PeripheryContract,
     SwapRouterContract,
     DefaultDeployOptions,
     deploy,
-    fromDeployResult
+    fromDeployResult,
+    toSqrtX96
 };;

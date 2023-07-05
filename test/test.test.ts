@@ -1,6 +1,6 @@
 import 'mocha';
 import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt} from "@ijstech/eth-wallet";
-import {CoreContract, IDeployedContracts, deploy } from "../src/index";
+import {CoreContract, IDeployedContracts, deploy, toSqrtX96 } from "../src/index";
 import {Contract as Mock} from "../packages/mock-contracts";
 import { assertEqual, getProvider, expectToFail, print } from './helper';
 
@@ -13,22 +13,22 @@ const LINK_PRICE_IN_USD = 6;  // USD per LINK
 function getTick(price: BigNumber, tickSpace:number): number {
     /*
     log_base1.0001(X) = log(X) / log(1.0001)
-    log(big_X) = log(x*(10+eY)) = Y + log(x)
+    log(big_X) = log(x*(1+eY)) = Y + log(x)
     Math.round(Math.round(Math.log(Math.sqrt(price))/Math.log(1.0001))/tickSpacing)*tickSpacing,
     */
-    let sqrt = price.sqrt().toFixed();
+    let sqrt = price.toFixed();
     let dp = sqrt.indexOf('.');
     if (sqrt.startsWith("0.")) { // sqrt < 1
         dp = 0;
     } else {  // sqrt > 1
-        if (dp < 0)
+        if (dp < 0) // no decimal point
             dp = sqrt.length;
         sqrt = "0." + sqrt.substring(0,dp) + sqrt.substring(dp+1);
     }
     let log = dp + Math.log10(parseFloat(sqrt));
     return Math.round(Math.round(log/Math.log10(1.0001))/tickSpace)*tickSpace;
 }
-async function createAndAdd(uniswap: IDeployedContracts, token0: Erc20, token1: Erc20, pairFee: BigNumber, price: BigNumber, amount0: BigNumber, amount1: BigNumber, lp: string, deadline: number, eth?:BigNumber): Promise<{receipt1:TransactionReceipt, receipt2:TransactionReceipt}> {
+async function createAndAdd(uniswap: IDeployedContracts, token0: Erc20, token1: Erc20, pairFee: BigNumber, price: BigNumber, amount0: number, amount1: number, lp: string, deadline: number, eth?:number): Promise<{receipt1:TransactionReceipt, receipt2:TransactionReceipt}> {
     let receipt1: TransactionReceipt;
     let receipt2: TransactionReceipt;
     let _price = new BigNumber(price).shiftedBy(await token1.decimals - await token0.decimals);
@@ -36,9 +36,9 @@ async function createAndAdd(uniswap: IDeployedContracts, token0: Erc20, token1: 
         token0: token0.address,
         token1: token1.address,
         fee: pairFee,
-        sqrtPriceX96: _price.sqrt().times(new BigNumber(2).pow(96)).dp(0) // 177159557114295710296167184869
+        sqrtPriceX96: toSqrtX96(_price)
     };
-    print(param1);
+    // print(param1);
     receipt1 = await uniswap.nftPosMngr.createAndInitializePoolIfNecessary(param1);
 
     let tickSpacing = (await uniswap.factory.feeAmountTickSpacing(pairFee)).toNumber();
@@ -46,19 +46,19 @@ async function createAndAdd(uniswap: IDeployedContracts, token0: Erc20, token1: 
         token0: token0.address,
         token1: token1.address,
         fee: pairFee, 
-        // tickLower: getTick(_price.times("0.8"), tickSpacing),
-        // tickUpper: getTick(_price.times("1.2"), tickSpacing),
-        tickLower: Math.round(-887272/tickSpacing)*tickSpacing,
-        tickUpper: Math.round(887272/tickSpacing)*tickSpacing,
-        amount0Desired: amount0,
-        amount1Desired: amount1,
+        tickLower: getTick(_price.times("0.8"), tickSpacing),
+        tickUpper: getTick(_price.times("1.2"), tickSpacing),
+        // tickLower: Math.round(-887272/tickSpacing)*tickSpacing,
+        // tickUpper: Math.round(887272/tickSpacing)*tickSpacing,
+        amount0Desired: Utils.toDecimals(amount0, await token0.decimals),
+        amount1Desired: Utils.toDecimals(amount1, await token1.decimals),
         amount0Min: 0,
         amount1Min: 0,
         recipient: lp,
         deadline: deadline
     };
-    print(params2)
-    receipt2 = await uniswap.nftPosMngr.mint(params2, eth);
+    // print(params2);
+    receipt2 = await uniswap.nftPosMngr.mint(params2, eth?Utils.toDecimals(eth):undefined); 
 
     return {receipt1, receipt2}
 }
@@ -120,23 +120,13 @@ describe('Uniswap V3', function() {
         let receipt2: TransactionReceipt;
 
         if (new BigNumber(uni.address.toLowerCase()).lt(usdt.address.toLowerCase())) {
-            ({receipt1, receipt2} = await createAndAdd(uniswap, uni, usdt, pairFee, new BigNumber(UNI_PRICE_IN_USD), Utils.toDecimals(UNI_TO_ADD), Utils.toDecimals(USDT_TO_ADD, 6), lp, deadline));
+            ({receipt1, receipt2} = await createAndAdd(uniswap, uni, usdt, pairFee, new BigNumber(UNI_PRICE_IN_USD), UNI_TO_ADD, USDT_TO_ADD, lp, deadline));
         } else {
-            ({receipt1, receipt2} = await createAndAdd(uniswap, usdt, uni, pairFee, new BigNumber(1 / UNI_PRICE_IN_USD), Utils.toDecimals(USDT_TO_ADD, 6), Utils.toDecimals(UNI_TO_ADD), lp, deadline));
+            ({receipt1, receipt2} = await createAndAdd(uniswap, usdt, uni, pairFee, new BigNumber(1 / UNI_PRICE_IN_USD), USDT_TO_ADD, UNI_TO_ADD, lp, deadline));
         }
         // print(receipt1);
         // print(receipt2);
-    });
-    let USDT_FROM_AMOUNT = 100;
-    it('swap', async function() {
-        let price = UNI_PRICE_IN_USD;
 
-        wallet.defaultAccount = deployer;
-        await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT});
-
-        wallet.defaultAccount = swapper;
-        await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT});
-       
         let poolAddress = await uniswap.factory.getPool(
             new BigNumber(uni.address.toLowerCase()).lt(usdt.address.toLowerCase()) ? 
             {param1: uni.address, param2: usdt.address, param3: pairFee}: 
@@ -147,16 +137,31 @@ describe('Uniswap V3', function() {
         // print(await pool.slot0());
         /*
         {
-        sqrtPriceX96: 177159557114295710296167184869
-        tick: 16095
+        sqrtPriceX96: 177159557114295734349045 // =5e-12   (5*e6 usdt = 1e18 uni) (1 usdt = 0.2e12 uni) (5e-12 usdt = 1 uni)
+        tick: -260229
         observationIndex: 0
         observationCardinality: 1
         observationCardinalityNext: 1
         feeProtocol: 0
         unlocked: true
-        }        
+        }
         */
+    });
+    let USDT_FROM_AMOUNT = 100;
+    it('swap 1', async function() {
+        let price = UNI_PRICE_IN_USD;
+
+        wallet.defaultAccount = deployer;
+        await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT});
+
+        wallet.defaultAccount = swapper;
+        await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT});
+
         let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: usdt.address,
@@ -166,10 +171,115 @@ describe('Uniswap V3', function() {
             deadline: now + 3600,
             amountIn: Utils.toDecimals(USDT_FROM_AMOUNT, await usdt.decimals),
             amountOutMinimum: Utils.toDecimals(0),
-            sqrtPriceLimitX96: 0//new BigNumber((price * 1.2).toString()).sqrt().times(new BigNumber(2).pow(96)).dp(0) //
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
-        print(params);
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
         let receipt = await uniswap.router.exactInputSingle(params);
+        // print(receipt);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+    });
+    it('swap 2', async function() {
+        let price = UNI_PRICE_IN_USD;
+        let UNI_FROM_AMOUNT = USDT_FROM_AMOUNT / UNI_PRICE_IN_USD;
+
+        wallet.defaultAccount = deployer;
+        await uni.mint({address: swapper, amount: UNI_FROM_AMOUNT});
+
+        wallet.defaultAccount = swapper;
+        await uni.approve({spender: uniswap.router.address, amount: UNI_FROM_AMOUNT});
+
+        let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 0.99).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }
+        wallet.defaultAccount = swapper;
+        let params = {
+            tokenIn: uni.address,
+            tokenOut: usdt.address,
+            fee: pairFee,
+            recipient: swapper,
+            deadline: now + 3600,
+            amountIn: Utils.toDecimals(UNI_FROM_AMOUNT, await uni.decimals),
+            amountOutMinimum: Utils.toDecimals(0),
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
+        };
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+        let receipt = await uniswap.router.exactInputSingle(params);
+        // print(receipt);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+    });
+    it('swap 3', async function() {
+        let price = UNI_PRICE_IN_USD;
+        let UNI_TO_AMOUNT = USDT_FROM_AMOUNT / UNI_PRICE_IN_USD;
+
+        wallet.defaultAccount = deployer;
+        await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT*2});
+
+        wallet.defaultAccount = swapper;
+        await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT*2});
+
+        let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }
+        wallet.defaultAccount = swapper;
+        let params = {
+            tokenIn: usdt.address,
+            tokenOut: uni.address,
+            fee: pairFee,
+            recipient: swapper,
+            deadline: now + 3600,
+            amountOut: Utils.toDecimals(UNI_TO_AMOUNT, await uni.decimals),
+            amountInMaximum: Utils.toDecimals(USDT_FROM_AMOUNT*2, 6),
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
+        };
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+        let receipt = await uniswap.router.exactOutputSingle(params);
+        // print(receipt);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+    });
+    it('swap 4', async function() {
+        let price = UNI_PRICE_IN_USD;
+        let USDT_TO_AMOUNT = USDT_FROM_AMOUNT;
+        let UNI_FROM_AMOUNT = USDT_TO_AMOUNT / UNI_PRICE_IN_USD;
+
+        wallet.defaultAccount = deployer;
+        await uni.mint({address: swapper, amount: UNI_FROM_AMOUNT*2});
+
+        wallet.defaultAccount = swapper;
+        await uni.approve({spender: uniswap.router.address, amount: UNI_FROM_AMOUNT*2});
+
+        let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 0.99).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }
+        wallet.defaultAccount = swapper;
+        let params = {
+            tokenIn: uni.address,
+            tokenOut: usdt.address,
+            fee: pairFee,
+            recipient: swapper,
+            deadline: now + 3600,
+            amountOut: Utils.toDecimals(USDT_TO_AMOUNT, await usdt.decimals),
+            amountInMaximum: Utils.toDecimals(UNI_FROM_AMOUNT*2),
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
+        };
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await uni.balanceOf(swapper));
+        let receipt = await uniswap.router.exactOutputSingle(params);
         // print(receipt);
         print(await usdt.balanceOf(swapper));
         print(await uni.balanceOf(swapper));
@@ -192,20 +302,40 @@ describe('Uniswap V3', function() {
         let receipt1: TransactionReceipt;
         let receipt2: TransactionReceipt;
 
-        print(await wallet.balanceOf(lp));
-        print(await weth.balanceOf(lp));
+        // print(await wallet.balanceOf(lp));
+        // print(await weth.balanceOf(lp));
         if (new BigNumber(weth.address.toLowerCase()).lt(usdt.address.toLowerCase())) {
-            ({receipt1, receipt2} = await createAndAdd(uniswap, weth, usdt, pairFee, new BigNumber(ETH_PRICE_IN_USD), Utils.toDecimals(ETH_TO_ADD), Utils.toDecimals(USDT_TO_ADD, 6), lp, deadline, Utils.toDecimals(ETH_TO_ADD)));
+            ({receipt1, receipt2} = await createAndAdd(uniswap, weth, usdt, pairFee, new BigNumber(ETH_PRICE_IN_USD), ETH_TO_ADD, USDT_TO_ADD, lp, deadline, ETH_TO_ADD));
         } else {
-            ({receipt1, receipt2} = await createAndAdd(uniswap, usdt, weth, pairFee, new BigNumber(1 / ETH_PRICE_IN_USD), Utils.toDecimals(USDT_TO_ADD, 6), Utils.toDecimals(ETH_TO_ADD), lp, deadline, Utils.toDecimals(ETH_TO_ADD)));
+            ({receipt1, receipt2} = await createAndAdd(uniswap, usdt, weth, pairFee, new BigNumber(1 / ETH_PRICE_IN_USD), USDT_TO_ADD, ETH_TO_ADD, lp, deadline, ETH_TO_ADD));
         }
-        print(await wallet.balanceOf(lp));
-        print(await weth.balanceOf(lp));
         // print(receipt1);
         // print(receipt2);
+        // print(await wallet.balanceOf(lp));
+        // print(await weth.balanceOf(lp));
+
+        let poolAddress = await uniswap.factory.getPool(
+            new BigNumber(uni.address.toLowerCase()).lt(usdt.address.toLowerCase()) ? 
+            {param1: weth.address, param2: usdt.address, param3: pairFee}: 
+            {param1: usdt.address, param2: weth.address, param3: pairFee}
+        );
+        console.log("pool:", poolAddress);
+        let pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
+        // print(await pool.slot0());
+        /*
+        {
+        sqrtPriceX96: 3543191142285913894699275 // =2e-9 ( 1e18 weth = 2000e6 usdt ) ( 1 weth = 2000e-12 usdt ) ( 0.0005e12 weth = 1 usdt )
+        tick: -200312
+        observationIndex: 0
+        observationCardinality: 1
+        observationCardinalityNext: 1
+        feeProtocol: 0
+        unlocked: true
+        }
+        */
     });
     let USDT_FROM_AMOUNT = 100;
-    it('swap', async function() {
+    it('swap exact-in', async function() {
         let price = ETH_PRICE_IN_USD;
 
         wallet.defaultAccount = deployer;
@@ -213,37 +343,68 @@ describe('Uniswap V3', function() {
 
         wallet.defaultAccount = swapper;
         await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT});
-       
-        let poolAddress = await uniswap.factory.getPool(
-            new BigNumber(weth.address.toLowerCase()).lt(usdt.address.toLowerCase()) ? 
-            {param1: weth.address, param2: usdt.address, param3: pairFee}: 
-            {param1: usdt.address, param2: weth.address, param3: pairFee}
-        );
-        console.log("pool:", poolAddress);
-        let pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
-        // print(await pool.slot0());
 
         let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await weth.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(weth.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: usdt.address,
             tokenOut: weth.address,
             fee: pairFee,
-            recipient: uniswap.router.address, // set to router to unwrap weth // swapper
+            recipient: uniswap.router.address, // *** set to router to unwrap weth
             deadline: now + 3600,
             amountIn: Utils.toDecimals(USDT_FROM_AMOUNT, await usdt.decimals),
             amountOutMinimum: Utils.toDecimals(0),
-            sqrtPriceLimitX96: 0//new BigNumber((price * 1.2).toString()).sqrt().times(new BigNumber(2).pow(96)).dp(0) //
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
-        print(params);
-        // print(await wallet.balanceOf(swapper));
-        // print(await weth.balanceOf(swapper));
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
         let callData1 = await uniswap.router.exactInputSingle.txData(params);
         let callData2 = await uniswap.router.unwrapWETH9.txData({amountMinimum: 0, recipient: swapper});
         let receipt = await uniswap.router.multicall([callData1, callData2]);
         // print(receipt);
+        print(await usdt.balanceOf(swapper));
         print(await wallet.balanceOf(swapper));
         print(await weth.balanceOf(swapper));
+    });
+    it('swap exact-out', async function() {
+        let price = ETH_PRICE_IN_USD;
+
+        let now = await wallet.getBlockTimestamp();
+        let _price = new BigNumber((price * 0.9).toString()).shiftedBy(await usdt.decimals - await weth.decimals);
+        if (new BigNumber(usdt.address.toLowerCase()).lt(weth.address.toLowerCase())) {
+            _price = _price.pow(-1);
+        }        
+        console.log(_price.toFixed()) //600000000   1 eth = 2000 usdt   1e18=2000e6   0.0005e12=1   500000000=1  weth<usdt  in<out
+        console.log(toSqrtX96(_price).toFixed())
+        wallet.defaultAccount = swapper;
+        let params = {
+            tokenIn: weth.address,
+            tokenOut: usdt.address,
+            fee: pairFee,
+            recipient: swapper,
+            deadline: now + 3600,
+            amountOut: Utils.toDecimals(USDT_FROM_AMOUNT, await usdt.decimals),
+            amountInMaximum: Utils.toDecimals(1),
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
+        };
+        // print(params);
+        print(await usdt.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        let callData1 = await uniswap.router.exactOutputSingle.txData(params);
+        let callData2 = await uniswap.router.refundETH.txData();
+        let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
+        // print(receipt);
+        print(await usdt.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        print(await wallet.balanceOf(uniswap.router.address));
     });
     });
 }); 

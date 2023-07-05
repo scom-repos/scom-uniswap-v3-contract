@@ -1,7 +1,7 @@
 define("@scom/demo-contract", ["require", "exports", "v3-core", "v3-periphery", "swap-router-contracts", "v3-core", "v3-periphery", "swap-router-contracts", "@ijstech/eth-wallet"], function (require, exports, v3_core_1, v3_periphery_1, swap_router_contracts_1, v3_core_2, v3_periphery_2, swap_router_contracts_2, eth_wallet_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.deploy = exports.DefaultDeployOptions = exports.SwapRouterContract = exports.PeripheryContract = exports.CoreContract = void 0;
+    exports.toSqrtX96 = exports.fromDeployResult = exports.deploy = exports.DefaultDeployOptions = exports.SwapRouterContract = exports.PeripheryContract = exports.CoreContract = void 0;
     Object.defineProperty(exports, "CoreContract", { enumerable: true, get: function () { return v3_core_2.Contract; } });
     Object.defineProperty(exports, "PeripheryContract", { enumerable: true, get: function () { return v3_periphery_2.Contract; } });
     Object.defineProperty(exports, "SwapRouterContract", { enumerable: true, get: function () { return swap_router_contracts_2.Contract; } });
@@ -78,13 +78,20 @@ define("@scom/demo-contract", ["require", "exports", "v3-core", "v3-periphery", 
             router02: new swap_router_contracts_1.Contract.SwapRouter02(wallet, result.router02)
         };
     }
+    exports.fromDeployResult = fromDeployResult;
+    const X96 = new eth_wallet_1.BigNumber(2).pow(96);
+    function toSqrtX96(n) {
+        return n.sqrt().times(X96).dp(0, eth_wallet_1.BigNumber.ROUND_FLOOR);
+    }
+    exports.toSqrtX96 = toSqrtX96;
     exports.default = {
         CoreContract: v3_core_1.Contract,
         PeripheryContract: v3_periphery_1.Contract,
         SwapRouterContract: swap_router_contracts_1.Contract,
         DefaultDeployOptions: exports.DefaultDeployOptions,
         deploy,
-        fromDeployResult
+        fromDeployResult,
+        toSqrtX96
     };
     ;
 });

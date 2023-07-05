@@ -6,7 +6,7 @@ declare module "@scom/demo-contract" {
     export { Contract as CoreContract } from 'v3-core';
     export { Contract as PeripheryContract } from 'v3-periphery';
     export { Contract as SwapRouterContract } from 'swap-router-contracts';
-    import { IWallet } from '@ijstech/eth-wallet';
+    import { IWallet, BigNumber } from '@ijstech/eth-wallet';
     export interface IDeployOptions {
         weth: string;
     }
@@ -34,7 +34,8 @@ declare module "@scom/demo-contract" {
     }
     export var DefaultDeployOptions: IDeployOptions;
     export function deploy(wallet: IWallet, options: IDeployOptions, onProgress: (msg: string) => void): Promise<IDeployedContracts>;
-    function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedContracts;
+    export function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedContracts;
+    export function toSqrtX96(n: BigNumber): BigNumber;
     const _default: {
         CoreContract: typeof CoreContract;
         PeripheryContract: typeof PeripheryContract;
@@ -42,6 +43,7 @@ declare module "@scom/demo-contract" {
         DefaultDeployOptions: IDeployOptions;
         deploy: typeof deploy;
         fromDeployResult: typeof fromDeployResult;
+        toSqrtX96: typeof toSqrtX96;
     };
     export default _default;
 }
