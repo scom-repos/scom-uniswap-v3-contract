@@ -174,12 +174,10 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
         let receipt = await uniswap.router.exactInputSingle(params);
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 2', async function() {
         let price = UNI_PRICE_IN_USD;
@@ -208,12 +206,10 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
         let receipt = await uniswap.router.exactInputSingle(params);
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 3', async function() {
         let price = UNI_PRICE_IN_USD;
@@ -242,12 +238,10 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
         let receipt = await uniswap.router.exactOutputSingle(params);
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 4', async function() {
         let price = UNI_PRICE_IN_USD;
@@ -277,12 +271,10 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
         let receipt = await uniswap.router.exactOutputSingle(params);
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await uni.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     });
     // if (false)
@@ -361,16 +353,12 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
         let callData1 = await uniswap.router.exactInputSingle.txData(params);
         let callData2 = await uniswap.router.unwrapWETH9.txData({amountMinimum: 0, recipient: swapper});
         let receipt = await uniswap.router.multicall([callData1, callData2]);
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
     });
     it('swap exact-out', async function() {
         let price = ETH_PRICE_IN_USD;
@@ -394,17 +382,12 @@ describe('Uniswap V3', function() {
             sqrtPriceLimitX96: toSqrtX96(_price) //0
         };
         // print(params);
-        print(await usdt.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
         let callData1 = await uniswap.router.exactOutputSingle.txData(params);
         let callData2 = await uniswap.router.refundETH.txData();
         let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
         // print(receipt);
-        print(await usdt.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
-        print(await wallet.balanceOf(uniswap.router.address));
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper), await wallet.balanceOf(uniswap.router.address));
     });
     });
     describe('multi-hop', async function() {
@@ -426,18 +409,13 @@ describe('Uniswap V3', function() {
             amountIn: Utils.toDecimals(1, await weth.decimals),
             amountOutMinimum: 0
         }
-        print(await uni.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
+        print(await uni.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
         let receipt = await uniswap.router.exactInput(
             param,
             Utils.toDecimals(1)
         );
         
-        print(await uni.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
-        print(await wallet.balanceOf(uniswap.router.address));
+        print(await uni.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper), await wallet.balanceOf(uniswap.router.address));
     });
     it('swap exact-Out', async function() {
         // eth -> usdt -> uni;
@@ -457,19 +435,14 @@ describe('Uniswap V3', function() {
             amountOut: Utils.toDecimals(400, await uni.decimals),
             amountInMaximum: Utils.toDecimals(2)
         }
-        print(await uni.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
+        print(await uni.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
         let callData1 = await uniswap.router.exactOutput.txData(
             param
         );
         let callData2 = await uniswap.router.refundETH.txData();
         let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(2));
         // print(receipt);
-        print(await uni.balanceOf(swapper));
-        print(await wallet.balanceOf(swapper));
-        print(await weth.balanceOf(swapper));
-        print(await wallet.balanceOf(uniswap.router.address));
+        print(await uni.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper),await wallet.balanceOf(uniswap.router.address));
     });
     });
 }); 

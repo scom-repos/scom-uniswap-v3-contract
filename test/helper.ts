@@ -28,8 +28,8 @@ export async function expectToFail(f:Promise<TransactionReceipt>, error=""): Pro
         }
     }
 }
-export function print(o:any, indent?:string) {
-    console.log(_print(o, indent), "\n");
+export function print(...o:any) {
+    console.log.apply(this, o.map(e=>_print(e)));
 }
 function _print(o:any, indent?:string) {
     let s = "";
