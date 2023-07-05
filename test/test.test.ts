@@ -1,5 +1,5 @@
 import 'mocha';
-import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt} from "@ijstech/eth-wallet";
+import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt, Web3} from "@ijstech/eth-wallet";
 import {CoreContract, IDeployedContracts, deploy, toSqrtX96 } from "../src/index";
 import {Contract as Mock} from "../packages/mock-contracts";
 import { assertEqual, getProvider, expectToFail, print } from './helper';
@@ -402,6 +402,71 @@ describe('Uniswap V3', function() {
         let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
         // print(receipt);
         print(await usdt.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        print(await wallet.balanceOf(uniswap.router.address));
+    });
+    });
+    describe('multi-hop', async function() {
+    it('swap exact-in', async function() {
+        // eth -> usdt -> uni;
+        //   1 -> 2000 -> 400
+        let path = "0x" + 
+                    weth.address.toLowerCase().replace("0x","") + 
+                    Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                    usdt.address.toLowerCase().replace("0x","") + 
+                    Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                    uni.address.toLowerCase().replace("0x","");
+
+        let now = await wallet.getBlockTimestamp();
+        let param = {
+            path: path,
+            recipient: swapper,
+            deadline: now + 1000,
+            amountIn: Utils.toDecimals(1, await weth.decimals),
+            amountOutMinimum: 0
+        }
+        print(await uni.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        let receipt = await uniswap.router.exactInput(
+            param,
+            Utils.toDecimals(1)
+        );
+        
+        print(await uni.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        print(await wallet.balanceOf(uniswap.router.address));
+    });
+    it('swap exact-Out', async function() {
+        // eth -> usdt -> uni;
+        //   1 -> 2000 -> 400
+        let path = "0x" + 
+                    uni.address.toLowerCase().replace("0x","") +
+                    Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                    usdt.address.toLowerCase().replace("0x","") + 
+                    Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                    weth.address.toLowerCase().replace("0x","");
+
+        let now = await wallet.getBlockTimestamp();
+        let param = {
+            path: path,
+            recipient: swapper,
+            deadline: now + 1000,
+            amountOut: Utils.toDecimals(400, await uni.decimals),
+            amountInMaximum: Utils.toDecimals(2)
+        }
+        print(await uni.balanceOf(swapper));
+        print(await wallet.balanceOf(swapper));
+        print(await weth.balanceOf(swapper));
+        let callData1 = await uniswap.router.exactOutput.txData(
+            param
+        );
+        let callData2 = await uniswap.router.refundETH.txData();
+        let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(2));
+        // print(receipt);
+        print(await uni.balanceOf(swapper));
         print(await wallet.balanceOf(swapper));
         print(await weth.balanceOf(swapper));
         print(await wallet.balanceOf(uniswap.router.address));
