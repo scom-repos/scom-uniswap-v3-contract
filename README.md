@@ -19,5 +19,25 @@
 | Permit2 | [0x000000000022d473030f116ddee9f6b43ac78ba3](https://etherscan.io/address/0x000000000022d473030f116ddee9f6b43ac78ba3) |
 ---  
   
-## Deployer
+## Uniswap's own Deployer
 [0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9](https://etherscan.io/address/0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9)
+
+## Notes on calling uniswap router swap function:
+1. Prices are always based on token0 (token with smaller address); independent of in-token / out-token direction.
+2. sqrtPriceLimitX96 can be set to 0 to trade at the slot0 price
+3. sqrtPriceLimitX96 should be highter then the slot0 price for exact-in, or smaller then the slot 0 price for exact-out.
+4. ETH input is automatically wrapped.
+5. To get native ETH output: 1. set router as the recipient in swap paramters, 2. use router.multicall() with router.unwrapWETH9() as the second call.
+6. For ETH input and router.exactOut(): use router.multicall() with router.refundETH() as the second call to get excess ETH back.
+
+## Notes on logarithm
+1. log<sub>1.0001</sub>(X) = log(X) / log(1.0001)
+2. log<sub>10</sub>(big_X) = log<sub>10</sub>(x*1eY) = Y + log<sub>10</sub>(x)
+
+## Resources
+- https://uniswap.org/whitepaper-v3.pdf
+- https://github.com/Uniswap/v3-core
+- https://github.com/Uniswap/v3-periphery
+- https://github.com/Uniswap/swap-router-contracts
+- https://docs.uniswap.org/contracts/v3/overview
+- https://uniswapv3book.com/
