@@ -103,6 +103,7 @@ describe('Uniswap V3', function() {
     // if (false)
     describe('token-token', async function() {
     let pairFee = Utils.toDecimals("0.01", 6); // 0.010000
+    let pool: CoreContract.UniswapV3Pool;
     it('add liqudity', async function() {
         let USDT_TO_ADD = 1000000;
         let UNI_TO_ADD = USDT_TO_ADD / UNI_PRICE_IN_USD;
@@ -133,7 +134,7 @@ describe('Uniswap V3', function() {
             {param1: usdt.address, param2: uni.address, param3: pairFee}
         );
         console.log("pool:", poolAddress);
-        let pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
+        pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
         // print(await pool.slot0());
         /*
         {
@@ -147,10 +148,20 @@ describe('Uniswap V3', function() {
         }
         */
     });
+    describe('swap', async function() {
     let USDT_FROM_AMOUNT = 100;
+    let price: BigNumber;
+    let uniIsToken0: boolean;
+    before(async function() {
+        price = new BigNumber(UNI_PRICE_IN_USD).shiftedBy(await usdt.decimals - await uni.decimals);
+        uniIsToken0 = (await pool.token0()) == uni.address;
+        // price are relative to uni, inverse it if usdt has a smaller address, i.e., token0 is usdt
+        if (!uniIsToken0) {
+            console.log('inv price 1')
+            price = price.pow(-1);
+        }
+    })
     it('swap 1', async function() {
-        let price = UNI_PRICE_IN_USD;
-
         wallet.defaultAccount = deployer;
         await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT});
 
@@ -158,10 +169,7 @@ describe('Uniswap V3', function() {
         await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT});
 
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }
+        let _price = price.times(!uniIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: usdt.address,
@@ -180,7 +188,6 @@ describe('Uniswap V3', function() {
         print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 2', async function() {
-        let price = UNI_PRICE_IN_USD;
         let UNI_FROM_AMOUNT = USDT_FROM_AMOUNT / UNI_PRICE_IN_USD;
 
         wallet.defaultAccount = deployer;
@@ -190,10 +197,7 @@ describe('Uniswap V3', function() {
         await uni.approve({spender: uniswap.router.address, amount: UNI_FROM_AMOUNT});
 
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 0.99).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }
+        let _price = price.times(uniIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: uni.address,
@@ -212,7 +216,6 @@ describe('Uniswap V3', function() {
         print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 3', async function() {
-        let price = UNI_PRICE_IN_USD;
         let UNI_TO_AMOUNT = USDT_FROM_AMOUNT / UNI_PRICE_IN_USD;
 
         wallet.defaultAccount = deployer;
@@ -222,10 +225,7 @@ describe('Uniswap V3', function() {
         await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT*2});
 
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }
+        let _price = price.times(!uniIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: usdt.address,
@@ -244,7 +244,6 @@ describe('Uniswap V3', function() {
         print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     it('swap 4', async function() {
-        let price = UNI_PRICE_IN_USD;
         let USDT_TO_AMOUNT = USDT_FROM_AMOUNT;
         let UNI_FROM_AMOUNT = USDT_TO_AMOUNT / UNI_PRICE_IN_USD;
 
@@ -255,10 +254,7 @@ describe('Uniswap V3', function() {
         await uni.approve({spender: uniswap.router.address, amount: UNI_FROM_AMOUNT*2});
 
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 0.99).toString()).shiftedBy(await usdt.decimals - await uni.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(uni.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }
+        let _price = price.times(uniIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: uni.address,
@@ -277,9 +273,11 @@ describe('Uniswap V3', function() {
         print(await usdt.balanceOf(swapper), await uni.balanceOf(swapper));
     });
     });
+    });
     // if (false)
     describe('eth-token', async function() {
     let pairFee = Utils.toDecimals("0.01", 6); // 0.010000
+    let pool: CoreContract.UniswapV3Pool;
     it('add liqudity', async function() {
         let USDT_TO_ADD = 1000000;
         let ETH_TO_ADD = USDT_TO_ADD / ETH_PRICE_IN_USD;
@@ -312,7 +310,7 @@ describe('Uniswap V3', function() {
             {param1: usdt.address, param2: weth.address, param3: pairFee}
         );
         console.log("pool:", poolAddress);
-        let pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
+        pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
         // print(await pool.slot0());
         /*
         {
@@ -326,10 +324,19 @@ describe('Uniswap V3', function() {
         }
         */
     });
+    describe('swap', async function() {
     let USDT_FROM_AMOUNT = 100;
+    let price: BigNumber;
+    let wethIsToken0: boolean;
+    before('swap', async function() {
+        price = new BigNumber(ETH_PRICE_IN_USD).shiftedBy(await usdt.decimals - await weth.decimals);
+        wethIsToken0 = (await pool.token0()) == weth.address;
+        if (!wethIsToken0) {
+            console.log('inv price 2')
+            price = price.pow(-1);
+        }
+    });
     it('swap exact-in', async function() {
-        let price = ETH_PRICE_IN_USD;
-
         wallet.defaultAccount = deployer;
         await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT});
 
@@ -337,10 +344,7 @@ describe('Uniswap V3', function() {
         await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT});
 
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 1.01).toString()).shiftedBy(await usdt.decimals - await weth.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(weth.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }
+        let _price = price.times(!wethIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: usdt.address,
@@ -361,15 +365,8 @@ describe('Uniswap V3', function() {
         print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
     });
     it('swap exact-out', async function() {
-        let price = ETH_PRICE_IN_USD;
-
         let now = await wallet.getBlockTimestamp();
-        let _price = new BigNumber((price * 0.9).toString()).shiftedBy(await usdt.decimals - await weth.decimals);
-        if (new BigNumber(usdt.address.toLowerCase()).lt(weth.address.toLowerCase())) {
-            _price = _price.pow(-1);
-        }        
-        console.log(_price.toFixed()) //600000000   1 eth = 2000 usdt   1e18=2000e6   0.0005e12=1   500000000=1  weth<usdt  in<out
-        console.log(toSqrtX96(_price).toFixed())
+        let _price = price.times(wethIsToken0 ? "0.99" : "1.01");
         wallet.defaultAccount = swapper;
         let params = {
             tokenIn: weth.address,
@@ -388,6 +385,37 @@ describe('Uniswap V3', function() {
         let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
         // print(receipt);
         print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper), await wallet.balanceOf(uniswap.router.address));
+    });
+    it('swap exact-out 2', async function() {
+        print(await usdt.balanceOf(swapper));
+        wallet.defaultAccount = deployer;
+        await usdt.mint({address: swapper, amount: USDT_FROM_AMOUNT*2});
+
+        wallet.defaultAccount = swapper;
+        await usdt.approve({spender: uniswap.router.address, amount: USDT_FROM_AMOUNT*2});
+
+        let now = await wallet.getBlockTimestamp();
+        let _price = price.times(!wethIsToken0 ? "0.99" : "1.01");     
+        wallet.defaultAccount = swapper;
+        let params = {
+            tokenIn: usdt.address,
+            tokenOut: weth.address,
+            fee: pairFee,
+            recipient: uniswap.router.address,
+            deadline: now + 3600,
+            amountOut: Utils.toDecimals(USDT_FROM_AMOUNT/ETH_PRICE_IN_USD),
+            amountInMaximum: Utils.toDecimals(USDT_FROM_AMOUNT*2, await usdt.decimals),
+            sqrtPriceLimitX96: toSqrtX96(_price) //0
+        };
+        // print(params);
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper));
+        let callData1 = await uniswap.router.exactOutputSingle.txData(params);
+        let callData2 = await uniswap.router.unwrapWETH9.txData({amountMinimum: 0, recipient: swapper});
+        let receipt = await uniswap.router.multicall([callData1, callData2]);
+        // print(receipt);
+        print(await usdt.balanceOf(swapper), await wallet.balanceOf(swapper), await weth.balanceOf(swapper), await wallet.balanceOf(uniswap.router.address), await usdt.balanceOf(uniswap.router.address));
+        print(await usdt.allowance({owner: swapper, spender: uniswap.router.address}))
+    });
     });
     });
     describe('multi-hop', async function() {
