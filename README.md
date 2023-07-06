@@ -25,7 +25,7 @@
 ## Notes on calling uniswap router swap function:
 1. Prices are always based on token0 (token with smaller address); independent of in-token / out-token direction.
 2. sqrtPriceLimitX96 can be set to 0 to trade at the slot0 price
-3. sqrtPriceLimitX96 should be highter then the slot0 price for exact-in, or smaller then the slot 0 price for exact-out.
+3. sqrtPriceLimitX96 should be smaller then the slot0 price when swapping from token0 to token1 or highter then the slot0 price for token1 to token0 swaps.
 4. ETH input is automatically wrapped.
 5. To get native ETH output: 1. set router as the recipient in swap paramters, 2. use router.multicall() with router.unwrapWETH9() as the second call.
 6. For ETH input and router.exactOut(): use router.multicall() with router.refundETH() as the second call to get excess ETH back.
