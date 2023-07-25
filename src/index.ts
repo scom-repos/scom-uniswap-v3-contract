@@ -6,8 +6,7 @@ export {Contract as CoreContract} from 'v3-core';
 export {Contract as PeripheryContract} from 'v3-periphery';
 export {Contract as SwapRouterContract} from 'swap-router-contracts';
 
-import {IWallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
-import {Contract} from '@ijstech/eth-contract';
+import {IWallet, Wallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
 
 
 /*
@@ -139,6 +138,132 @@ const X96 = new BigNumber(2).pow(96);
 export function toSqrtX96(n: BigNumber): BigNumber {
     return n.sqrt().times(X96).dp(0, BigNumber.ROUND_FLOOR);
 }
+
+// SDK for front-end 
+
+// Interface Univ3 Route Object
+interface univ3RouteObj {
+    tokenIn: string,
+    tokenOut: string,
+    path?: string,
+    fee?: number,
+    amountIn?: BigNumber,
+    amountOut?: BigNumber
+}
+
+// Get Best Amount In for UniV3
+// Return: a UniV3 Route Object
+const getBestAmountInRouteUniV3 = async (wallet:IWallet, quoterAddress: string, tokenIn: string, tokenOut: string, amountOut: BigNumber, multiHopPairs?: {pair0: {token0: string, token1: string, fee: number}, pair1:{token0: string, token1: string, fee: number}}): Promise<univ3RouteObj> => {
+
+    const fees: number[] = [];
+    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+
+    // Single hop
+    let amountInArr: univ3RouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        const amountIn = await quoter.quoteExactOutputSingle.call({
+            tokenIn,
+            tokenOut,
+            fee,
+            amountOut,
+            sqrtPriceLimitX96: 0
+        })
+        return {
+            tokenIn,
+            tokenOut,
+            fee,
+            amountIn
+        };
+    }))
+
+    // Multi hop
+    if (multiHopPairs) {
+        let path = "0x" + tokenIn.toLowerCase().replace("0x","");  // Token In
+        // Check whether tokenIn is in pair0 and compute path
+        if (tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() || tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token1.toLocaleLowerCase()) {
+            // If tokenIn is in pair0
+            path += 
+                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58,64) + 
+                tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase()?  multiHopPairs.pair0.token1.toLocaleLowerCase().replace("0x","") :  multiHopPairs.pair0.token0.toLocaleLowerCase().replace("0x","") + // hop Token
+                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58,64) 
+        } else {
+            // If tokenIn is in pair1
+            path +=
+                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58,64) + 
+                tokenIn.toLocaleLowerCase() == multiHopPairs.pair1.token0.toLocaleLowerCase()?  multiHopPairs.pair1.token1.toLocaleLowerCase().replace("0x","") :  multiHopPairs.pair1.token0.toLocaleLowerCase().replace("0x","") + // hop Token
+                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58,64) 
+        }
+        path += tokenOut.toLowerCase().replace("0x","") // Token Out
+        const amountIn = await quoter.quoteExactOutput.call({path, amountOut});
+        amountInArr.push({
+            path,
+            tokenIn,
+            tokenOut,
+            amountIn
+        })
+    }
+
+    let bestAmountInObj: univ3RouteObj = amountInArr.reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
+
+    return bestAmountInObj;
+}
+
+// Get Best Amount Out for UniV3
+// Return: a UniV3 Route Object
+const getBestAmountOutRouteUniV3 = async (wallet:IWallet, quoterAddress: string, tokenIn: string, tokenOut: string, amountIn: BigNumber, multiHopPairs?: {pair0: {token0: string, token1: string, fee: number}, pair1:{token0: string, token1: string, fee: number}}): Promise<univ3RouteObj> => {
+
+    const fees: number[] = [];
+    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+
+    // Single hop
+    let amountOutArr: univ3RouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        const amountOut = await quoter.quoteExactInputSingle.call({
+            tokenIn,
+            tokenOut,
+            fee,
+            amountIn,
+            sqrtPriceLimitX96: 0
+        })
+        return {
+            tokenIn,
+            tokenOut,
+            fee,
+            amountOut
+        };
+    }))
+
+    // Multi hop
+    if (multiHopPairs) {
+        let path = "0x" + tokenOut.toLowerCase().replace("0x", "");  // Token In
+        // Check whether tokenOut is in pair0 and compute path
+        if (tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() || tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token1.toLocaleLowerCase()) {
+            // If tokenOut is in pair0
+            path +=
+                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58, 64) + 
+                tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() ? multiHopPairs.pair0.token1.toLocaleLowerCase().replace("0x", "") : multiHopPairs.pair0.token0.toLocaleLowerCase().replace("0x", "") + // hop Token
+                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58, 64) 
+        } else {
+            // If tokenOut is in pair1
+            path +=
+                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58, 64) + 
+                tokenOut.toLocaleLowerCase() == multiHopPairs.pair1.token0.toLocaleLowerCase() ? multiHopPairs.pair1.token1.toLocaleLowerCase().replace("0x", "") : multiHopPairs.pair1.token0.toLocaleLowerCase().replace("0x", "") + // hop Token
+                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58, 64) 
+        }
+        path += tokenIn.toLowerCase().replace("0x", "") // Token Out
+        const amountOut = await quoter.quoteExactInput.call({ path, amountIn });
+        amountOutArr.push({
+            path,
+            tokenIn,
+            tokenOut,
+            amountOut
+        })
+    }
+
+    let bestAmountOutObj: univ3RouteObj = amountOutArr.reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
+
+    return bestAmountOutObj;
+}
+
+
 export default {
     CoreContract,
     PeripheryContract,
