@@ -140,39 +140,74 @@ export function toSqrtX96(n: BigNumber): BigNumber {
 }
 
 // SDK for front-end 
+const fees: number[] = [100, 500, 3000, 10000]; // default pool fee
 
-// Interface Univ3 Route Object
-interface univ3RouteObj {
+// Interface 
+interface IGetBestExactRouteParam {
+    wallet:IWallet, 
+    quoterAddress: string, 
+    tokenIn: string, 
+    tokenOut: string, 
+    multiHopPairs?: 
+        {pair0: 
+            {token0: string, token1: string, fee: number}, 
+        pair1:
+            {token0: string, token1: string, fee: number}
+        }
+}
+export interface IGetBestExactAmountOutRouteParam extends IGetBestExactRouteParam{
+    exactAmountOut: BigNumber, 
+}
+
+export interface IGetBestExactAmountInRouteParam extends IGetBestExactRouteParam{
+    exactAmountIn: BigNumber, 
+}
+
+interface IRouteObj {
     tokenIn: string,
     tokenOut: string,
-    path?: string,
     fee?: number,
-    amountIn?: BigNumber,
-    amountOut?: BigNumber
+    path?: string,
+}
+
+export interface IBestExactAmountOutRouteObj extends IRouteObj {
+    amountIn: BigNumber,
+    exactAmountOut: BigNumber
+}
+
+export interface IBestExactAmountInRouteObj extends IRouteObj {
+    amountOut: BigNumber,
+    exactAmountIn: BigNumber
 }
 
 // Get Best Amount In for UniV3
 // Return: a UniV3 Route Object
-const getBestAmountInRouteUniV3 = async (wallet:IWallet, quoterAddress: string, tokenIn: string, tokenOut: string, amountOut: BigNumber, multiHopPairs?: {pair0: {token0: string, token1: string, fee: number}, pair1:{token0: string, token1: string, fee: number}}): Promise<univ3RouteObj> => {
+export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutRouteParam): Promise<IBestExactAmountOutRouteObj> => {
 
-    const fees: number[] = [];
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, multiHopPairs } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
-    let amountInArr: univ3RouteObj[] =  await Promise.all(fees.map( async(fee) => {
-        const amountIn = await quoter.quoteExactOutputSingle.call({
-            tokenIn,
-            tokenOut,
-            fee,
-            amountOut,
-            sqrtPriceLimitX96: 0
-        })
-        return {
-            tokenIn,
-            tokenOut,
-            fee,
-            amountIn
-        };
+    let exactAmountOutArr: IBestExactAmountOutRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        try {
+            const amountIn = await quoter.quoteExactOutputSingle.call({
+                tokenIn,
+                tokenOut,
+                fee,
+                amountOut: exactAmountOut,
+                sqrtPriceLimitX96: 0
+            })
+
+            return {
+                tokenIn,
+                tokenOut,
+                fee,
+                amountIn,
+                exactAmountOut
+            };
+        } catch (err) {
+            // pair not exists
+        }
     }))
 
     // Multi hop
@@ -193,42 +228,47 @@ const getBestAmountInRouteUniV3 = async (wallet:IWallet, quoterAddress: string, 
                 Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58,64) 
         }
         path += tokenOut.toLowerCase().replace("0x","") // Token Out
-        const amountIn = await quoter.quoteExactOutput.call({path, amountOut});
-        amountInArr.push({
-            path,
+        const amountIn = await quoter.quoteExactOutput.call({path, amountOut: exactAmountOut});
+        exactAmountOutArr.push({
             tokenIn,
             tokenOut,
-            amountIn
+            amountIn,
+            exactAmountOut
         })
     }
 
-    let bestAmountInObj: univ3RouteObj = amountInArr.reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
-
-    return bestAmountInObj;
+    let bestExactAmountOutRouteObj: IBestExactAmountOutRouteObj = exactAmountOutArr.filter( v => v !== undefined).reduce( (a,b) => a.amountIn.minus(b.amountIn)? b: a);
+    return bestExactAmountOutRouteObj;
 }
 
 // Get Best Amount Out for UniV3
 // Return: a UniV3 Route Object
-const getBestAmountOutRouteUniV3 = async (wallet:IWallet, quoterAddress: string, tokenIn: string, tokenOut: string, amountIn: BigNumber, multiHopPairs?: {pair0: {token0: string, token1: string, fee: number}, pair1:{token0: string, token1: string, fee: number}}): Promise<univ3RouteObj> => {
+export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRouteParam): Promise<IBestExactAmountInRouteObj> => {
 
-    const fees: number[] = [];
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, multiHopPairs } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
-    let amountOutArr: univ3RouteObj[] =  await Promise.all(fees.map( async(fee) => {
-        const amountOut = await quoter.quoteExactInputSingle.call({
-            tokenIn,
-            tokenOut,
-            fee,
-            amountIn,
-            sqrtPriceLimitX96: 0
-        })
-        return {
-            tokenIn,
-            tokenOut,
-            fee,
-            amountOut
-        };
+    let exactAmountInArr: IBestExactAmountInRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        try {
+            const amountOut = await quoter.quoteExactInputSingle.call({
+                tokenIn,
+                tokenOut,
+                fee,
+                amountIn: exactAmountIn,
+                sqrtPriceLimitX96: 0
+            })
+            return {
+                tokenIn,
+                tokenOut,
+                fee,
+                exactAmountIn,
+                amountOut
+            };
+        } catch (err) {
+            // pair not exists
+        }
+
     }))
 
     // Multi hop
@@ -249,17 +289,17 @@ const getBestAmountOutRouteUniV3 = async (wallet:IWallet, quoterAddress: string,
                 Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58, 64) 
         }
         path += tokenIn.toLowerCase().replace("0x", "") // Token Out
-        const amountOut = await quoter.quoteExactInput.call({ path, amountIn });
-        amountOutArr.push({
+        const amountOut = await quoter.quoteExactInput.call({ path, amountIn: exactAmountIn });
+        exactAmountInArr.push({
             path,
             tokenIn,
             tokenOut,
+            exactAmountIn,
             amountOut
         })
     }
 
-    let bestAmountOutObj: univ3RouteObj = amountOutArr.reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
-
+    let bestAmountOutObj: IBestExactAmountInRouteObj = exactAmountInArr.filter( v => v !== undefined).reduce( (a,b) => a.amountOut.minus(b.amountOut)? a: b);
     return bestAmountOutObj;
 }
 
@@ -271,5 +311,7 @@ export default {
     DefaultDeployOptions,
     deploy,
     fromDeployResult,
-    toSqrtX96
+    toSqrtX96,
+    getBestExactAmountInRoute,
+    getBestExactAmountOutRoute
 };;
