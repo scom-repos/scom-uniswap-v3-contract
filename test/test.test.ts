@@ -1,6 +1,6 @@
 import 'mocha';
 import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt, Web3} from "@ijstech/eth-wallet";
-import {CoreContract, IDeployedContracts, deploy, toSqrtX96, getBestExactAmountInRoute, getBestExactAmountOutRoute,
+import {CoreContract, IDeployedContracts, deploy, toSqrtX96, getBestExactAmountInRoute, getBestExactAmountOutRoute, convertPathFromStringToArr,
     IGetBestExactAmountOutRouteParam, IGetBestExactAmountInRouteParam, IBestExactAmountOutRouteObj, IBestExactAmountInRouteObj} from "../src/index";
 import {Contract as Mock} from "../packages/mock-contracts";
 import { assertEqual, getProvider, expectToFail, print } from './helper';
@@ -486,30 +486,96 @@ describe('Uniswap V3', function() {
             // Add weth & usdt pair
             wallet.defaultAccount = deployer;
             await usdt.mint({address: lp, amount: USDT_TO_ADD});
-            await uni.mint({address: lp, amount: UNI_TO_ADD});
     
             wallet.defaultAccount = lp;
             await usdt.approve({spender: uniswap.nftPosMngr.address, amount: USDT_TO_ADD});
-            await uni.approve({spender: uniswap.nftPosMngr.address, amount: UNI_TO_ADD});
     
             if (new BigNumber(weth.address.toLowerCase()).lt(usdt.address.toLowerCase())) {
                 await createAndAdd(uniswap, weth, usdt, pairFee, new BigNumber(ETH_PRICE_IN_USD), ETH_TO_ADD, USDT_TO_ADD, lp, deadline, ETH_TO_ADD);
             } else {
                 await createAndAdd(uniswap, usdt, weth, pairFee, new BigNumber(1 / ETH_PRICE_IN_USD), USDT_TO_ADD, ETH_TO_ADD, lp, deadline, ETH_TO_ADD);
             }
-    
+            
             // Add uni & usdt pair
             wallet.defaultAccount = deployer;
             await usdt.mint({address: lp, amount: USDT_TO_ADD});
+            await uni.mint({address: lp, amount: UNI_TO_ADD});
     
             wallet.defaultAccount = lp;
             await usdt.approve({spender: uniswap.nftPosMngr.address, amount: USDT_TO_ADD});
+            await uni.approve({spender: uniswap.nftPosMngr.address, amount: UNI_TO_ADD});
 
             if (new BigNumber(uni.address.toLowerCase()).lt(usdt.address.toLowerCase())) {
                 await createAndAdd(uniswap, uni, usdt, pairFee, new BigNumber(UNI_PRICE_IN_USD), UNI_TO_ADD, USDT_TO_ADD, lp, deadline);
             } else {
                 await createAndAdd(uniswap, usdt, uni, pairFee, new BigNumber(1 / UNI_PRICE_IN_USD), USDT_TO_ADD, UNI_TO_ADD, lp, deadline);
             }
+
+            // Add uni & weth pair
+            const UNI_PRICE_IN_ETH = 0.05;
+            UNI_TO_ADD = 100;
+            ETH_TO_ADD = UNI_TO_ADD * UNI_PRICE_IN_ETH;
+
+            wallet.defaultAccount = deployer;
+            await uni.mint({address: lp, amount: UNI_TO_ADD});
+    
+            wallet.defaultAccount = lp;
+            await uni.approve({spender: uniswap.nftPosMngr.address, amount: UNI_TO_ADD});
+    
+            if (new BigNumber(weth.address.toLowerCase()).lt(usdt.address.toLowerCase())) {
+                await createAndAdd(uniswap, weth, uni, pairFee, new BigNumber(UNI_PRICE_IN_ETH), ETH_TO_ADD, UNI_TO_ADD, lp, deadline, ETH_TO_ADD);
+            } else {
+                await createAndAdd(uniswap, uni, weth, pairFee, new BigNumber(1 / UNI_PRICE_IN_ETH), UNI_TO_ADD, ETH_TO_ADD, lp, deadline, ETH_TO_ADD);
+            }
+        });
+        it('quote exact amount in - no hop', async function() {
+            let effectiveGasPrice = new BigNumber(2000000000);
+            // weth -> usdt
+
+            let exactAmountIn = new BigNumber(1).shiftedBy(await weth.decimals)
+            // Quote
+            let quoteParam: IGetBestExactAmountInRouteParam = {
+                wallet, 
+                quoterAddress: uniswap.quoter.address, 
+                tokenIn: weth.address, 
+                tokenOut: usdt.address, 
+                exactAmountIn
+            }
+            
+            let quote: IBestExactAmountInRouteObj = await getBestExactAmountInRoute(quoteParam);
+            let fee = convertPathFromStringToArr(quote.path)[1];
+
+            // Swap
+            let now = await wallet.getBlockTimestamp();
+            wallet.defaultAccount = swapper;
+            let params = {
+                tokenIn: quote.tokenIn,
+                tokenOut: quote.tokenOut,
+                fee,
+                recipient: swapper,
+                deadline: now + 3600,
+                amountIn: quote.exactAmountIn,
+                amountOutMinimum: quote.amountOut,
+                sqrtPriceLimitX96: 0
+            };
+
+            let ethBalanceBeforeTrx = await wallet.balanceOf(swapper);
+            let usdtBalanceBeforeTrx = await usdt.balanceOf(swapper);
+            let callData1 = await uniswap.router.exactInputSingle.txData(params);
+            let callData2 = await uniswap.router.refundETH.txData();
+            let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
+            let ethBalanceAfterTrx = await wallet.balanceOf(swapper);
+            let usdtBalanceAfterTrx = await usdt.balanceOf(swapper);
+
+            // Calculate token give and get
+            let ethUsedActual = ethBalanceBeforeTrx.minus(ethBalanceAfterTrx).shiftedBy(await weth.decimals).toFixed();
+            let ethUsedEstimated = quote.exactAmountIn.plus(effectiveGasPrice.times(receipt.gasUsed)).toFixed()
+            let usdtGetActual = usdtBalanceAfterTrx.minus(usdtBalanceBeforeTrx).shiftedBy(await usdt.decimals).toFixed();
+            let usdtGetEstimated = quote.amountOut.toFixed()
+
+            // Test the calculation
+            assert.equal(ethUsedActual, ethUsedEstimated)
+            assert.equal(usdtGetActual, usdtGetEstimated)
         });
         it('quote exact amount out - no hop', async function() {
             let effectiveGasPrice = new BigNumber(2000000000);
@@ -525,6 +591,7 @@ describe('Uniswap V3', function() {
                 exactAmountOut
             }
             let quote: IBestExactAmountOutRouteObj = await getBestExactAmountOutRoute(quoteParam);
+            let fee = convertPathFromStringToArr(quote.path)[1];
 
             // Swap
             let now = await wallet.getBlockTimestamp();
@@ -532,7 +599,7 @@ describe('Uniswap V3', function() {
             let params = {
                 tokenIn: quote.tokenIn,
                 tokenOut: quote.tokenOut,
-                fee: quote.fee,
+                fee: fee,
                 recipient: swapper,
                 deadline: now + 3600,
                 amountOut: exactAmountOut,
@@ -558,9 +625,71 @@ describe('Uniswap V3', function() {
             assert.equal(ethUsedActual, ethUsedEstimated)
             assert.equal(usdtGetActual, usdtGetEstimated)
         });
-        it('quote exact amount in - no hop', async function() {
+        it('quote exact amount out - 1 hop', async function() {
             let effectiveGasPrice = new BigNumber(2000000000);
-            // weth -> usdt
+
+            // eth -> usdt -> uni;
+            //   1 -> 2000 -> 400
+            let path = "0x" +
+                uni.address.toLowerCase().replace("0x","") +
+                Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                usdt.address.toLowerCase().replace("0x","") + 
+                Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                weth.address.toLowerCase().replace("0x","");
+
+            let exactAmountOut = new BigNumber(100).shiftedBy(await uni.decimals)
+            // Quote
+            let quoteParam: IGetBestExactAmountOutRouteParam = {
+                wallet, 
+                quoterAddress: uniswap.quoter.address, 
+                tokenIn: weth.address, 
+                tokenOut: uni.address, 
+                exactAmountOut,
+                path
+            }
+            let quote: IBestExactAmountOutRouteObj = await getBestExactAmountOutRoute(quoteParam);
+
+            // Swap
+            let now = await wallet.getBlockTimestamp();
+            let param = {
+                path: path,
+                recipient: swapper,
+                deadline: now + 1000,
+                amountOut: exactAmountOut,
+                amountInMaximum: quote.amountIn
+            }
+
+            let ethBalanceBeforeTrx = await wallet.balanceOf(swapper);
+            let uniBalanceBeforeTrx = await uni.balanceOf(swapper);
+            let callData1 = await uniswap.router.exactOutput.txData(
+                param
+            );
+            let callData2 = await uniswap.router.refundETH.txData();
+            let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(2));
+            let ethBalanceAfterTrx = await wallet.balanceOf(swapper);
+            let uniBalanceAfterTrx = await uni.balanceOf(swapper);
+
+            // Calculate token give and get
+            let ethUsedActual = ethBalanceBeforeTrx.minus(ethBalanceAfterTrx).shiftedBy(await weth.decimals).toFixed();
+            let ethUsedEstimated = quote.amountIn.plus(effectiveGasPrice.times(receipt.gasUsed)).toFixed()
+            let uniGetActual = uniBalanceAfterTrx.minus(uniBalanceBeforeTrx).shiftedBy(await uni.decimals).toFixed();
+            let uniGetEstimated = quote.exactAmountOut.toFixed()
+
+            // Test the calculation
+            assert.equal(ethUsedActual, ethUsedEstimated)
+            assert.equal(uniGetActual, uniGetEstimated)
+        });
+        it('quote exact amount in - 1 hop', async function() {
+            let effectiveGasPrice = new BigNumber(2000000000);
+
+            // uni -> usdt -> eth;
+            //   400 -> 2000 -> 1
+            let path = "0x" +
+                weth.address.toLowerCase().replace("0x","") +
+                Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                usdt.address.toLowerCase().replace("0x","") + 
+                Utils.numberToBytes32(Utils.toDecimals("0.01", 6)).substring(58,64) +
+                uni.address.toLowerCase().replace("0x","");
 
             let exactAmountIn = new BigNumber(1).shiftedBy(await weth.decimals)
             // Quote
@@ -568,43 +697,41 @@ describe('Uniswap V3', function() {
                 wallet, 
                 quoterAddress: uniswap.quoter.address, 
                 tokenIn: weth.address, 
-                tokenOut: usdt.address, 
-                exactAmountIn
+                tokenOut: uni.address, 
+                exactAmountIn,
+                path
             }
-            
             let quote: IBestExactAmountInRouteObj = await getBestExactAmountInRoute(quoteParam);
 
             // Swap
             let now = await wallet.getBlockTimestamp();
-            wallet.defaultAccount = swapper;
-            let params = {
-                tokenIn: quote.tokenIn,
-                tokenOut: quote.tokenOut,
-                fee: quote.fee,
+            let param = {
+                path: path,
                 recipient: swapper,
-                deadline: now + 3600,
-                amountIn: quote.exactAmountIn,
-                amountOutMinimum: quote.amountOut,
-                sqrtPriceLimitX96: 0
-            };
+                deadline: now + 1000,
+                amountIn: exactAmountIn,
+                amountOutMinimum: quote.amountOut
+            }
 
             let ethBalanceBeforeTrx = await wallet.balanceOf(swapper);
-            let usdtBalanceBeforeTrx = await usdt.balanceOf(swapper);
-            let callData1 = await uniswap.router.exactInputSingle.txData(params);
+            let uniBalanceBeforeTrx = await uni.balanceOf(swapper);
+            let callData1 = await uniswap.router.exactInput.txData(
+                param
+            );
             let callData2 = await uniswap.router.refundETH.txData();
-            let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(1));
+            let receipt = await uniswap.router.multicall([callData1, callData2], Utils.toDecimals(2));
             let ethBalanceAfterTrx = await wallet.balanceOf(swapper);
-            let usdtBalanceAfterTrx = await usdt.balanceOf(swapper);
+            let uniBalanceAfterTrx = await uni.balanceOf(swapper);
 
             // Calculate token give and get
             let ethUsedActual = ethBalanceBeforeTrx.minus(ethBalanceAfterTrx).shiftedBy(await weth.decimals).toFixed();
             let ethUsedEstimated = quote.exactAmountIn.plus(effectiveGasPrice.times(receipt.gasUsed)).toFixed()
-            let usdtGetActual = usdtBalanceAfterTrx.minus(usdtBalanceBeforeTrx).shiftedBy(await usdt.decimals).toFixed();
-            let usdtGetEstimated = quote.amountOut.toFixed()
+            let uniGetActual = uniBalanceAfterTrx.minus(uniBalanceBeforeTrx).shiftedBy(await uni.decimals).toFixed();
+            let uniGetEstimated = quote.amountOut.toFixed()
 
             // Test the calculation
             assert.equal(ethUsedActual, ethUsedEstimated)
-            assert.equal(usdtGetActual, usdtGetEstimated)
+            assert.equal(uniGetActual, uniGetEstimated)
         });
     });
 }); 

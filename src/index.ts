@@ -7,6 +7,7 @@ export {Contract as PeripheryContract} from 'v3-periphery';
 export {Contract as SwapRouterContract} from 'swap-router-contracts';
 
 import {IWallet, Wallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
+import { arrayBuffer } from 'stream/consumers';
 
 
 /*
@@ -148,12 +149,7 @@ interface IGetBestExactRouteParam {
     quoterAddress: string, 
     tokenIn: string, 
     tokenOut: string, 
-    multiHopPairs?: 
-        {pair0: 
-            {token0: string, token1: string, fee: number}, 
-        pair1:
-            {token0: string, token1: string, fee: number}
-        }
+    path?: string
 }
 export interface IGetBestExactAmountOutRouteParam extends IGetBestExactRouteParam{
     exactAmountOut: BigNumber, 
@@ -166,8 +162,7 @@ export interface IGetBestExactAmountInRouteParam extends IGetBestExactRouteParam
 interface IRouteObj {
     tokenIn: string,
     tokenOut: string,
-    fee?: number,
-    path?: string,
+    path: string,
 }
 
 export interface IBestExactAmountOutRouteObj extends IRouteObj {
@@ -180,11 +175,10 @@ export interface IBestExactAmountInRouteObj extends IRouteObj {
     exactAmountIn: BigNumber
 }
 
-// Get Best Amount In for UniV3
-// Return: a UniV3 Route Object
+// Get Best Exact Amount Out for UniV3
 export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutRouteParam): Promise<IBestExactAmountOutRouteObj> => {
 
-    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, multiHopPairs } = param;
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
@@ -198,10 +192,15 @@ export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutR
                 sqrtPriceLimitX96: 0
             })
 
+            let path = "0x" +
+                tokenIn.toLowerCase().replace("0x", "") +
+                Utils.numberToBytes32(fee).substring(58, 64) +
+                tokenOut.toLowerCase().replace("0x", "")
+
             return {
                 tokenIn,
                 tokenOut,
-                fee,
+                path,
                 amountIn,
                 exactAmountOut
             };
@@ -211,41 +210,26 @@ export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutR
     }))
 
     // Multi hop
-    if (multiHopPairs) {
-        let path = "0x" + tokenIn.toLowerCase().replace("0x","");  // Token In
-        // Check whether tokenIn is in pair0 and compute path
-        if (tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() || tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token1.toLocaleLowerCase()) {
-            // If tokenIn is in pair0
-            path += 
-                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58,64) + 
-                tokenIn.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase()?  multiHopPairs.pair0.token1.toLocaleLowerCase().replace("0x","") :  multiHopPairs.pair0.token0.toLocaleLowerCase().replace("0x","") + // hop Token
-                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58,64) 
-        } else {
-            // If tokenIn is in pair1
-            path +=
-                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58,64) + 
-                tokenIn.toLocaleLowerCase() == multiHopPairs.pair1.token0.toLocaleLowerCase()?  multiHopPairs.pair1.token1.toLocaleLowerCase().replace("0x","") :  multiHopPairs.pair1.token0.toLocaleLowerCase().replace("0x","") + // hop Token
-                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58,64) 
-        }
-        path += tokenOut.toLowerCase().replace("0x","") // Token Out
+    if (path) {
         const amountIn = await quoter.quoteExactOutput.call({path, amountOut: exactAmountOut});
         exactAmountOutArr.push({
             tokenIn,
             tokenOut,
             amountIn,
+            path,
             exactAmountOut
         })
     }
 
-    let bestExactAmountOutRouteObj: IBestExactAmountOutRouteObj = exactAmountOutArr.filter( v => v !== undefined).reduce( (a,b) => a.amountIn.minus(b.amountIn)? b: a);
+    let bestExactAmountOutRouteObj: IBestExactAmountOutRouteObj = exactAmountOutArr.filter( v => v !== undefined).reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
+
     return bestExactAmountOutRouteObj;
 }
 
-// Get Best Amount Out for UniV3
-// Return: a UniV3 Route Object
+// Get Best Exact Amount In for UniV3
 export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRouteParam): Promise<IBestExactAmountInRouteObj> => {
 
-    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, multiHopPairs } = param;
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
@@ -258,10 +242,15 @@ export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRout
                 amountIn: exactAmountIn,
                 sqrtPriceLimitX96: 0
             })
+            let path = "0x" +
+                tokenIn.toLowerCase().replace("0x", "") +
+                Utils.numberToBytes32(fee).substring(58, 64) +
+                tokenOut.toLowerCase().replace("0x", "")
             return {
                 tokenIn,
                 tokenOut,
-                fee,
+                fee: fee,
+                path,
                 exactAmountIn,
                 amountOut
             };
@@ -272,23 +261,7 @@ export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRout
     }))
 
     // Multi hop
-    if (multiHopPairs) {
-        let path = "0x" + tokenOut.toLowerCase().replace("0x", "");  // Token In
-        // Check whether tokenOut is in pair0 and compute path
-        if (tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() || tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token1.toLocaleLowerCase()) {
-            // If tokenOut is in pair0
-            path +=
-                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58, 64) + 
-                tokenOut.toLocaleLowerCase() == multiHopPairs.pair0.token0.toLocaleLowerCase() ? multiHopPairs.pair0.token1.toLocaleLowerCase().replace("0x", "") : multiHopPairs.pair0.token0.toLocaleLowerCase().replace("0x", "") + // hop Token
-                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58, 64) 
-        } else {
-            // If tokenOut is in pair1
-            path +=
-                Utils.numberToBytes32(multiHopPairs.pair1.fee).substring(58, 64) + 
-                tokenOut.toLocaleLowerCase() == multiHopPairs.pair1.token0.toLocaleLowerCase() ? multiHopPairs.pair1.token1.toLocaleLowerCase().replace("0x", "") : multiHopPairs.pair1.token0.toLocaleLowerCase().replace("0x", "") + // hop Token
-                Utils.numberToBytes32(multiHopPairs.pair0.fee).substring(58, 64) 
-        }
-        path += tokenIn.toLowerCase().replace("0x", "") // Token Out
+    if (path) {
         const amountOut = await quoter.quoteExactInput.call({ path, amountIn: exactAmountIn });
         exactAmountInArr.push({
             path,
@@ -299,8 +272,32 @@ export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRout
         })
     }
 
-    let bestAmountOutObj: IBestExactAmountInRouteObj = exactAmountInArr.filter( v => v !== undefined).reduce( (a,b) => a.amountOut.minus(b.amountOut)? a: b);
+    let bestAmountOutObj: IBestExactAmountInRouteObj = exactAmountInArr.filter( v => v !== undefined).reduce( (a,b) => a.amountOut.minus(b.amountOut)? b: a);
+
     return bestAmountOutObj;
+}
+
+export const convertPathFromStringToArr = (path:string): any[] => {
+
+    if (!path) return null;
+
+    let arr = [];
+    // Remove "0x"
+    path = path.substring(2, path.length)
+    while (path.length !== 40) {
+        // Add token address to arr
+        arr.push("0x" + path.substring(0, 40));
+        path = path.substring(40, path.length);
+        
+        // Add fee to arr
+        arr.push(parseInt(path.substring(0,6), 16));
+        path = path.substring(6, path.length);
+    }
+
+    // Add last token address to arr
+    arr.push("0x" + path)
+
+    return arr;
 }
 
 
@@ -313,5 +310,6 @@ export default {
     fromDeployResult,
     toSqrtX96,
     getBestExactAmountInRoute,
-    getBestExactAmountOutRoute
+    getBestExactAmountOutRoute,
+    convertPathFromStringToArr
 };;
