@@ -144,18 +144,18 @@ export function toSqrtX96(n: BigNumber): BigNumber {
 const fees: number[] = [100, 500, 3000, 10000]; // default pool fee
 
 // Interface 
-interface IGetBestExactRouteParam {
+interface IGetExactRouteParam {
     wallet:IWallet, 
     quoterAddress: string, 
     tokenIn: string, 
     tokenOut: string, 
     path?: string
 }
-export interface IGetBestExactAmountOutRouteParam extends IGetBestExactRouteParam{
+export interface IGetExactAmountOutRouteParam extends IGetExactRouteParam{
     exactAmountOut: BigNumber, 
 }
 
-export interface IGetBestExactAmountInRouteParam extends IGetBestExactRouteParam{
+export interface IGetExactAmountInRouteParam extends IGetExactRouteParam{
     exactAmountIn: BigNumber, 
 }
 
@@ -165,24 +165,24 @@ interface IRouteObj {
     path: string,
 }
 
-export interface IBestExactAmountOutRouteObj extends IRouteObj {
+export interface IExactAmountOutRouteObj extends IRouteObj {
     amountIn: BigNumber,
     exactAmountOut: BigNumber
 }
 
-export interface IBestExactAmountInRouteObj extends IRouteObj {
+export interface IExactAmountInRouteObj extends IRouteObj {
     amountOut: BigNumber,
     exactAmountIn: BigNumber
 }
 
-// Get Best Exact Amount Out for UniV3
-export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutRouteParam): Promise<IBestExactAmountOutRouteObj> => {
+// Get Exact Amount Out for UniV3
+export const getExactAmountOutRoute = async ( param: IGetExactAmountOutRouteParam): Promise<IExactAmountOutRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
-    let exactAmountOutArr: IBestExactAmountOutRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+    let exactAmountOutArr: IExactAmountOutRouteObj[] =  await Promise.all(fees.map( async(fee) => {
         try {
             const amountIn = await quoter.quoteExactOutputSingle.call({
                 tokenIn,
@@ -221,19 +221,19 @@ export const getBestExactAmountOutRoute = async ( param: IGetBestExactAmountOutR
         })
     }
 
-    let bestExactAmountOutRouteObj: IBestExactAmountOutRouteObj = exactAmountOutArr.filter( v => v !== undefined).reduce( (a,b) => a.amountIn.minus(b.amountIn)? a: b);
+    exactAmountOutArr = exactAmountOutArr.filter( v => v !== undefined).sort( (a,b) => a.amountIn.minus(b.amountIn).toNumber());
 
-    return bestExactAmountOutRouteObj;
+    return exactAmountOutArr;
 }
 
-// Get Best Exact Amount In for UniV3
-export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRouteParam): Promise<IBestExactAmountInRouteObj> => {
+// Get Exact Amount In for UniV3
+export const getExactAmountInRoute = async (param: IGetExactAmountInRouteParam): Promise<IExactAmountInRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
 
     // Single hop
-    let exactAmountInArr: IBestExactAmountInRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+    let exactAmountInArr: IExactAmountInRouteObj[] =  await Promise.all(fees.map( async(fee) => {
         try {
             const amountOut = await quoter.quoteExactInputSingle.call({
                 tokenIn,
@@ -272,9 +272,9 @@ export const getBestExactAmountInRoute = async (param: IGetBestExactAmountInRout
         })
     }
 
-    let bestAmountOutObj: IBestExactAmountInRouteObj = exactAmountInArr.filter( v => v !== undefined).reduce( (a,b) => a.amountOut.minus(b.amountOut)? b: a);
+    exactAmountInArr = exactAmountInArr.filter( v => v !== undefined).sort( (a,b) => b.amountOut.minus(a.amountOut).toNumber());
 
-    return bestAmountOutObj;
+    return exactAmountInArr;
 }
 
 export const convertPathFromStringToArr = (path:string): any[] => {
@@ -309,7 +309,7 @@ export default {
     deploy,
     fromDeployResult,
     toSqrtX96,
-    getBestExactAmountInRoute,
-    getBestExactAmountOutRoute,
+    getExactAmountInRoute,
+    getExactAmountOutRoute,
     convertPathFromStringToArr
 };;
