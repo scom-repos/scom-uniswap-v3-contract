@@ -143,19 +143,18 @@ export function toSqrtX96(n: BigNumber): BigNumber {
 // SDK for front-end 
 const fees: number[] = [100, 500, 3000, 10000]; // default pool fee
 
-// Interface 
-interface IGetExactRouteParam {
+interface IGetExactRoutesParam {
     wallet:IWallet, 
     quoterAddress: string, 
     tokenIn: string, 
     tokenOut: string, 
     path?: string
 }
-export interface IGetExactAmountOutRouteParam extends IGetExactRouteParam{
+export interface IGetExactAmountOutRoutesParam extends IGetExactRoutesParam{
     exactAmountOut: BigNumber, 
 }
 
-export interface IGetExactAmountInRouteParam extends IGetExactRouteParam{
+export interface IGetExactAmountInRoutesParam extends IGetExactRoutesParam{
     exactAmountIn: BigNumber, 
 }
 
@@ -176,7 +175,7 @@ export interface IExactAmountInRouteObj extends IRouteObj {
 }
 
 // Get Exact Amount Out for UniV3
-export const getExactAmountOutRoute = async ( param: IGetExactAmountOutRouteParam): Promise<IExactAmountOutRouteObj[]> => {
+export const getExactAmountOutRoutes = async ( param: IGetExactAmountOutRoutesParam): Promise<IExactAmountOutRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
@@ -227,7 +226,7 @@ export const getExactAmountOutRoute = async ( param: IGetExactAmountOutRoutePara
 }
 
 // Get Exact Amount In for UniV3
-export const getExactAmountInRoute = async (param: IGetExactAmountInRouteParam): Promise<IExactAmountInRouteObj[]> => {
+export const getExactAmountInRoutes = async (param: IGetExactAmountInRoutesParam): Promise<IExactAmountInRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, path } = param;
     const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
@@ -277,7 +276,7 @@ export const getExactAmountInRoute = async (param: IGetExactAmountInRouteParam):
     return exactAmountInArr;
 }
 
-export const convertPathFromStringToArr = (path:string): any[] => {
+export const convertPathFromStringToArr = (path:string): (string | number)[] => {
 
     if (!path) return null;
 
@@ -309,7 +308,7 @@ export default {
     deploy,
     fromDeployResult,
     toSqrtX96,
-    getExactAmountInRoute,
-    getExactAmountOutRoute,
+    getExactAmountInRoutes,
+    getExactAmountOutRoutes,
     convertPathFromStringToArr
 };;

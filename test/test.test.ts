@@ -1,7 +1,7 @@
 import 'mocha';
 import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt, Web3} from "@ijstech/eth-wallet";
-import {CoreContract, IDeployedContracts, deploy, toSqrtX96, getExactAmountInRoute, getExactAmountOutRoute, convertPathFromStringToArr,
-    IGetExactAmountOutRouteParam, IGetExactAmountInRouteParam, IExactAmountOutRouteObj, IExactAmountInRouteObj} from "../src/index";
+import {CoreContract, IDeployedContracts, deploy, toSqrtX96, getExactAmountInRoutes, getExactAmountOutRoutes, convertPathFromStringToArr,
+    IGetExactAmountOutRoutesParam, IGetExactAmountInRoutesParam, IExactAmountOutRouteObj, IExactAmountInRouteObj} from "../src/index";
 import {Contract as Mock} from "../packages/mock-contracts";
 import { assertEqual, getProvider, expectToFail, print } from './helper';
 import assert from "assert";
@@ -534,7 +534,7 @@ describe('Uniswap V3', function() {
 
             let exactAmountIn = new BigNumber(1).shiftedBy(await weth.decimals)
             // Quote
-            let quoteParam: IGetExactAmountInRouteParam = {
+            let quoteParam: IGetExactAmountInRoutesParam = {
                 wallet, 
                 quoterAddress: uniswap.quoter.address, 
                 tokenIn: weth.address, 
@@ -542,8 +542,8 @@ describe('Uniswap V3', function() {
                 exactAmountIn
             }
             
-            let quote: IExactAmountInRouteObj = (await getExactAmountInRoute(quoteParam))[0];
-            let fee = convertPathFromStringToArr(quote.path)[1];
+            let quote: IExactAmountInRouteObj = (await getExactAmountInRoutes(quoteParam))[0];
+            let fee = Number(convertPathFromStringToArr(quote.path)[1]);
 
             // Swap
             let now = await wallet.getBlockTimestamp();
@@ -583,15 +583,15 @@ describe('Uniswap V3', function() {
 
             let exactAmountOut = new BigNumber(100).shiftedBy(await usdt.decimals)
             // Quote
-            let quoteParam: IGetExactAmountOutRouteParam = {
+            let quoteParam: IGetExactAmountOutRoutesParam = {
                 wallet, 
                 quoterAddress: uniswap.quoter.address, 
                 tokenIn: weth.address, 
                 tokenOut: usdt.address, 
                 exactAmountOut
             }
-            let quote: IExactAmountOutRouteObj = (await getExactAmountOutRoute(quoteParam))[0];
-            let fee = convertPathFromStringToArr(quote.path)[1];
+            let quote: IExactAmountOutRouteObj = (await getExactAmountOutRoutes(quoteParam))[0];
+            let fee = Number(convertPathFromStringToArr(quote.path)[1]);
 
             // Swap
             let now = await wallet.getBlockTimestamp();
@@ -639,7 +639,7 @@ describe('Uniswap V3', function() {
 
             let exactAmountOut = new BigNumber(100).shiftedBy(await uni.decimals)
             // Quote
-            let quoteParam: IGetExactAmountOutRouteParam = {
+            let quoteParam: IGetExactAmountOutRoutesParam = {
                 wallet, 
                 quoterAddress: uniswap.quoter.address, 
                 tokenIn: weth.address, 
@@ -647,7 +647,7 @@ describe('Uniswap V3', function() {
                 exactAmountOut,
                 path
             }
-            let quote: IExactAmountOutRouteObj = (await getExactAmountOutRoute(quoteParam))[0];
+            let quote: IExactAmountOutRouteObj = (await getExactAmountOutRoutes(quoteParam))[0];
 
             // Swap
             let now = await wallet.getBlockTimestamp();
@@ -693,7 +693,7 @@ describe('Uniswap V3', function() {
 
             let exactAmountIn = new BigNumber(1).shiftedBy(await weth.decimals)
             // Quote
-            let quoteParam: IGetExactAmountInRouteParam = {
+            let quoteParam: IGetExactAmountInRoutesParam = {
                 wallet, 
                 quoterAddress: uniswap.quoter.address, 
                 tokenIn: weth.address, 
@@ -701,7 +701,7 @@ describe('Uniswap V3', function() {
                 exactAmountIn,
                 path
             }
-            let quote: IExactAmountInRouteObj = (await getExactAmountInRoute(quoteParam))[0];
+            let quote: IExactAmountInRouteObj = (await getExactAmountInRoutes(quoteParam))[0];
 
             // Swap
             let now = await wallet.getBlockTimestamp();
