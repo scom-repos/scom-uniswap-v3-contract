@@ -1708,5 +1708,6 @@ declare module "v3-periphery/contracts/index.ts" {
 }
 /// <amd-module name="v3-periphery" />
 declare module "v3-periphery" {
-    export * as Contract from "v3-periphery/contracts/index.ts";
+    import * as Contracts from "v3-periphery/contracts/index.ts";
+    export { Contracts };
 }

@@ -1705,9 +1705,9 @@ define("v3-periphery/contracts/index.ts", ["require", "exports", "v3-periphery/c
     Object.defineProperty(exports, "UniswapInterfaceMulticall", { enumerable: true, get: function () { return UniswapInterfaceMulticall_1.UniswapInterfaceMulticall; } });
     Object.defineProperty(exports, "NFTDescriptor", { enumerable: true, get: function () { return NFTDescriptor_1.NFTDescriptor; } });
 });
-define("v3-periphery", ["require", "exports", "v3-periphery/contracts/index.ts"], function (require, exports, Contract) {
+define("v3-periphery", ["require", "exports", "v3-periphery/contracts/index.ts"], function (require, exports, Contracts) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Contract = void 0;
-    exports.Contract = Contract;
+    exports.Contracts = void 0;
+    exports.Contracts = Contracts;
 });

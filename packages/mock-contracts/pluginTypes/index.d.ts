@@ -263,9 +263,147 @@ declare module "mock-contracts/contracts/MockErc20.ts" {
         }
     }
 }
+/// <amd-module name="mock-contracts/contracts/Multicall2.json.ts" />
+declare module "mock-contracts/contracts/Multicall2.json.ts" {
+    const _default_1: {
+        abi: {
+            inputs: ({
+                internalType: string;
+                name: string;
+                type: string;
+                components?: undefined;
+            } | {
+                components: {
+                    internalType: string;
+                    name: string;
+                    type: string;
+                }[];
+                internalType: string;
+                name: string;
+                type: string;
+            })[];
+            name: string;
+            outputs: ({
+                internalType: string;
+                name: string;
+                type: string;
+                components?: undefined;
+            } | {
+                components: {
+                    internalType: string;
+                    name: string;
+                    type: string;
+                }[];
+                internalType: string;
+                name: string;
+                type: string;
+            })[];
+            stateMutability: string;
+            type: string;
+        }[];
+        bytecode: string;
+    };
+    export default _default_1;
+}
+/// <amd-module name="mock-contracts/contracts/Multicall2.ts" />
+declare module "mock-contracts/contracts/Multicall2.ts" {
+    import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
+    export interface ITryAggregateParams {
+        requireSuccess: boolean;
+        calls: {
+            target: string;
+            callData: string;
+        }[];
+    }
+    export interface ITryBlockAndAggregateParams {
+        requireSuccess: boolean;
+        calls: {
+            target: string;
+            callData: string;
+        }[];
+    }
+    export class Multicall2 extends _Contract {
+        static _abi: any;
+        constructor(wallet: IWallet, address?: string);
+        deploy(options?: TransactionOptions): Promise<string>;
+        aggregate: {
+            (calls: {
+                target: string;
+                callData: string;
+            }[], options?: TransactionOptions): Promise<TransactionReceipt>;
+            call: (calls: {
+                target: string;
+                callData: string;
+            }[], options?: TransactionOptions) => Promise<{
+                blockNumber: BigNumber;
+                returnData: string[];
+            }>;
+        };
+        blockAndAggregate: {
+            (calls: {
+                target: string;
+                callData: string;
+            }[], options?: TransactionOptions): Promise<TransactionReceipt>;
+            call: (calls: {
+                target: string;
+                callData: string;
+            }[], options?: TransactionOptions) => Promise<{
+                blockNumber: BigNumber;
+                blockHash: string;
+                returnData: {
+                    success: boolean;
+                    returnData: string;
+                }[];
+            }>;
+        };
+        getBlockHash: {
+            (blockNumber: number | BigNumber, options?: TransactionOptions): Promise<string>;
+        };
+        getBlockNumber: {
+            (options?: TransactionOptions): Promise<BigNumber>;
+        };
+        getCurrentBlockCoinbase: {
+            (options?: TransactionOptions): Promise<string>;
+        };
+        getCurrentBlockDifficulty: {
+            (options?: TransactionOptions): Promise<BigNumber>;
+        };
+        getCurrentBlockGasLimit: {
+            (options?: TransactionOptions): Promise<BigNumber>;
+        };
+        getCurrentBlockTimestamp: {
+            (options?: TransactionOptions): Promise<BigNumber>;
+        };
+        getEthBalance: {
+            (addr: string, options?: TransactionOptions): Promise<BigNumber>;
+        };
+        getLastBlockHash: {
+            (options?: TransactionOptions): Promise<string>;
+        };
+        tryAggregate: {
+            (params: ITryAggregateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
+            call: (params: ITryAggregateParams, options?: TransactionOptions) => Promise<{
+                success: boolean;
+                returnData: string;
+            }[]>;
+        };
+        tryBlockAndAggregate: {
+            (params: ITryBlockAndAggregateParams, options?: TransactionOptions): Promise<TransactionReceipt>;
+            call: (params: ITryBlockAndAggregateParams, options?: TransactionOptions) => Promise<{
+                blockNumber: BigNumber;
+                blockHash: string;
+                returnData: {
+                    success: boolean;
+                    returnData: string;
+                }[];
+            }>;
+        };
+        private assign;
+    }
+}
 /// <amd-module name="mock-contracts/contracts/WETH9.json.ts" />
 declare module "mock-contracts/contracts/WETH9.json.ts" {
-    const _default_1: {
+    const _default_2: {
         abi: ({
             constant: boolean;
             inputs: {
@@ -306,7 +444,7 @@ declare module "mock-contracts/contracts/WETH9.json.ts" {
         })[];
         bytecode: string;
     };
-    export default _default_1;
+    export default _default_2;
 }
 /// <amd-module name="mock-contracts/contracts/WETH9.ts" />
 declare module "mock-contracts/contracts/WETH9.ts" {
@@ -408,9 +546,11 @@ declare module "mock-contracts/contracts/WETH9.ts" {
 /// <amd-module name="mock-contracts/contracts/index.ts" />
 declare module "mock-contracts/contracts/index.ts" {
     export { MockErc20 } from "mock-contracts/contracts/MockErc20.ts";
+    export { Multicall2 } from "mock-contracts/contracts/Multicall2.ts";
     export { WETH9 } from "mock-contracts/contracts/WETH9.ts";
 }
 /// <amd-module name="mock-contracts" />
 declare module "mock-contracts" {
-    export * as Contract from "mock-contracts/contracts/index.ts";
+    import * as Contracts from "mock-contracts/contracts/index.ts";
+    export { Contracts };
 }

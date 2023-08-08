@@ -1102,9 +1102,9 @@ define("swap-router-contracts/contracts/index.ts", ["require", "exports", "swap-
     Object.defineProperty(exports, "QuoterV2", { enumerable: true, get: function () { return QuoterV2_1.QuoterV2; } });
     Object.defineProperty(exports, "TokenValidator", { enumerable: true, get: function () { return TokenValidator_1.TokenValidator; } });
 });
-define("swap-router-contracts", ["require", "exports", "swap-router-contracts/contracts/index.ts"], function (require, exports, Contract) {
+define("swap-router-contracts", ["require", "exports", "swap-router-contracts/contracts/index.ts"], function (require, exports, Contracts) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Contract = void 0;
-    exports.Contract = Contract;
+    exports.Contracts = void 0;
+    exports.Contracts = Contracts;
 });

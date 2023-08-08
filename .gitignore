@@ -1,2 +1,7 @@
 node_modules
+/hardhat/artifacts/
+/hardhat/cache/
+/hardhat/v3-core
+/hardhat/v3-periphery/
+/hardhat/swap-router-contracts/
 package-lock.json

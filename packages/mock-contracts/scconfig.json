@@ -6,7 +6,7 @@
         "sourceDir": "contracts",
         "outputDir": "src/contracts",
         "overrides": [{
-            "sources":["WETH9.sol"],
+            "sources": ["WETH9.sol"],
             "version": "0.4.26"
         }]
     }

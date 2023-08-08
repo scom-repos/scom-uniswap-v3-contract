@@ -1,1 +1,2 @@
-export * as Contract from "./contracts/index";
+import * as Contracts from "./contracts/index";
+export { Contracts };

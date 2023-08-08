@@ -373,6 +373,152 @@ define("mock-contracts/contracts/MockErc20.ts", ["require", "exports", "@ijstech
     MockErc20._abi = MockErc20_json_1.default.abi;
     exports.MockErc20 = MockErc20;
 });
+define("mock-contracts/contracts/Multicall2.json.ts", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    ///<amd-module name='mock-contracts/contracts/Multicall2.json.ts'/> 
+    exports.default = {
+        "abi": [
+            { "inputs": [{ "components": [{ "internalType": "address", "name": "target", "type": "address" }, { "internalType": "bytes", "name": "callData", "type": "bytes" }], "internalType": "struct Multicall2.Call[]", "name": "calls", "type": "tuple[]" }], "name": "aggregate", "outputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }, { "internalType": "bytes[]", "name": "returnData", "type": "bytes[]" }], "stateMutability": "nonpayable", "type": "function" },
+            { "inputs": [{ "components": [{ "internalType": "address", "name": "target", "type": "address" }, { "internalType": "bytes", "name": "callData", "type": "bytes" }], "internalType": "struct Multicall2.Call[]", "name": "calls", "type": "tuple[]" }], "name": "blockAndAggregate", "outputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }, { "internalType": "bytes32", "name": "blockHash", "type": "bytes32" }, { "components": [{ "internalType": "bool", "name": "success", "type": "bool" }, { "internalType": "bytes", "name": "returnData", "type": "bytes" }], "internalType": "struct Multicall2.Result[]", "name": "returnData", "type": "tuple[]" }], "stateMutability": "nonpayable", "type": "function" },
+            { "inputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }], "name": "getBlockHash", "outputs": [{ "internalType": "bytes32", "name": "blockHash", "type": "bytes32" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getBlockNumber", "outputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getCurrentBlockCoinbase", "outputs": [{ "internalType": "address", "name": "coinbase", "type": "address" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getCurrentBlockDifficulty", "outputs": [{ "internalType": "uint256", "name": "difficulty", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getCurrentBlockGasLimit", "outputs": [{ "internalType": "uint256", "name": "gaslimit", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getCurrentBlockTimestamp", "outputs": [{ "internalType": "uint256", "name": "timestamp", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [{ "internalType": "address", "name": "addr", "type": "address" }], "name": "getEthBalance", "outputs": [{ "internalType": "uint256", "name": "balance", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [], "name": "getLastBlockHash", "outputs": [{ "internalType": "bytes32", "name": "blockHash", "type": "bytes32" }], "stateMutability": "view", "type": "function" },
+            { "inputs": [{ "internalType": "bool", "name": "requireSuccess", "type": "bool" }, { "components": [{ "internalType": "address", "name": "target", "type": "address" }, { "internalType": "bytes", "name": "callData", "type": "bytes" }], "internalType": "struct Multicall2.Call[]", "name": "calls", "type": "tuple[]" }], "name": "tryAggregate", "outputs": [{ "components": [{ "internalType": "bool", "name": "success", "type": "bool" }, { "internalType": "bytes", "name": "returnData", "type": "bytes" }], "internalType": "struct Multicall2.Result[]", "name": "returnData", "type": "tuple[]" }], "stateMutability": "nonpayable", "type": "function" },
+            { "inputs": [{ "internalType": "bool", "name": "requireSuccess", "type": "bool" }, { "components": [{ "internalType": "address", "name": "target", "type": "address" }, { "internalType": "bytes", "name": "callData", "type": "bytes" }], "internalType": "struct Multicall2.Call[]", "name": "calls", "type": "tuple[]" }], "name": "tryBlockAndAggregate", "outputs": [{ "internalType": "uint256", "name": "blockNumber", "type": "uint256" }, { "internalType": "bytes32", "name": "blockHash", "type": "bytes32" }, { "components": [{ "internalType": "bool", "name": "success", "type": "bool" }, { "internalType": "bytes", "name": "returnData", "type": "bytes" }], "internalType": "struct Multicall2.Result[]", "name": "returnData", "type": "tuple[]" }], "stateMutability": "nonpayable", "type": "function" }
+        ],
+        "bytecode": "608060405234801561001057600080fd5b50610b4a806100206000396000f3fe608060405234801561001057600080fd5b50600436106100d45760003560e01c806372425d9d11610081578063bce38bd71161005b578063bce38bd714610181578063c3077fa9146101a1578063ee82ac5e146101b457600080fd5b806372425d9d1461016757806386d516e81461016d578063a8b0574e1461017357600080fd5b8063399542e9116100b2578063399542e91461011757806342cbb15c146101395780634d2301cc1461013f57600080fd5b80630f28c97d146100d9578063252dba42146100ee57806327e86d6e1461010f575b600080fd5b425b6040519081526020015b60405180910390f35b6101016100fc3660046107e3565b6101c6565b6040516100e592919061088e565b6100db610375565b61012a610125366004610916565b610388565b6040516100e5939291906109d3565b436100db565b6100db61014d3660046109fb565b73ffffffffffffffffffffffffffffffffffffffff163190565b446100db565b456100db565b6040514181526020016100e5565b61019461018f366004610916565b6103a0565b6040516100e59190610a1d565b61012a6101af3660046107e3565b61059d565b6100db6101c2366004610a30565b4090565b8051439060609067ffffffffffffffff8111156101e5576101e56105ba565b60405190808252806020026020018201604052801561021857816020015b60608152602001906001900390816102035790505b50905060005b835181101561036f5760008085838151811061023c5761023c610a49565b60200260200101516000015173ffffffffffffffffffffffffffffffffffffffff1686848151811061027057610270610a49565b6020026020010151602001516040516102899190610a78565b6000604051808303816000865af19150503d80600081146102c6576040519150601f19603f3d011682016040523d82523d6000602084013e6102cb565b606091505b50915091508161033c576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820181905260248201527f4d756c746963616c6c206167677265676174653a2063616c6c206661696c656460448201526064015b60405180910390fd5b8084848151811061034f5761034f610a49565b60200260200101819052505050808061036790610ac3565b91505061021e565b50915091565b6000610382600143610afb565b40905090565b438040606061039785856103a0565b90509250925092565b6060815167ffffffffffffffff8111156103bc576103bc6105ba565b60405190808252806020026020018201604052801561040257816020015b6040805180820190915260008152606060208201528152602001906001900390816103da5790505b50905060005b82518110156105965760008084838151811061042657610426610a49565b60200260200101516000015173ffffffffffffffffffffffffffffffffffffffff1685848151811061045a5761045a610a49565b6020026020010151602001516040516104739190610a78565b6000604051808303816000865af19150503d80600081146104b0576040519150601f19603f3d011682016040523d82523d6000602084013e6104b5565b606091505b5091509150851561054d578161054d576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152602160248201527f4d756c746963616c6c32206167677265676174653a2063616c6c206661696c6560448201527f64000000000000000000000000000000000000000000000000000000000000006064820152608401610333565b604051806040016040528083151581526020018281525084848151811061057657610576610a49565b60200260200101819052505050808061058e90610ac3565b915050610408565b5092915050565b60008060606105ad600185610388565b9196909550909350915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040805190810167ffffffffffffffff8111828210171561060c5761060c6105ba565b60405290565b604051601f82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe016810167ffffffffffffffff81118282101715610659576106596105ba565b604052919050565b803573ffffffffffffffffffffffffffffffffffffffff8116811461068557600080fd5b919050565b6000601f838184011261069c57600080fd5b8235602067ffffffffffffffff808311156106b9576106b96105ba565b8260051b6106c8838201610612565b93845286810183019383810190898611156106e257600080fd5b84890192505b858310156107d6578235848111156107005760008081fd5b890160407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0828d0381018213156107375760008081fd5b61073f6105e9565b61074a898501610661565b8152828401358881111561075e5760008081fd5b8085019450508d603f8501126107745760008081fd5b8884013588811115610788576107886105ba565b6107978a848e84011601610612565b92508083528e848287010111156107ae5760008081fd5b808486018b85013760009083018a0152808901919091528452505091840191908401906106e8565b9998505050505050505050565b6000602082840312156107f557600080fd5b813567ffffffffffffffff81111561080c57600080fd5b6108188482850161068a565b949350505050565b60005b8381101561083b578181015183820152602001610823565b50506000910152565b6000815180845261085c816020860160208601610820565b601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0169290920160200192915050565b600060408201848352602060408185015281855180845260608601915060608160051b870101935082870160005b82811015610908577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa08887030184526108f6868351610844565b955092840192908401906001016108bc565b509398975050505050505050565b6000806040838503121561092957600080fd5b8235801515811461093957600080fd5b9150602083013567ffffffffffffffff81111561095557600080fd5b6109618582860161068a565b9150509250929050565b6000815180845260208085019450848260051b860182860160005b858110156109c6578383038952815180511515845285015160408685018190526109b281860183610844565b9a87019a9450505090840190600101610986565b5090979650505050505050565b8381528260208201526060604082015260006109f2606083018461096b565b95945050505050565b600060208284031215610a0d57600080fd5b610a1682610661565b9392505050565b602081526000610a16602083018461096b565b600060208284031215610a4257600080fd5b5035919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008251610a8a818460208701610820565b9190910192915050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b60007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8203610af457610af4610a94565b5060010190565b81810381811115610b0e57610b0e610a94565b9291505056fea264697066735822122084e283d1bc82e7f41b4d0b16a74c7102c1f45183a63559e0a113ba6c016f19e264736f6c63430008120033"
+    };
+});
+define("mock-contracts/contracts/Multicall2.ts", ["require", "exports", "@ijstech/eth-contract", "mock-contracts/contracts/Multicall2.json.ts"], function (require, exports, eth_contract_2, Multicall2_json_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.Multicall2 = void 0;
+    class Multicall2 extends eth_contract_2.Contract {
+        constructor(wallet, address) {
+            super(wallet, address, Multicall2_json_1.default.abi, Multicall2_json_1.default.bytecode);
+            this.assign();
+        }
+        deploy(options) {
+            return this.__deploy([], options);
+        }
+        assign() {
+            let getBlockHash_call = async (blockNumber, options) => {
+                let result = await this.call('getBlockHash', [this.wallet.utils.toString(blockNumber)], options);
+                return result;
+            };
+            this.getBlockHash = getBlockHash_call;
+            let getBlockNumber_call = async (options) => {
+                let result = await this.call('getBlockNumber', [], options);
+                return new eth_contract_2.BigNumber(result);
+            };
+            this.getBlockNumber = getBlockNumber_call;
+            let getCurrentBlockCoinbase_call = async (options) => {
+                let result = await this.call('getCurrentBlockCoinbase', [], options);
+                return result;
+            };
+            this.getCurrentBlockCoinbase = getCurrentBlockCoinbase_call;
+            let getCurrentBlockDifficulty_call = async (options) => {
+                let result = await this.call('getCurrentBlockDifficulty', [], options);
+                return new eth_contract_2.BigNumber(result);
+            };
+            this.getCurrentBlockDifficulty = getCurrentBlockDifficulty_call;
+            let getCurrentBlockGasLimit_call = async (options) => {
+                let result = await this.call('getCurrentBlockGasLimit', [], options);
+                return new eth_contract_2.BigNumber(result);
+            };
+            this.getCurrentBlockGasLimit = getCurrentBlockGasLimit_call;
+            let getCurrentBlockTimestamp_call = async (options) => {
+                let result = await this.call('getCurrentBlockTimestamp', [], options);
+                return new eth_contract_2.BigNumber(result);
+            };
+            this.getCurrentBlockTimestamp = getCurrentBlockTimestamp_call;
+            let getEthBalance_call = async (addr, options) => {
+                let result = await this.call('getEthBalance', [addr], options);
+                return new eth_contract_2.BigNumber(result);
+            };
+            this.getEthBalance = getEthBalance_call;
+            let getLastBlockHash_call = async (options) => {
+                let result = await this.call('getLastBlockHash', [], options);
+                return result;
+            };
+            this.getLastBlockHash = getLastBlockHash_call;
+            let aggregate_send = async (calls, options) => {
+                let result = await this.send('aggregate', [calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))], options);
+                return result;
+            };
+            let aggregate_call = async (calls, options) => {
+                let result = await this.call('aggregate', [calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))], options);
+                return {
+                    blockNumber: new eth_contract_2.BigNumber(result.blockNumber),
+                    returnData: result.returnData
+                };
+            };
+            this.aggregate = Object.assign(aggregate_send, {
+                call: aggregate_call
+            });
+            let blockAndAggregate_send = async (calls, options) => {
+                let result = await this.send('blockAndAggregate', [calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))], options);
+                return result;
+            };
+            let blockAndAggregate_call = async (calls, options) => {
+                let result = await this.call('blockAndAggregate', [calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))], options);
+                return {
+                    blockNumber: new eth_contract_2.BigNumber(result.blockNumber),
+                    blockHash: result.blockHash,
+                    returnData: result.returnData.map(e => ({
+                        success: e.success,
+                        returnData: e.returnData
+                    }))
+                };
+            };
+            this.blockAndAggregate = Object.assign(blockAndAggregate_send, {
+                call: blockAndAggregate_call
+            });
+            let tryAggregateParams = (params) => [params.requireSuccess, params.calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))];
+            let tryAggregate_send = async (params, options) => {
+                let result = await this.send('tryAggregate', tryAggregateParams(params), options);
+                return result;
+            };
+            let tryAggregate_call = async (params, options) => {
+                let result = await this.call('tryAggregate', tryAggregateParams(params), options);
+                return (result.map(e => ({
+                    success: e.success,
+                    returnData: e.returnData
+                })));
+            };
+            this.tryAggregate = Object.assign(tryAggregate_send, {
+                call: tryAggregate_call
+            });
+            let tryBlockAndAggregateParams = (params) => [params.requireSuccess, params.calls.map(e => ([e.target, this.wallet.utils.stringToBytes(e.callData)]))];
+            let tryBlockAndAggregate_send = async (params, options) => {
+                let result = await this.send('tryBlockAndAggregate', tryBlockAndAggregateParams(params), options);
+                return result;
+            };
+            let tryBlockAndAggregate_call = async (params, options) => {
+                let result = await this.call('tryBlockAndAggregate', tryBlockAndAggregateParams(params), options);
+                return {
+                    blockNumber: new eth_contract_2.BigNumber(result.blockNumber),
+                    blockHash: result.blockHash,
+                    returnData: result.returnData.map(e => ({
+                        success: e.success,
+                        returnData: e.returnData
+                    }))
+                };
+            };
+            this.tryBlockAndAggregate = Object.assign(tryBlockAndAggregate_send, {
+                call: tryBlockAndAggregate_call
+            });
+        }
+    }
+    Multicall2._abi = Multicall2_json_1.default.abi;
+    exports.Multicall2 = Multicall2;
+});
 define("mock-contracts/contracts/WETH9.json.ts", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -396,14 +542,14 @@ define("mock-contracts/contracts/WETH9.json.ts", ["require", "exports"], functio
             { "anonymous": false, "inputs": [{ "indexed": true, "name": "dst", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Deposit", "type": "event" },
             { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Withdrawal", "type": "event" }
         ],
-        "bytecode": "60c0604052600d60808190527f577261707065642045746865720000000000000000000000000000000000000060a090815261003e91600091906100a3565b506040805180820190915260048082527f57455448000000000000000000000000000000000000000000000000000000006020909201918252610083916001916100a3565b506002805460ff1916601217905534801561009d57600080fd5b5061013e565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100e457805160ff1916838001178555610111565b82800160010185558215610111579182015b828111156101115782518255916020019190600101906100f6565b5061011d929150610121565b5090565b61013b91905b8082111561011d5760008155600101610127565b90565b6107688061014d6000396000f3006080604052600436106100ae5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306fdde0381146100b8578063095ea7b31461014257806318160ddd1461018757806323b872dd146101ae5780632e1a7d4d146101e5578063313ce567146101fd57806370a082311461022857806395d89b4114610256578063a9059cbb1461026b578063d0e30db0146100ae578063dd62ed3e1461029c575b6100b66102d0565b005b3480156100c457600080fd5b506100cd61031f565b6040805160208082528351818301528351919283929083019185019080838360005b838110156101075781810151838201526020016100ef565b50505050905090810190601f1680156101345780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34801561014e57600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff600435166024356103cb565b604080519115158252519081900360200190f35b34801561019357600080fd5b5061019c61043e565b60408051918252519081900360200190f35b3480156101ba57600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff60043581169060243516604435610443565b3480156101f157600080fd5b506100b66004356105e3565b34801561020957600080fd5b50610212610678565b6040805160ff9092168252519081900360200190f35b34801561023457600080fd5b5061019c73ffffffffffffffffffffffffffffffffffffffff60043516610681565b34801561026257600080fd5b506100cd610693565b34801561027757600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff6004351660243561070b565b3480156102a857600080fd5b5061019c73ffffffffffffffffffffffffffffffffffffffff6004358116906024351661071f565b33600081815260036020908152604091829020805434908101909155825190815291517fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c9281900390910190a2565b6000805460408051602060026001851615610100027fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0190941693909304601f810184900484028201840190925281815292918301828280156103c35780601f10610398576101008083540402835291602001916103c3565b820191906000526020600020905b8154815290600101906020018083116103a657829003601f168201915b505050505081565b33600081815260046020908152604080832073ffffffffffffffffffffffffffffffffffffffff8716808552908352818420869055815186815291519394909390927f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925928290030190a350600192915050565b303190565b73ffffffffffffffffffffffffffffffffffffffff831660009081526003602052604081205482111561047557600080fd5b73ffffffffffffffffffffffffffffffffffffffff841633148015906104eb575073ffffffffffffffffffffffffffffffffffffffff841660009081526004602090815260408083203384529091529020547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff14155b156105655773ffffffffffffffffffffffffffffffffffffffff8416600090815260046020908152604080832033845290915290205482111561052d57600080fd5b73ffffffffffffffffffffffffffffffffffffffff841660009081526004602090815260408083203384529091529020805483900390555b73ffffffffffffffffffffffffffffffffffffffff808516600081815260036020908152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a35060019392505050565b336000908152600360205260409020548111156105ff57600080fd5b33600081815260036020526040808220805485900390555183156108fc0291849190818181858888f1935050505015801561063e573d6000803e3d6000fd5b5060408051828152905133917f7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65919081900360200190a250565b60025460ff1681565b60036020526000908152604090205481565b60018054604080516020600284861615610100027fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0190941693909304601f810184900484028201840190925281815292918301828280156103c35780601f10610398576101008083540402835291602001916103c3565b6000610718338484610443565b9392505050565b6004602090815260009283526040808420909152908252902054815600a165627a7a723058208c02cba27f26a6eb39520b2d0c1fd7eaa990df3d0320424c55aaca840c1b28750029"
+        "bytecode": "60c0604052600d60808190527f577261707065642045746865720000000000000000000000000000000000000060a090815261003e91600091906100a3565b506040805180820190915260048082527f57455448000000000000000000000000000000000000000000000000000000006020909201918252610083916001916100a3565b506002805460ff1916601217905534801561009d57600080fd5b5061013e565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106100e457805160ff1916838001178555610111565b82800160010185558215610111579182015b828111156101115782518255916020019190600101906100f6565b5061011d929150610121565b5090565b61013b91905b8082111561011d5760008155600101610127565b90565b6107688061014d6000396000f3006080604052600436106100ae5763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166306fdde0381146100b8578063095ea7b31461014257806318160ddd1461018757806323b872dd146101ae5780632e1a7d4d146101e5578063313ce567146101fd57806370a082311461022857806395d89b4114610256578063a9059cbb1461026b578063d0e30db0146100ae578063dd62ed3e1461029c575b6100b66102d0565b005b3480156100c457600080fd5b506100cd61031f565b6040805160208082528351818301528351919283929083019185019080838360005b838110156101075781810151838201526020016100ef565b50505050905090810190601f1680156101345780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b34801561014e57600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff600435166024356103cb565b604080519115158252519081900360200190f35b34801561019357600080fd5b5061019c61043e565b60408051918252519081900360200190f35b3480156101ba57600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff60043581169060243516604435610443565b3480156101f157600080fd5b506100b66004356105e3565b34801561020957600080fd5b50610212610678565b6040805160ff9092168252519081900360200190f35b34801561023457600080fd5b5061019c73ffffffffffffffffffffffffffffffffffffffff60043516610681565b34801561026257600080fd5b506100cd610693565b34801561027757600080fd5b5061017373ffffffffffffffffffffffffffffffffffffffff6004351660243561070b565b3480156102a857600080fd5b5061019c73ffffffffffffffffffffffffffffffffffffffff6004358116906024351661071f565b33600081815260036020908152604091829020805434908101909155825190815291517fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c9281900390910190a2565b6000805460408051602060026001851615610100027fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0190941693909304601f810184900484028201840190925281815292918301828280156103c35780601f10610398576101008083540402835291602001916103c3565b820191906000526020600020905b8154815290600101906020018083116103a657829003601f168201915b505050505081565b33600081815260046020908152604080832073ffffffffffffffffffffffffffffffffffffffff8716808552908352818420869055815186815291519394909390927f8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925928290030190a350600192915050565b303190565b73ffffffffffffffffffffffffffffffffffffffff831660009081526003602052604081205482111561047557600080fd5b73ffffffffffffffffffffffffffffffffffffffff841633148015906104eb575073ffffffffffffffffffffffffffffffffffffffff841660009081526004602090815260408083203384529091529020547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff14155b156105655773ffffffffffffffffffffffffffffffffffffffff8416600090815260046020908152604080832033845290915290205482111561052d57600080fd5b73ffffffffffffffffffffffffffffffffffffffff841660009081526004602090815260408083203384529091529020805483900390555b73ffffffffffffffffffffffffffffffffffffffff808516600081815260036020908152604080832080548890039055938716808352918490208054870190558351868152935191937fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef929081900390910190a35060019392505050565b336000908152600360205260409020548111156105ff57600080fd5b33600081815260036020526040808220805485900390555183156108fc0291849190818181858888f1935050505015801561063e573d6000803e3d6000fd5b5060408051828152905133917f7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65919081900360200190a250565b60025460ff1681565b60036020526000908152604090205481565b60018054604080516020600284861615610100027fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0190941693909304601f810184900484028201840190925281815292918301828280156103c35780601f10610398576101008083540402835291602001916103c3565b6000610718338484610443565b9392505050565b6004602090815260009283526040808420909152908252902054815600a165627a7a7230582028e8926331b6fbc962189e19ee2a6efac438a3c6bc58098e6793d702eaef86460029"
     };
 });
-define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth-contract", "mock-contracts/contracts/WETH9.json.ts"], function (require, exports, eth_contract_2, WETH9_json_1) {
+define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth-contract", "mock-contracts/contracts/WETH9.json.ts"], function (require, exports, eth_contract_3, WETH9_json_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.WETH9 = void 0;
-    class WETH9 extends eth_contract_2.Contract {
+    class WETH9 extends eth_contract_3.Contract {
         constructor(wallet, address) {
             super(wallet, address, WETH9_json_1.default.abi, WETH9_json_1.default.bytecode);
             this.assign();
@@ -419,7 +565,7 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             return {
                 src: result.src,
                 guy: result.guy,
-                wad: new eth_contract_2.BigNumber(result.wad),
+                wad: new eth_contract_3.BigNumber(result.wad),
                 _event: event
             };
         }
@@ -431,7 +577,7 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             return {
                 src: result.src,
                 dst: result.dst,
-                wad: new eth_contract_2.BigNumber(result.wad),
+                wad: new eth_contract_3.BigNumber(result.wad),
                 _event: event
             };
         }
@@ -442,7 +588,7 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             let result = event.data;
             return {
                 dst: result.dst,
-                wad: new eth_contract_2.BigNumber(result.wad),
+                wad: new eth_contract_3.BigNumber(result.wad),
                 _event: event
             };
         }
@@ -453,7 +599,7 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             let result = event.data;
             return {
                 src: result.src,
-                wad: new eth_contract_2.BigNumber(result.wad),
+                wad: new eth_contract_3.BigNumber(result.wad),
                 _event: event
             };
         }
@@ -465,17 +611,17 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             this.name = name_call;
             let totalSupply_call = async (options) => {
                 let result = await this.call('totalSupply', [], options);
-                return new eth_contract_2.BigNumber(result);
+                return new eth_contract_3.BigNumber(result);
             };
             this.totalSupply = totalSupply_call;
             let decimals_call = async (options) => {
                 let result = await this.call('decimals', [], options);
-                return new eth_contract_2.BigNumber(result);
+                return new eth_contract_3.BigNumber(result);
             };
             this.decimals = decimals_call;
             let balanceOf_call = async (param1, options) => {
                 let result = await this.call('balanceOf', [param1], options);
-                return new eth_contract_2.BigNumber(result);
+                return new eth_contract_3.BigNumber(result);
             };
             this.balanceOf = balanceOf_call;
             let symbol_call = async (options) => {
@@ -486,7 +632,7 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
             let allowanceParams = (params) => [params.param1, params.param2];
             let allowance_call = async (params, options) => {
                 let result = await this.call('allowance', allowanceParams(params), options);
-                return new eth_contract_2.BigNumber(result);
+                return new eth_contract_3.BigNumber(result);
             };
             this.allowance = allowance_call;
             let approveParams = (params) => [params.guy, this.wallet.utils.toString(params.wad)];
@@ -552,16 +698,17 @@ define("mock-contracts/contracts/WETH9.ts", ["require", "exports", "@ijstech/eth
     WETH9._abi = WETH9_json_1.default.abi;
     exports.WETH9 = WETH9;
 });
-define("mock-contracts/contracts/index.ts", ["require", "exports", "mock-contracts/contracts/MockErc20.ts", "mock-contracts/contracts/WETH9.ts"], function (require, exports, MockErc20_1, WETH9_1) {
+define("mock-contracts/contracts/index.ts", ["require", "exports", "mock-contracts/contracts/MockErc20.ts", "mock-contracts/contracts/Multicall2.ts", "mock-contracts/contracts/WETH9.ts"], function (require, exports, MockErc20_1, Multicall2_1, WETH9_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.WETH9 = exports.MockErc20 = void 0;
+    exports.WETH9 = exports.Multicall2 = exports.MockErc20 = void 0;
     Object.defineProperty(exports, "MockErc20", { enumerable: true, get: function () { return MockErc20_1.MockErc20; } });
+    Object.defineProperty(exports, "Multicall2", { enumerable: true, get: function () { return Multicall2_1.Multicall2; } });
     Object.defineProperty(exports, "WETH9", { enumerable: true, get: function () { return WETH9_1.WETH9; } });
 });
-define("mock-contracts", ["require", "exports", "mock-contracts/contracts/index.ts"], function (require, exports, Contract) {
+define("mock-contracts", ["require", "exports", "mock-contracts/contracts/index.ts"], function (require, exports, Contracts) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Contract = void 0;
-    exports.Contract = Contract;
+    exports.Contracts = void 0;
+    exports.Contracts = Contracts;
 });

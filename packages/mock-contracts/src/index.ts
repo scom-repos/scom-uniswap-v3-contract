@@ -1,2 +1,3 @@
-import {IWallet, BigNumber} from '@ijstech/eth-wallet';
-export * as Contract from "./contracts/index";
+import {} from '@ijstech/eth-wallet';
+import * as Contracts from './contracts/index';
+export {Contracts};

@@ -455,5 +455,6 @@ declare module "v3-core/contracts/index.ts" {
 }
 /// <amd-module name="v3-core" />
 declare module "v3-core" {
-    export * as Contract from "v3-core/contracts/index.ts";
+    import * as Contracts from "v3-core/contracts/index.ts";
+    export { Contracts };
 }

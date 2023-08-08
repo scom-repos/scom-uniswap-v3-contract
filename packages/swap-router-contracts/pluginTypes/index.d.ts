@@ -978,5 +978,6 @@ declare module "swap-router-contracts/contracts/index.ts" {
 }
 /// <amd-module name="swap-router-contracts" />
 declare module "swap-router-contracts" {
-    export * as Contract from "swap-router-contracts/contracts/index.ts";
+    import * as Contracts from "swap-router-contracts/contracts/index.ts";
+    export { Contracts };
 }

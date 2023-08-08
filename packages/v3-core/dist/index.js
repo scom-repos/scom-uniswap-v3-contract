@@ -576,9 +576,9 @@ define("v3-core/contracts/index.ts", ["require", "exports", "v3-core/contracts/U
     Object.defineProperty(exports, "UniswapV3Factory", { enumerable: true, get: function () { return UniswapV3Factory_1.UniswapV3Factory; } });
     Object.defineProperty(exports, "UniswapV3Pool", { enumerable: true, get: function () { return UniswapV3Pool_1.UniswapV3Pool; } });
 });
-define("v3-core", ["require", "exports", "v3-core/contracts/index.ts"], function (require, exports, Contract) {
+define("v3-core", ["require", "exports", "v3-core/contracts/index.ts"], function (require, exports, Contracts) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Contract = void 0;
-    exports.Contract = Contract;
+    exports.Contracts = void 0;
+    exports.Contracts = Contracts;
 });
