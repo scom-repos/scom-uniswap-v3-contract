@@ -1,5 +1,5 @@
-/// <amd-module name="@scom/demo-contract" />
-declare module "@scom/demo-contract" {
+/// <amd-module name="@scom/scom-uniswap-v3-contract" />
+declare module "@scom/scom-uniswap-v3-contract" {
     import { Contracts as CoreContracts } from 'v3-core';
     import { Contracts as PeripheryContracts } from 'v3-periphery';
     import { Contracts as SwapRouterContracts } from 'swap-router-contracts';

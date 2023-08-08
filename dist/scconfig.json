@@ -1,0 +1,12 @@
+{
+    "name": "@scom/scom-uniswap-v3-contract",
+    "type": "contract",
+    "version": "0.1.0",
+    "dependencies": [
+        "v3-core",
+        "v3-periphery",
+        "swap-router-contracts",
+        "@ijstech/eth-wallet",
+        "@ijstech/eth-contract"
+    ]
+}

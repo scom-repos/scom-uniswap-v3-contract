@@ -1,4 +1,4 @@
-define("@scom/demo-contract", ["require", "exports", "v3-core", "v3-periphery", "swap-router-contracts", "v3-core", "v3-periphery", "swap-router-contracts", "@ijstech/eth-wallet"], function (require, exports, v3_core_1, v3_periphery_1, swap_router_contracts_1, v3_core_2, v3_periphery_2, swap_router_contracts_2, eth_wallet_1) {
+define("@scom/scom-uniswap-v3-contract", ["require", "exports", "v3-core", "v3-periphery", "swap-router-contracts", "v3-core", "v3-periphery", "swap-router-contracts", "@ijstech/eth-wallet"], function (require, exports, v3_core_1, v3_periphery_1, swap_router_contracts_1, v3_core_2, v3_periphery_2, swap_router_contracts_2, eth_wallet_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.convertPathFromStringToArr = exports.getExactAmountInRoutes = exports.getExactAmountOutRoutes = exports.toSqrtX96 = exports.fromDeployResult = exports.deploy = exports.DefaultDeployOptions = exports.SwapRouterContracts = exports.PeripheryContracts = exports.CoreContracts = void 0;
