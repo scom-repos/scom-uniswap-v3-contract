@@ -1,8 +1,8 @@
 import 'mocha';
 import {Utils, Wallet, BigNumber, Erc20, TransactionReceipt, Web3} from "@ijstech/eth-wallet";
-import {CoreContract, IDeployedContracts, deploy, toSqrtX96, getExactAmountInRoutes, getExactAmountOutRoutes, convertPathFromStringToArr,
+import {CoreContracts, IDeployedContracts, deploy, toSqrtX96, getExactAmountInRoutes, getExactAmountOutRoutes, convertPathFromStringToArr,
     IGetExactAmountOutRoutesParam, IGetExactAmountInRoutesParam, IExactAmountOutRouteObj, IExactAmountInRouteObj} from "../src/index";
-import {Contract as Mock} from "../packages/mock-contracts";
+import {Contracts as Mock} from "../packages/mock-contracts";
 import { assertEqual, getProvider, expectToFail, print } from './helper';
 import assert from "assert";
 
@@ -105,7 +105,7 @@ describe('Uniswap V3', function() {
     // if (false)
     describe('token-token', async function() {
     let pairFee = Utils.toDecimals("0.01", 6); // 0.010000
-    let pool: CoreContract.UniswapV3Pool;
+    let pool: CoreContracts.UniswapV3Pool;
     it('add liqudity', async function() {
         let USDT_TO_ADD = 1000000;
         let UNI_TO_ADD = USDT_TO_ADD / UNI_PRICE_IN_USD;
@@ -136,7 +136,7 @@ describe('Uniswap V3', function() {
             {param1: usdt.address, param2: uni.address, param3: pairFee}
         );
         console.log("pool:", poolAddress);
-        pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
+        pool = new CoreContracts.UniswapV3Pool(wallet, poolAddress);
         // print(await pool.slot0());
         /*
         {
@@ -279,7 +279,7 @@ describe('Uniswap V3', function() {
     // if (false)
     describe('eth-token', async function() {
     let pairFee = Utils.toDecimals("0.01", 6); // 0.010000
-    let pool: CoreContract.UniswapV3Pool;
+    let pool: CoreContracts.UniswapV3Pool;
     it('add liqudity', async function() {
         let USDT_TO_ADD = 1000000;
         let ETH_TO_ADD = USDT_TO_ADD / ETH_PRICE_IN_USD;
@@ -312,7 +312,7 @@ describe('Uniswap V3', function() {
             {param1: usdt.address, param2: weth.address, param3: pairFee}
         );
         console.log("pool:", poolAddress);
-        pool = new CoreContract.UniswapV3Pool(wallet, poolAddress);
+        pool = new CoreContracts.UniswapV3Pool(wallet, poolAddress);
         // print(await pool.slot0());
         /*
         {

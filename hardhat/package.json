@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "postinstall": "ln -s ../packages/mock-contracts mock-contracts && git clone -b v1.0.0 https://github.com/Uniswap/v3-periphery && git clone -b v1.0.0 https://github.com/Uniswap/v3-core && git clone -b v1.0.0 https://github.com/Uniswap/swap-router-contracts",
+        "postinstall": "git clone -b v1.0.0 https://github.com/Uniswap/v3-periphery && git clone -b v1.0.0 https://github.com/Uniswap/v3-core && git clone -b v1.0.0 https://github.com/Uniswap/swap-router-contracts",
         "compile": "npx hardhat compile",
         "compile:v3-core": "npx hardhat --config ./hardhat-v3-core.config.ts compile",
         "compile:v3-periphery": "npx hardhat --config ./hardhat-v3-periphery.config.ts compile",

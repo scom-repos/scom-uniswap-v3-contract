@@ -1,13 +1,14 @@
-import {Contract as CoreContract} from 'v3-core';
-import {Contract as PeripheryContract} from 'v3-periphery';
-import {Contract as SwapRouterContract} from 'swap-router-contracts';
+import {Contracts as CoreContracts} from 'v3-core';
+import {Contracts as PeripheryContracts} from 'v3-periphery';
+import {Contracts as SwapRouterContracts} from 'swap-router-contracts';
 
-export {Contract as CoreContract} from 'v3-core';
-export {Contract as PeripheryContract} from 'v3-periphery';
-export {Contract as SwapRouterContract} from 'swap-router-contracts';
+export {Contracts as CoreContracts} from 'v3-core';
+export {Contracts as PeripheryContracts} from 'v3-periphery';
+export {Contracts as SwapRouterContracts} from 'swap-router-contracts';
 
 import {IWallet, Wallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
-import { arrayBuffer } from 'stream/consumers';
+import {} from '@ijstech/eth-contract';
+// import { arrayBuffer } from 'stream/consumers';
 
 
 /*
@@ -45,15 +46,15 @@ export interface IDeployResult {
     router02: string;
 };
 export interface IDeployedContracts {
-    factory: CoreContract.UniswapV3Factory;
-    tickLens: PeripheryContract.TickLens
-    quoter: PeripheryContract.Quoter;
-    router: PeripheryContract.SwapRouter;
-    nftDesc: PeripheryContract.NFTDescriptor;
-    nftPosDesc: PeripheryContract.NonfungibleTokenPositionDescriptor;
-    nftPosMngr: PeripheryContract.NonfungiblePositionManager;
-    quoterV2: PeripheryContract.QuoterV2;
-    router02: SwapRouterContract.SwapRouter02;
+    factory: CoreContracts.UniswapV3Factory;
+    tickLens: PeripheryContracts.TickLens
+    quoter: PeripheryContracts.Quoter;
+    router: PeripheryContracts.SwapRouter;
+    nftDesc: PeripheryContracts.NFTDescriptor;
+    nftPosDesc: PeripheryContracts.NonfungibleTokenPositionDescriptor;
+    nftPosMngr: PeripheryContracts.NonfungiblePositionManager;
+    quoterV2: PeripheryContracts.QuoterV2;
+    router02: SwapRouterContracts.SwapRouter02;
 }
 var progressHandler: any;
 export var DefaultDeployOptions: IDeployOptions = {
@@ -61,32 +62,32 @@ export var DefaultDeployOptions: IDeployOptions = {
 };
 export async function deploy(wallet: IWallet, options: IDeployOptions, onProgress:(msg:string)=>void): Promise<IDeployedContracts>{
     onProgress('1/9 Deploy UniswapV3Factory contract');
-    let factory = new CoreContract.UniswapV3Factory(wallet);
+    let factory = new CoreContracts.UniswapV3Factory(wallet);
     await factory.deploy();
     onProgress(`factory: ${factory.address}`);
 
     onProgress('2/9 Deploy TickLens contract');
-    let tickLens = new PeripheryContract.TickLens(wallet);
+    let tickLens = new PeripheryContracts.TickLens(wallet);
     await tickLens.deploy();
     onProgress(`tickLens: ${tickLens.address}`);
 
     onProgress('3/9 Deploy Quoter contract');
-    let quoter = new PeripheryContract.Quoter(wallet);
+    let quoter = new PeripheryContracts.Quoter(wallet);
     await quoter.deploy({ factory: factory.address, WETH9: options.weth});
     onProgress(`quoter: ${quoter.address}`);
 
     onProgress('4/9 Deploy SwapRouter contract');
-    let router = new PeripheryContract.SwapRouter(wallet);
+    let router = new PeripheryContracts.SwapRouter(wallet);
     await router.deploy({ factory: factory.address, WETH9: options.weth});
     onProgress(`router: ${router.address}`);
 
     onProgress('5/9 Deploy NFTDescriptor contract');
-    let nftDesc = new PeripheryContract.NFTDescriptor(wallet);
+    let nftDesc = new PeripheryContracts.NFTDescriptor(wallet);
     await nftDesc.deploy();
     onProgress(`nftDesc: ${nftDesc.address}`);
 
     onProgress('6/9 Deploy NonfungibleTokenPositionDescriptor contract');
-    let nftPosDesc = new PeripheryContract.NonfungibleTokenPositionDescriptor(wallet);
+    let nftPosDesc = new PeripheryContracts.NonfungibleTokenPositionDescriptor(wallet);
     let label = await (new Erc20(wallet, options.weth).symbol);
     label = label.substring(0,31);
     label = Utils.stringToBytes32(label) as string;
@@ -96,17 +97,17 @@ export async function deploy(wallet: IWallet, options: IDeployOptions, onProgres
     onProgress(`nftPosDesc: ${nftPosDesc.address}`);
 
     onProgress('7/9 Deploy NonfungiblePositionManager contract');
-    let nftPosMngr = new PeripheryContract.NonfungiblePositionManager(wallet);
+    let nftPosMngr = new PeripheryContracts.NonfungiblePositionManager(wallet);
     await nftPosMngr.deploy({ factory: factory.address, WETH9: options.weth, tokenDescriptor: nftDesc.address});
     onProgress(`nftPosMngr: ${nftPosMngr.address}`);
 
     onProgress('8/9 Deploy QuoterV2 contract');
-    let quoterV2 = new PeripheryContract.QuoterV2(wallet);
+    let quoterV2 = new PeripheryContracts.QuoterV2(wallet);
     await quoterV2.deploy({ factory: factory.address, WETH9: options.weth });
     onProgress(`quoter2: ${quoterV2.address}`);
 
     onProgress('9/9 Deploy SwapRouter02 contract');
-    let router02 = new SwapRouterContract.SwapRouter02(wallet);
+    let router02 = new SwapRouterContracts.SwapRouter02(wallet);
     await router02.deploy({ factoryV2: Utils.nullAddress, factoryV3: factory.address, positionManager: nftPosMngr.address, WETH9: options.weth});
     onProgress(`router2: ${router02.address}`);
 
@@ -124,15 +125,15 @@ export async function deploy(wallet: IWallet, options: IDeployOptions, onProgres
 };
 export function fromDeployResult(wallet: IWallet, result: IDeployResult): IDeployedContracts {
     return {
-        factory: new CoreContract.UniswapV3Factory(wallet, result.factory),
-        tickLens: new PeripheryContract.TickLens(wallet, result.tickLens),
-        quoter: new PeripheryContract.Quoter(wallet, result.quoter),
-        router: new PeripheryContract.SwapRouter(wallet, result.router),
-        nftDesc: new PeripheryContract.NFTDescriptor(wallet, result.nftDesc),
-        nftPosDesc: new PeripheryContract.NonfungibleTokenPositionDescriptor(wallet, result.nftPosDesc),
-        nftPosMngr: new PeripheryContract.NonfungiblePositionManager(wallet, result.nftPosMngr),
-        quoterV2: new PeripheryContract.QuoterV2(wallet, result.quoterV2),
-        router02: new SwapRouterContract.SwapRouter02(wallet, result.router02)
+        factory: new CoreContracts.UniswapV3Factory(wallet, result.factory),
+        tickLens: new PeripheryContracts.TickLens(wallet, result.tickLens),
+        quoter: new PeripheryContracts.Quoter(wallet, result.quoter),
+        router: new PeripheryContracts.SwapRouter(wallet, result.router),
+        nftDesc: new PeripheryContracts.NFTDescriptor(wallet, result.nftDesc),
+        nftPosDesc: new PeripheryContracts.NonfungibleTokenPositionDescriptor(wallet, result.nftPosDesc),
+        nftPosMngr: new PeripheryContracts.NonfungiblePositionManager(wallet, result.nftPosMngr),
+        quoterV2: new PeripheryContracts.QuoterV2(wallet, result.quoterV2),
+        router02: new SwapRouterContracts.SwapRouter02(wallet, result.router02)
     }
 }
 const X96 = new BigNumber(2).pow(96);
@@ -178,7 +179,7 @@ export interface IExactAmountInRouteObj extends IRouteObj {
 export const getExactAmountOutRoutes = async ( param: IGetExactAmountOutRoutesParam): Promise<IExactAmountOutRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, path } = param;
-    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+    const quoter = new PeripheryContracts.Quoter(wallet, quoterAddress);
 
     // Single hop
     let exactAmountOutArr: IExactAmountOutRouteObj[] =  await Promise.all(fees.map( async(fee) => {
@@ -229,7 +230,7 @@ export const getExactAmountOutRoutes = async ( param: IGetExactAmountOutRoutesPa
 export const getExactAmountInRoutes = async (param: IGetExactAmountInRoutesParam): Promise<IExactAmountInRouteObj[]> => {
 
     const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, path } = param;
-    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+    const quoter = new PeripheryContracts.Quoter(wallet, quoterAddress);
 
     // Single hop
     let exactAmountInArr: IExactAmountInRouteObj[] =  await Promise.all(fees.map( async(fee) => {
@@ -301,9 +302,9 @@ export const convertPathFromStringToArr = (path:string): (string | number)[] => 
 
 
 export default {
-    CoreContract,
-    PeripheryContract,
-    SwapRouterContract,
+    CoreContracts,
+    PeripheryContracts,
+    SwapRouterContracts,
     DefaultDeployOptions,
     deploy,
     fromDeployResult,
