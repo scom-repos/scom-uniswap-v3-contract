@@ -6,8 +6,8 @@ export {Contract as CoreContract} from 'v3-core';
 export {Contract as PeripheryContract} from 'v3-periphery';
 export {Contract as SwapRouterContract} from 'swap-router-contracts';
 
-import {IWallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
-import {Contract} from '@ijstech/eth-contract';
+import {IWallet, Wallet, BigNumber, Utils, Erc20} from '@ijstech/eth-wallet';
+import { arrayBuffer } from 'stream/consumers';
 
 
 /*
@@ -139,6 +139,167 @@ const X96 = new BigNumber(2).pow(96);
 export function toSqrtX96(n: BigNumber): BigNumber {
     return n.sqrt().times(X96).dp(0, BigNumber.ROUND_FLOOR);
 }
+
+// SDK for front-end 
+const fees: number[] = [100, 500, 3000, 10000]; // default pool fee
+
+interface IGetExactRoutesParam {
+    wallet:IWallet, 
+    quoterAddress: string, 
+    tokenIn: string, 
+    tokenOut: string, 
+    path?: string
+}
+export interface IGetExactAmountOutRoutesParam extends IGetExactRoutesParam{
+    exactAmountOut: BigNumber, 
+}
+
+export interface IGetExactAmountInRoutesParam extends IGetExactRoutesParam{
+    exactAmountIn: BigNumber, 
+}
+
+interface IRouteObj {
+    tokenIn: string,
+    tokenOut: string,
+    path: string,
+}
+
+export interface IExactAmountOutRouteObj extends IRouteObj {
+    amountIn: BigNumber,
+    exactAmountOut: BigNumber
+}
+
+export interface IExactAmountInRouteObj extends IRouteObj {
+    amountOut: BigNumber,
+    exactAmountIn: BigNumber
+}
+
+// Get Exact Amount Out for UniV3
+export const getExactAmountOutRoutes = async ( param: IGetExactAmountOutRoutesParam): Promise<IExactAmountOutRouteObj[]> => {
+
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountOut, path } = param;
+    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+
+    // Single hop
+    let exactAmountOutArr: IExactAmountOutRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        try {
+            const amountIn = await quoter.quoteExactOutputSingle.call({
+                tokenIn,
+                tokenOut,
+                fee,
+                amountOut: exactAmountOut,
+                sqrtPriceLimitX96: 0
+            })
+
+            let path = "0x" +
+                tokenIn.toLowerCase().replace("0x", "") +
+                Utils.numberToBytes32(fee).substring(58, 64) +
+                tokenOut.toLowerCase().replace("0x", "")
+
+            return {
+                tokenIn,
+                tokenOut,
+                path,
+                amountIn,
+                exactAmountOut
+            };
+        } catch (err) {
+            // pair not exists
+        }
+    }))
+
+    // Multi hop
+    if (path) {
+        const amountIn = await quoter.quoteExactOutput.call({path, amountOut: exactAmountOut});
+        exactAmountOutArr.push({
+            tokenIn,
+            tokenOut,
+            amountIn,
+            path,
+            exactAmountOut
+        })
+    }
+
+    exactAmountOutArr = exactAmountOutArr.filter( v => v !== undefined).sort( (a,b) => a.amountIn.minus(b.amountIn).toNumber());
+
+    return exactAmountOutArr;
+}
+
+// Get Exact Amount In for UniV3
+export const getExactAmountInRoutes = async (param: IGetExactAmountInRoutesParam): Promise<IExactAmountInRouteObj[]> => {
+
+    const {wallet, quoterAddress, tokenIn, tokenOut, exactAmountIn, path } = param;
+    const quoter = new PeripheryContract.Quoter(wallet, quoterAddress);
+
+    // Single hop
+    let exactAmountInArr: IExactAmountInRouteObj[] =  await Promise.all(fees.map( async(fee) => {
+        try {
+            const amountOut = await quoter.quoteExactInputSingle.call({
+                tokenIn,
+                tokenOut,
+                fee,
+                amountIn: exactAmountIn,
+                sqrtPriceLimitX96: 0
+            })
+            let path = "0x" +
+                tokenIn.toLowerCase().replace("0x", "") +
+                Utils.numberToBytes32(fee).substring(58, 64) +
+                tokenOut.toLowerCase().replace("0x", "")
+            return {
+                tokenIn,
+                tokenOut,
+                fee: fee,
+                path,
+                exactAmountIn,
+                amountOut
+            };
+        } catch (err) {
+            // pair not exists
+        }
+
+    }))
+
+    // Multi hop
+    if (path) {
+        const amountOut = await quoter.quoteExactInput.call({ path, amountIn: exactAmountIn });
+        exactAmountInArr.push({
+            path,
+            tokenIn,
+            tokenOut,
+            exactAmountIn,
+            amountOut
+        })
+    }
+
+    exactAmountInArr = exactAmountInArr.filter( v => v !== undefined).sort( (a,b) => b.amountOut.minus(a.amountOut).toNumber());
+
+    return exactAmountInArr;
+}
+
+export const convertPathFromStringToArr = (path:string): (string | number)[] => {
+
+    if (!path) return null;
+
+    let arr = [];
+    // Remove "0x"
+    path = path.substring(2, path.length)
+    while (path.length !== 40) {
+        // Add token address to arr
+        arr.push("0x" + path.substring(0, 40));
+        path = path.substring(40, path.length);
+        
+        // Add fee to arr
+        arr.push(parseInt(path.substring(0,6), 16));
+        path = path.substring(6, path.length);
+    }
+
+    // Add last token address to arr
+    arr.push("0x" + path)
+
+    return arr;
+}
+
+
 export default {
     CoreContract,
     PeripheryContract,
@@ -146,5 +307,8 @@ export default {
     DefaultDeployOptions,
     deploy,
     fromDeployResult,
-    toSqrtX96
+    toSqrtX96,
+    getExactAmountInRoutes,
+    getExactAmountOutRoutes,
+    convertPathFromStringToArr
 };;
