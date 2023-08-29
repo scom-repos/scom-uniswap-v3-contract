@@ -1,6 +1,6 @@
 {
     "name": "@scom/scom-uniswap-v3-contract",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "lib/index.js",
     "pluginTypes": "pluginTypes/index.d.ts",
     "types": "types/index.d.ts",
