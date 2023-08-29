@@ -1,5 +1,5 @@
 {
-  "name": "swap-router-contracts",
+  "name": "@scom/scom-uniswap-swap-router-contracts",
   "version": "0.1.0",
   "main": "lib/index.js",
   "pluginTypes": "pluginTypes/index.d.ts",

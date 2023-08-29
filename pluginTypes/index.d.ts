@@ -1,11 +1,11 @@
 /// <amd-module name="@scom/scom-uniswap-v3-contract" />
 declare module "@scom/scom-uniswap-v3-contract" {
-    import { Contracts as CoreContracts } from 'v3-core';
-    import { Contracts as PeripheryContracts } from 'v3-periphery';
-    import { Contracts as SwapRouterContracts } from 'swap-router-contracts';
-    export { Contracts as CoreContracts } from 'v3-core';
-    export { Contracts as PeripheryContracts } from 'v3-periphery';
-    export { Contracts as SwapRouterContracts } from 'swap-router-contracts';
+    import { Contracts as CoreContracts } from '@scom/scom-uniswap-v3-core';
+    import { Contracts as PeripheryContracts } from '@scom/scom-uniswap-v3-periphery';
+    import { Contracts as SwapRouterContracts } from '@scom/scom-uniswap-swap-router-contracts';
+    export { Contracts as CoreContracts } from '@scom/scom-uniswap-v3-core';
+    export { Contracts as PeripheryContracts } from '@scom/scom-uniswap-v3-periphery';
+    export { Contracts as SwapRouterContracts } from '@scom/scom-uniswap-swap-router-contracts';
     import { IWallet, BigNumber } from '@ijstech/eth-wallet';
     export interface IDeployOptions {
         weth: string;

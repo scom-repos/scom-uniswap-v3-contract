@@ -3,9 +3,9 @@
     "type": "contract",
     "version": "0.1.0",
     "dependencies": [
-        "v3-core",
-        "v3-periphery",
-        "swap-router-contracts",
+        "@scom/scom-uniswap-v3-core",
+        "@scom/scom-uniswap-v3-periphery",
+        "@scom/scom-uniswap-swap-router-contracts",
         "@ijstech/eth-wallet",
         "@ijstech/eth-contract"
     ]

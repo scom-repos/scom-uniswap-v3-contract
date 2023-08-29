@@ -1,5 +1,5 @@
-/// <amd-module name="v3-core/contracts/UniswapV3Factory.json.ts" />
-declare module "v3-core/contracts/UniswapV3Factory.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-core/contracts/UniswapV3Factory.json.ts" />
+declare module "@scom/scom-uniswap-v3-core/contracts/UniswapV3Factory.json.ts" {
     const _default: {
         abi: ({
             inputs: any[];
@@ -40,8 +40,8 @@ declare module "v3-core/contracts/UniswapV3Factory.json.ts" {
     };
     export default _default;
 }
-/// <amd-module name="v3-core/contracts/UniswapV3Factory.ts" />
-declare module "v3-core/contracts/UniswapV3Factory.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-core/contracts/UniswapV3Factory.ts" />
+declare module "@scom/scom-uniswap-v3-core/contracts/UniswapV3Factory.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, Event, TransactionOptions } from "@ijstech/eth-contract";
     export interface ICreatePoolParams {
         tokenA: string;
@@ -120,8 +120,8 @@ declare module "v3-core/contracts/UniswapV3Factory.ts" {
         }
     }
 }
-/// <amd-module name="v3-core/contracts/UniswapV3Pool.json.ts" />
-declare module "v3-core/contracts/UniswapV3Pool.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-core/contracts/UniswapV3Pool.json.ts" />
+declare module "@scom/scom-uniswap-v3-core/contracts/UniswapV3Pool.json.ts" {
     const _default_1: {
         abi: ({
             inputs: any[];
@@ -162,8 +162,8 @@ declare module "v3-core/contracts/UniswapV3Pool.json.ts" {
     };
     export default _default_1;
 }
-/// <amd-module name="v3-core/contracts/UniswapV3Pool.ts" />
-declare module "v3-core/contracts/UniswapV3Pool.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-core/contracts/UniswapV3Pool.ts" />
+declare module "@scom/scom-uniswap-v3-core/contracts/UniswapV3Pool.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, Event, TransactionOptions } from "@ijstech/eth-contract";
     export interface IBurnParams {
         tickLower: number | BigNumber;
@@ -448,13 +448,13 @@ declare module "v3-core/contracts/UniswapV3Pool.ts" {
         }
     }
 }
-/// <amd-module name="v3-core/contracts/index.ts" />
-declare module "v3-core/contracts/index.ts" {
-    export { UniswapV3Factory } from "v3-core/contracts/UniswapV3Factory.ts";
-    export { UniswapV3Pool } from "v3-core/contracts/UniswapV3Pool.ts";
+/// <amd-module name="@scom/scom-uniswap-v3-core/contracts/index.ts" />
+declare module "@scom/scom-uniswap-v3-core/contracts/index.ts" {
+    export { UniswapV3Factory } from "@scom/scom-uniswap-v3-core/contracts/UniswapV3Factory.ts";
+    export { UniswapV3Pool } from "@scom/scom-uniswap-v3-core/contracts/UniswapV3Pool.ts";
 }
-/// <amd-module name="v3-core" />
-declare module "v3-core" {
-    import * as Contracts from "v3-core/contracts/index.ts";
+/// <amd-module name="@scom/scom-uniswap-v3-core" />
+declare module "@scom/scom-uniswap-v3-core" {
+    import * as Contracts from "@scom/scom-uniswap-v3-core/contracts/index.ts";
     export { Contracts };
 }

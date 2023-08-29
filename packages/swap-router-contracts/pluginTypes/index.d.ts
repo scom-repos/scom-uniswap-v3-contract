@@ -1,5 +1,5 @@
-/// <amd-module name="swap-router-contracts/contracts/SwapRouter02.json.ts" />
-declare module "swap-router-contracts/contracts/SwapRouter02.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/SwapRouter02.json.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/SwapRouter02.json.ts" {
     const _default: {
         abi: ({
             inputs: {
@@ -55,8 +55,8 @@ declare module "swap-router-contracts/contracts/SwapRouter02.json.ts" {
     };
     export default _default;
 }
-/// <amd-module name="swap-router-contracts/contracts/SwapRouter02.ts" />
-declare module "swap-router-contracts/contracts/SwapRouter02.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/SwapRouter02.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/SwapRouter02.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factoryV2: string;
@@ -490,8 +490,8 @@ declare module "swap-router-contracts/contracts/SwapRouter02.ts" {
         private assign;
     }
 }
-/// <amd-module name="swap-router-contracts/contracts/MixedRouteQuoterV1.json.ts" />
-declare module "swap-router-contracts/contracts/MixedRouteQuoterV1.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/MixedRouteQuoterV1.json.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/MixedRouteQuoterV1.json.ts" {
     const _default_1: {
         abi: ({
             inputs: {
@@ -541,8 +541,8 @@ declare module "swap-router-contracts/contracts/MixedRouteQuoterV1.json.ts" {
     };
     export default _default_1;
 }
-/// <amd-module name="swap-router-contracts/contracts/MixedRouteQuoterV1.ts" />
-declare module "swap-router-contracts/contracts/MixedRouteQuoterV1.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/MixedRouteQuoterV1.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/MixedRouteQuoterV1.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -622,8 +622,8 @@ declare module "swap-router-contracts/contracts/MixedRouteQuoterV1.ts" {
         private assign;
     }
 }
-/// <amd-module name="swap-router-contracts/contracts/Quoter.json.ts" />
-declare module "swap-router-contracts/contracts/Quoter.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/Quoter.json.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/Quoter.json.ts" {
     const _default_2: {
         abi: ({
             inputs: {
@@ -654,8 +654,8 @@ declare module "swap-router-contracts/contracts/Quoter.json.ts" {
     };
     export default _default_2;
 }
-/// <amd-module name="swap-router-contracts/contracts/Quoter.ts" />
-declare module "swap-router-contracts/contracts/Quoter.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/Quoter.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/Quoter.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -724,8 +724,8 @@ declare module "swap-router-contracts/contracts/Quoter.ts" {
         private assign;
     }
 }
-/// <amd-module name="swap-router-contracts/contracts/QuoterV2.json.ts" />
-declare module "swap-router-contracts/contracts/QuoterV2.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/QuoterV2.json.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/QuoterV2.json.ts" {
     const _default_3: {
         abi: ({
             inputs: {
@@ -775,8 +775,8 @@ declare module "swap-router-contracts/contracts/QuoterV2.json.ts" {
     };
     export default _default_3;
 }
-/// <amd-module name="swap-router-contracts/contracts/QuoterV2.ts" />
-declare module "swap-router-contracts/contracts/QuoterV2.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/QuoterV2.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/QuoterV2.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -887,8 +887,8 @@ declare module "swap-router-contracts/contracts/QuoterV2.ts" {
         private assign;
     }
 }
-/// <amd-module name="swap-router-contracts/contracts/TokenValidator.json.ts" />
-declare module "swap-router-contracts/contracts/TokenValidator.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/TokenValidator.json.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/TokenValidator.json.ts" {
     const _default_4: {
         abi: ({
             inputs: {
@@ -919,8 +919,8 @@ declare module "swap-router-contracts/contracts/TokenValidator.json.ts" {
     };
     export default _default_4;
 }
-/// <amd-module name="swap-router-contracts/contracts/TokenValidator.ts" />
-declare module "swap-router-contracts/contracts/TokenValidator.ts" {
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/TokenValidator.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/TokenValidator.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factoryV2: string;
@@ -968,16 +968,16 @@ declare module "swap-router-contracts/contracts/TokenValidator.ts" {
         private assign;
     }
 }
-/// <amd-module name="swap-router-contracts/contracts/index.ts" />
-declare module "swap-router-contracts/contracts/index.ts" {
-    export { SwapRouter02 } from "swap-router-contracts/contracts/SwapRouter02.ts";
-    export { MixedRouteQuoterV1 } from "swap-router-contracts/contracts/MixedRouteQuoterV1.ts";
-    export { Quoter } from "swap-router-contracts/contracts/Quoter.ts";
-    export { QuoterV2 } from "swap-router-contracts/contracts/QuoterV2.ts";
-    export { TokenValidator } from "swap-router-contracts/contracts/TokenValidator.ts";
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts/contracts/index.ts" />
+declare module "@scom/scom-uniswap-swap-router-contracts/contracts/index.ts" {
+    export { SwapRouter02 } from "@scom/scom-uniswap-swap-router-contracts/contracts/SwapRouter02.ts";
+    export { MixedRouteQuoterV1 } from "@scom/scom-uniswap-swap-router-contracts/contracts/MixedRouteQuoterV1.ts";
+    export { Quoter } from "@scom/scom-uniswap-swap-router-contracts/contracts/Quoter.ts";
+    export { QuoterV2 } from "@scom/scom-uniswap-swap-router-contracts/contracts/QuoterV2.ts";
+    export { TokenValidator } from "@scom/scom-uniswap-swap-router-contracts/contracts/TokenValidator.ts";
 }
-/// <amd-module name="swap-router-contracts" />
-declare module "swap-router-contracts" {
-    import * as Contracts from "swap-router-contracts/contracts/index.ts";
+/// <amd-module name="@scom/scom-uniswap-swap-router-contracts" />
+declare module "@scom/scom-uniswap-swap-router-contracts" {
+    import * as Contracts from "@scom/scom-uniswap-swap-router-contracts/contracts/index.ts";
     export { Contracts };
 }

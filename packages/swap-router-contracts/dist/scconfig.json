@@ -1,9 +1,0 @@
-{
-    "name": "swap-router-contracts",
-    "type": "contract",
-    "version": "0.1.0",
-    "dependencies": [
-        "@ijstech/eth-wallet",
-        "@ijstech/eth-contract"
-    ]
-}

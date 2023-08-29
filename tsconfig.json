@@ -9,9 +9,9 @@
         "outDir": "lib",
         "baseUrl": ".",
         "paths": {
-            "swap-router-contracts": ["./packages/swap-router-contracts"],
-            "v3-core": ["./packages/v3-core"],
-            "v3-periphery": ["./packages/v3-periphery"]
+            "@scom/scom-uniswap-swap-router-contracts": ["./packages/swap-router-contracts"],
+            "@scom/scom-uniswap-v3-core": ["./packages/v3-core"],
+            "@scom/scom-uniswap-v3-periphery": ["./packages/v3-periphery"]
         }
     },
     "include": [

@@ -1,5 +1,5 @@
-/// <amd-module name="v3-periphery/contracts/NonfungiblePositionManager.json.ts" />
-declare module "v3-periphery/contracts/NonfungiblePositionManager.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NonfungiblePositionManager.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NonfungiblePositionManager.json.ts" {
     const _default: {
         abi: ({
             inputs: {
@@ -71,8 +71,8 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.json.ts" {
     };
     export default _default;
 }
-/// <amd-module name="v3-periphery/contracts/NonfungiblePositionManager.ts" />
-declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NonfungiblePositionManager.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NonfungiblePositionManager.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, Event, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -505,8 +505,8 @@ declare module "v3-periphery/contracts/NonfungiblePositionManager.ts" {
         }
     }
 }
-/// <amd-module name="v3-periphery/contracts/NonfungibleTokenPositionDescriptor.json.ts" />
-declare module "v3-periphery/contracts/NonfungibleTokenPositionDescriptor.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NonfungibleTokenPositionDescriptor.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NonfungibleTokenPositionDescriptor.json.ts" {
     const _default_1: {
         abi: ({
             inputs: {
@@ -545,8 +545,8 @@ declare module "v3-periphery/contracts/NonfungibleTokenPositionDescriptor.json.t
     };
     export default _default_1;
 }
-/// <amd-module name="v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts" />
-declare module "v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts" {
     import { IWallet, Contract as _Contract, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         WETH9: string;
@@ -595,8 +595,8 @@ declare module "v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/SwapRouter.json.ts" />
-declare module "v3-periphery/contracts/SwapRouter.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/SwapRouter.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/SwapRouter.json.ts" {
     const _default_2: {
         abi: ({
             inputs: {
@@ -652,8 +652,8 @@ declare module "v3-periphery/contracts/SwapRouter.json.ts" {
     };
     export default _default_2;
 }
-/// <amd-module name="v3-periphery/contracts/SwapRouter.ts" />
-declare module "v3-periphery/contracts/SwapRouter.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/SwapRouter.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/SwapRouter.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -896,8 +896,8 @@ declare module "v3-periphery/contracts/SwapRouter.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/V3Migrator.json.ts" />
-declare module "v3-periphery/contracts/V3Migrator.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/V3Migrator.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/V3Migrator.json.ts" {
     const _default_3: {
         abi: ({
             inputs: {
@@ -949,8 +949,8 @@ declare module "v3-periphery/contracts/V3Migrator.json.ts" {
     };
     export default _default_3;
 }
-/// <amd-module name="v3-periphery/contracts/V3Migrator.ts" />
-declare module "v3-periphery/contracts/V3Migrator.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/V3Migrator.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/V3Migrator.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -1088,8 +1088,8 @@ declare module "v3-periphery/contracts/V3Migrator.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/PairFlash.json.ts" />
-declare module "v3-periphery/contracts/PairFlash.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/PairFlash.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/PairFlash.json.ts" {
     const _default_4: {
         abi: ({
             inputs: {
@@ -1147,8 +1147,8 @@ declare module "v3-periphery/contracts/PairFlash.json.ts" {
     };
     export default _default_4;
 }
-/// <amd-module name="v3-periphery/contracts/PairFlash.ts" />
-declare module "v3-periphery/contracts/PairFlash.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/PairFlash.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/PairFlash.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         swapRouter: string;
@@ -1234,8 +1234,8 @@ declare module "v3-periphery/contracts/PairFlash.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/Quoter.json.ts" />
-declare module "v3-periphery/contracts/Quoter.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/Quoter.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/Quoter.json.ts" {
     const _default_5: {
         abi: ({
             inputs: {
@@ -1266,8 +1266,8 @@ declare module "v3-periphery/contracts/Quoter.json.ts" {
     };
     export default _default_5;
 }
-/// <amd-module name="v3-periphery/contracts/Quoter.ts" />
-declare module "v3-periphery/contracts/Quoter.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/Quoter.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/Quoter.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -1336,8 +1336,8 @@ declare module "v3-periphery/contracts/Quoter.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/QuoterV2.json.ts" />
-declare module "v3-periphery/contracts/QuoterV2.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/QuoterV2.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/QuoterV2.json.ts" {
     const _default_6: {
         abi: ({
             inputs: {
@@ -1387,8 +1387,8 @@ declare module "v3-periphery/contracts/QuoterV2.json.ts" {
     };
     export default _default_6;
 }
-/// <amd-module name="v3-periphery/contracts/QuoterV2.ts" />
-declare module "v3-periphery/contracts/QuoterV2.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/QuoterV2.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/QuoterV2.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IDeployParams {
         factory: string;
@@ -1499,8 +1499,8 @@ declare module "v3-periphery/contracts/QuoterV2.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/TickLens.json.ts" />
-declare module "v3-periphery/contracts/TickLens.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/TickLens.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/TickLens.json.ts" {
     const _default_7: {
         abi: {
             inputs: {
@@ -1526,8 +1526,8 @@ declare module "v3-periphery/contracts/TickLens.json.ts" {
     };
     export default _default_7;
 }
-/// <amd-module name="v3-periphery/contracts/TickLens.ts" />
-declare module "v3-periphery/contracts/TickLens.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/TickLens.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/TickLens.ts" {
     import { IWallet, Contract as _Contract, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export interface IGetPopulatedTicksInWordParams {
         pool: string;
@@ -1547,8 +1547,8 @@ declare module "v3-periphery/contracts/TickLens.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/UniswapInterfaceMulticall.json.ts" />
-declare module "v3-periphery/contracts/UniswapInterfaceMulticall.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/UniswapInterfaceMulticall.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/UniswapInterfaceMulticall.json.ts" {
     const _default_8: {
         abi: ({
             inputs: {
@@ -1598,8 +1598,8 @@ declare module "v3-periphery/contracts/UniswapInterfaceMulticall.json.ts" {
     };
     export default _default_8;
 }
-/// <amd-module name="v3-periphery/contracts/UniswapInterfaceMulticall.ts" />
-declare module "v3-periphery/contracts/UniswapInterfaceMulticall.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/UniswapInterfaceMulticall.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/UniswapInterfaceMulticall.ts" {
     import { IWallet, Contract as _Contract, TransactionReceipt, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export class UniswapInterfaceMulticall extends _Contract {
         static _abi: any;
@@ -1638,8 +1638,8 @@ declare module "v3-periphery/contracts/UniswapInterfaceMulticall.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/NFTDescriptor.json.ts" />
-declare module "v3-periphery/contracts/NFTDescriptor.json.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NFTDescriptor.json.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NFTDescriptor.json.ts" {
     const _default_9: {
         abi: {
             inputs: {
@@ -1665,8 +1665,8 @@ declare module "v3-periphery/contracts/NFTDescriptor.json.ts" {
     };
     export default _default_9;
 }
-/// <amd-module name="v3-periphery/contracts/NFTDescriptor.ts" />
-declare module "v3-periphery/contracts/NFTDescriptor.ts" {
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/NFTDescriptor.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/NFTDescriptor.ts" {
     import { IWallet, Contract as _Contract, BigNumber, TransactionOptions } from "@ijstech/eth-contract";
     export class NFTDescriptor extends _Contract {
         static _abi: any;
@@ -1693,21 +1693,21 @@ declare module "v3-periphery/contracts/NFTDescriptor.ts" {
         private assign;
     }
 }
-/// <amd-module name="v3-periphery/contracts/index.ts" />
-declare module "v3-periphery/contracts/index.ts" {
-    export { NonfungiblePositionManager } from "v3-periphery/contracts/NonfungiblePositionManager.ts";
-    export { NonfungibleTokenPositionDescriptor } from "v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts";
-    export { SwapRouter } from "v3-periphery/contracts/SwapRouter.ts";
-    export { V3Migrator } from "v3-periphery/contracts/V3Migrator.ts";
-    export { PairFlash } from "v3-periphery/contracts/PairFlash.ts";
-    export { Quoter } from "v3-periphery/contracts/Quoter.ts";
-    export { QuoterV2 } from "v3-periphery/contracts/QuoterV2.ts";
-    export { TickLens } from "v3-periphery/contracts/TickLens.ts";
-    export { UniswapInterfaceMulticall } from "v3-periphery/contracts/UniswapInterfaceMulticall.ts";
-    export { NFTDescriptor } from "v3-periphery/contracts/NFTDescriptor.ts";
+/// <amd-module name="@scom/scom-uniswap-v3-periphery/contracts/index.ts" />
+declare module "@scom/scom-uniswap-v3-periphery/contracts/index.ts" {
+    export { NonfungiblePositionManager } from "@scom/scom-uniswap-v3-periphery/contracts/NonfungiblePositionManager.ts";
+    export { NonfungibleTokenPositionDescriptor } from "@scom/scom-uniswap-v3-periphery/contracts/NonfungibleTokenPositionDescriptor.ts";
+    export { SwapRouter } from "@scom/scom-uniswap-v3-periphery/contracts/SwapRouter.ts";
+    export { V3Migrator } from "@scom/scom-uniswap-v3-periphery/contracts/V3Migrator.ts";
+    export { PairFlash } from "@scom/scom-uniswap-v3-periphery/contracts/PairFlash.ts";
+    export { Quoter } from "@scom/scom-uniswap-v3-periphery/contracts/Quoter.ts";
+    export { QuoterV2 } from "@scom/scom-uniswap-v3-periphery/contracts/QuoterV2.ts";
+    export { TickLens } from "@scom/scom-uniswap-v3-periphery/contracts/TickLens.ts";
+    export { UniswapInterfaceMulticall } from "@scom/scom-uniswap-v3-periphery/contracts/UniswapInterfaceMulticall.ts";
+    export { NFTDescriptor } from "@scom/scom-uniswap-v3-periphery/contracts/NFTDescriptor.ts";
 }
-/// <amd-module name="v3-periphery" />
-declare module "v3-periphery" {
-    import * as Contracts from "v3-periphery/contracts/index.ts";
+/// <amd-module name="@scom/scom-uniswap-v3-periphery" />
+declare module "@scom/scom-uniswap-v3-periphery" {
+    import * as Contracts from "@scom/scom-uniswap-v3-periphery/contracts/index.ts";
     export { Contracts };
 }
